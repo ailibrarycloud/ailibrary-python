@@ -1,4 +1,7 @@
-# OFFICIAL AILIBRARY REPO
+# OFFICIAL AILIBRARY REPO \( work in progress \)
+
+DO NOT MAKE ANY CHANGES TO MAIN. PLEASE CREATE A BRANCH AND MAKE YOUR CHANGES THERE. DO NOT MERGE THAT BRANCH TO MAIN.	
+
 
 questions so far:
 1) various versions? should i have a src/ailibrary/v1/ ?
