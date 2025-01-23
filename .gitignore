@@ -1,0 +1,8 @@
+/.venv/
+/.vscode/
+/.pytest_cache/
+.env
+build.log
+requirements.in
+**/__pycache__/
+*.pyc
