@@ -1,18 +1,11 @@
-import requests
-from typing import Dict, List, Optional, Union
+from typing import Dict, List, Optional
+from ..utils.http import HTTPClient
 
-class AILibraryAgent:
-    """Client for interacting with the AI Library Agent API."""
-    
-    def __init__(self, api_key: str, base_url: str = "https://api.ailibrary.ai/v1"):
-        self.api_key = api_key
-        self.base_url = base_url
-        self.headers = {
-            "Authorization": f"Bearer {api_key}",
-            "Content-Type": "application/json"
-        }
+class Agent:
+    def __init__(self, http: HTTPClient):
+        self._http = http
 
-    def create_agent(
+    def create(
         self,
         title: str,
         instructions: Optional[str] = "You are a helpful assistant.",
@@ -22,15 +15,10 @@ class AILibraryAgent:
         knowledge_search: Optional[bool] = None,
         knowledge_id: Optional[str] = None
     ) -> Dict:
-        """Create a new agent with the specified parameters."""
-        endpoint = f"{self.base_url}/agent/create"
-        
         payload = {
             "title": title,
             "instructions": instructions
         }
-        
-        # Add optional parameters if provided
         if description:
             payload["description"] = description
         if coverimage:
@@ -42,22 +30,15 @@ class AILibraryAgent:
         if knowledge_id:
             payload["knowledge_id"] = knowledge_id
 
-        response = requests.post(endpoint, headers=self.headers, json=payload)
-        return response.json()
+        return self._http.request("POST", "/agent/create", json=payload)
 
-    def get_agent(self, namespace: str) -> Dict:
-        """Retrieve information about an agent."""
-        endpoint = f"{self.base_url}/agent/{namespace}"
-        response = requests.get(endpoint, headers=self.headers)
-        return response.json()
+    def get(self, namespace: str) -> Dict:
+        return self._http.request("GET", f"/agent/{namespace}")
 
-    def list_agents(self) -> Dict:
-        """List all agents."""
-        endpoint = f"{self.base_url}/agent"
-        response = requests.get(endpoint, headers=self.headers)
-        return response.json()
+    def list(self) -> Dict:
+        return self._http.request("GET", "/agent")
 
-    def update_agent(
+    def update(
         self,
         namespace: str,
         title: Optional[str] = None,
@@ -69,9 +50,6 @@ class AILibraryAgent:
         knowledge_search: Optional[bool] = None,
         knowledge_id: Optional[str] = None
     ) -> Dict:
-        """Update an existing agent."""
-        endpoint = f"{self.base_url}/agent/{namespace}"
-        
         payload = {}
         if title:
             payload["title"] = title
@@ -90,24 +68,14 @@ class AILibraryAgent:
         if knowledge_id:
             payload["knowledge_id"] = knowledge_id
 
-        response = requests.put(endpoint, headers=self.headers, json=payload)
-        return response.json()
+        return self._http.request("PUT", f"/agent/{namespace}", json=payload)
 
-    def delete_agent(self, namespace: str) -> Dict:
-        """Delete an agent."""
-        endpoint = f"{self.base_url}/agent/{namespace}"
-        response = requests.delete(endpoint, headers=self.headers)
-        return response.json()
+    def delete(self, namespace: str) -> Dict:
+        return self._http.request("DELETE", f"/agent/{namespace}")
 
     def chat(self, namespace: str, messages: List[Dict[str, str]], session_id: Optional[str] = None) -> Dict:
-        """Chat with an agent."""
-        endpoint = f"{self.base_url}/agent/{namespace}/chat"
-        
-        payload = {
-            "messages": messages
-        }
+        payload = {"messages": messages}
         if session_id:
             payload["session_id"] = session_id
 
-        response = requests.post(endpoint, headers=self.headers, json=payload, stream=True)
-        return response.json()
+        return self._http.request("POST", f"/agent/{namespace}/chat", json=payload)

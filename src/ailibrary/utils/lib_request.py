@@ -1,7 +1,8 @@
 import requests
 from typing import Dict, Optional, Any, BinaryIO
 
-class HTTPClient:
+
+class _AILibRequestClient:
     """Handles HTTP requests to the AI Library API."""
     
     def __init__(self, api_key: str, base_url: str):
@@ -11,7 +12,7 @@ class HTTPClient:
             "Content-Type": "application/json"
         }
     
-    def request(
+    def _request(
         self, 
         method: str, 
         endpoint: str, 
