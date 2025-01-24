@@ -1,9 +1,11 @@
 from typing import Dict, List, Optional
-from ..utils.http import HTTPClient
+from ..utils.http_client import HTTPClient
+
 
 class Agent:
-    def __init__(self, http: HTTPClient):
-        self._http = http
+    """Client for interacting with the AI Library Agent API."""
+    def __init__(self, http_client: HTTPClient):
+        self._http_client = http_client
 
     def create(
         self,
@@ -15,6 +17,7 @@ class Agent:
         knowledge_search: Optional[bool] = None,
         knowledge_id: Optional[str] = None
     ) -> Dict:
+        """Create a new agent with the specified parameters."""
         payload = {
             "title": title,
             "instructions": instructions
@@ -30,13 +33,15 @@ class Agent:
         if knowledge_id:
             payload["knowledge_id"] = knowledge_id
 
-        return self._http.request("POST", "/agent/create", json=payload)
+        return self._http_client._request("POST", "/agent/create", json=payload)
 
     def get(self, namespace: str) -> Dict:
-        return self._http.request("GET", f"/agent/{namespace}")
+        """Retrieve information about an agent."""
+        return self._http_client._request("GET", f"/agent/{namespace}")
 
     def list(self) -> Dict:
-        return self._http.request("GET", "/agent")
+        """List all agents."""
+        return self._http_client._request("GET", "/agent")
 
     def update(
         self,
@@ -50,6 +55,7 @@ class Agent:
         knowledge_search: Optional[bool] = None,
         knowledge_id: Optional[str] = None
     ) -> Dict:
+        """Update an existing agent."""
         payload = {}
         if title:
             payload["title"] = title
@@ -68,14 +74,16 @@ class Agent:
         if knowledge_id:
             payload["knowledge_id"] = knowledge_id
 
-        return self._http.request("PUT", f"/agent/{namespace}", json=payload)
+        return self._http_client._request("PUT", f"/agent/{namespace}", json=payload)
 
     def delete(self, namespace: str) -> Dict:
-        return self._http.request("DELETE", f"/agent/{namespace}")
+        """Delete an agent."""
+        return self._http_client._request("DELETE", f"/agent/{namespace}")
 
     def chat(self, namespace: str, messages: List[Dict[str, str]], session_id: Optional[str] = None) -> Dict:
+        """Chat with an agent."""
         payload = {"messages": messages}
         if session_id:
             payload["session_id"] = session_id
 
-        return self._http.request("POST", f"/agent/{namespace}/chat", json=payload)
+        return self._http_client._request("POST", f"/agent/{namespace}/chat", json=payload)

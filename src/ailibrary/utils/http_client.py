@@ -2,7 +2,7 @@ import requests
 from typing import Dict, Optional, Any, BinaryIO
 
 
-class _AILibRequestClient:
+class _HTTPClient:
     """Handles HTTP requests to the AI Library API."""
     
     def __init__(self, api_key: str, base_url: str):

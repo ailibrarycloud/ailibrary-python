@@ -1,9 +1,12 @@
 from typing import Dict, List, Optional
-from ..utils.http import HTTPClient
+from ..utils.http_client import HTTPClient
+
 
 class Notes:
-    def __init__(self, http: HTTPClient):
-        self._http = http
+    """Notes resource for managing notes on resources."""
+
+    def __init__(self, http_client: HTTPClient):
+        self._http_client = http_client
 
     def add(
         self,
@@ -13,6 +16,7 @@ class Notes:
         resource_id: str,
         meta: Optional[Dict] = None
     ) -> Dict:
+        """Add a note to a resource."""
         payload = {
             "content": content,
             "role": role,
@@ -21,10 +25,11 @@ class Notes:
         }
         if meta:
             payload["meta"] = meta
-        return self._http.request("POST", "/notes", json=payload)
+        return self._http_client._request("POST", "/notes", json=payload)
 
     def get_for_resource(self, resource: str, resource_id: str) -> List[Dict]:
-        return self._http.request("GET", f"/notes/{resource}/{resource_id}")
+        """Get notes for a resource."""
+        return self._http_client._request("GET", f"/notes/{resource}/{resource_id}")
 
     def update(
         self,
@@ -33,16 +38,18 @@ class Notes:
         role: str,
         meta: Optional[Dict] = None
     ) -> Dict:
+        """Update a note."""
         payload = {
             "content": content,
             "role": role
         }
         if meta:
             payload["meta"] = meta
-        return self._http.request("PUT", f"/notes/{note_id}", json=payload)
+        return self._http_client._request("PUT", f"/notes/{note_id}", json=payload)
 
     def get(self, note_id: str) -> Dict:
-        return self._http.request("GET", f"/notes/{note_id}")
+        """Get a note by ID."""
+        return self._http_client._request("GET", f"/notes/{note_id}")
 
     def delete_for_resource(
         self,
@@ -51,10 +58,12 @@ class Notes:
         values: Optional[List[str]] = None,
         delete_all: bool = False
     ) -> Dict:
+        """Delete notes for a resource."""
         payload = {"delete_all": delete_all}
         if values:
             payload["values"] = values
-        return self._http.request("DELETE", f"/notes/{resource}/{resource_id}", json=payload)
+        return self._http_client._request("DELETE", f"/notes/{resource}/{resource_id}", json=payload)
 
     def delete(self, note_id: str) -> Dict:
-        return self._http.request("DELETE", f"/notes/{note_id}")
+        """Delete a note by ID."""
+        return self._http_client._request("DELETE", f"/notes/{note_id}")
