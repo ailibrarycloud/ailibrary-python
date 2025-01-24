@@ -1,11 +1,11 @@
 from typing import Dict, List, Optional
-from ..utils.http_client import HTTPClient
+from ..utils.http_client import _HTTPClient
 
 
 class KnowledgeBase:
     """Knowledge Base resource for managing vector databases."""
 
-    def __init__(self, http_client: HTTPClient):
+    def __init__(self, http_client: _HTTPClient):
         self._http_client = http_client
 
     def create(self, name: str, meta: Optional[Dict] = None) -> Dict:
@@ -15,7 +15,7 @@ class KnowledgeBase:
             payload["meta"] = meta
         return self._http_client._request("POST", "/knowledgebase", json=payload)
 
-    def list(self) -> Dict:
+    def list_knowledge_bases(self) -> Dict:
         """List all knowledge bases."""
         return self._http_client._request("GET", "/knowledgebase")
 

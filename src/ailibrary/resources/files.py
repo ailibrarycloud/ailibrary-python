@@ -1,11 +1,11 @@
 from typing import Dict, List, Optional, BinaryIO
-from ..utils.http_client import HTTPClient
+from ..utils.http_client import _HTTPClient
 
 
 class Files:
     """Files resource for managing file uploads and operations."""
 
-    def __init__(self, http_client: HTTPClient):
+    def __init__(self, http_client: _HTTPClient):
         self._http_client = http_client
 
     def upload(self, files: List[BinaryIO], knowledge_id: Optional[str] = None) -> List[Dict]:
@@ -16,7 +16,7 @@ class Files:
             params['knowledgeId'] = knowledge_id
         return self._http_client._request("POST", "/files", files=files_data, params=params)
 
-    def list(self, page: Optional[int] = None, limit: Optional[int] = None) -> Dict:
+    def list_files(self, page: Optional[int] = None, limit: Optional[int] = None) -> Dict:
         """List all files."""
         params = {}
         if page:

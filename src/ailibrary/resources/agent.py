@@ -1,10 +1,10 @@
 from typing import Dict, List, Optional
-from ..utils.http_client import HTTPClient
+from ..utils.http_client import _HTTPClient
 
 
 class Agent:
     """Client for interacting with the AI Library Agent API."""
-    def __init__(self, http_client: HTTPClient):
+    def __init__(self, http_client: _HTTPClient):
         self._http_client = http_client
 
     def create(
@@ -39,7 +39,7 @@ class Agent:
         """Retrieve information about an agent."""
         return self._http_client._request("GET", f"/agent/{namespace}")
 
-    def list(self) -> Dict:
+    def list_agents(self) -> Dict:
         """List all agents."""
         return self._http_client._request("GET", "/agent")
 

@@ -1,11 +1,11 @@
 from typing import Dict, List
-from ..utils.http_client import HTTPClient
+from ..utils.http_client import _HTTPClient
 
 
 class Utilities:
     """Utility functions to support AI agents."""
 
-    def __init__(self, http_client: HTTPClient):
+    def __init__(self, http_client: _HTTPClient):
         self._http_client = http_client
 
     def web_search(self, search_terms: List[str]) -> List[Dict]:
