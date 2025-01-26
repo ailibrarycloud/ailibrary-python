@@ -40,9 +40,9 @@ class KnowledgeBase:
     ) -> Dict:
         """Add sources to a knowledge base."""
         
-        acceptable_types = ["docs"]
-        if type not in acceptable_types:
-            raise ValueError(f"Invalid type. Acceptable types: {self._http_client._stringify(acceptable_types)} .")
+        valid_types = ["docs"]
+        if type not in valid_types:
+            raise ValueError(f"Invalid type. Valid types: {self._http_client._stringify(valid_types)} .")
 
         payload = {
             "type": type

@@ -60,7 +60,7 @@ class Agent:
         """Update an existing agent."""
 
         payload = {"namespace": namespace}
-        acceptable_types = ["notebook", "chat", "voice"]
+        valid_types = ["notebook", "chat", "voice"]
 
         optional_params = {"title": title, "type": type, "instructions": instructions,
                            "description": description, "coverimage": coverimage, 
@@ -69,8 +69,8 @@ class Agent:
         for param in optional_params:
             ### What if title is specified but its an empty string? or the title is not found?
             param_value = optional_params[param]
-            if param == "type" and param_value and param_value not in acceptable_types:
-                raise ValueError(f"Invalid agent type. If specified, must be one of: {self._http_client._stringify(acceptable_types)} .")
+            if param == "type" and param_value and param_value not in valid_types:
+                raise ValueError(f"Invalid agent type. If specified, must be one of: {self._http_client._stringify(valid_types)} .")
             elif param_value is not None:   
                 payload[param] = param_value
         return self._http_client._request("PUT", f"/agent/{namespace}", json=payload)

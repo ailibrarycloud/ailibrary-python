@@ -1,6 +1,8 @@
 from typing import Dict, List
 from ..utils.http_client import _HTTPClient
 
+###### WHAT IF USER PROVIDES THE WRONG TYPES OF VARIABLES? eg user passes a list instead of a string?
+###### rather than use a million if statements in each function, how can we validate the data?
 
 class Utilities:
     """Utility functions to support AI agents."""
@@ -8,11 +10,13 @@ class Utilities:
     def __init__(self, http_client: _HTTPClient):
         self._http_client = http_client
 
+
     def web_search(self, search_terms: List[str]) -> List[Dict]:
         """Search the web for terms."""
         return self._http_client._request("POST", "/utilities/websearch", json={
             "search_terms": search_terms
         })
+
 
     def web_parser(self, urls: List[str]) -> List[Dict]:
         """Parse web pages for content."""

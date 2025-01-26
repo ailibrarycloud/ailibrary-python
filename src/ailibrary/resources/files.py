@@ -26,13 +26,13 @@ class Files:
     def list_files(self, page: Optional[int] = None, limit: Optional[int] = None) -> Dict:
         """List all files."""
         params_dict = {}
-        optional_params = [page, limit]
-        for param in optional_params
-        if param:
-            params_dict['page'] = page
-        if limit:
-            params['limit'] = limit
-        return self._http_client._request("GET", "/files", params=params)
+        optional_params = {"page": page, "limit": limit}
+        for param in optional_params:
+            param_value = optional_params[param]
+            if param_value is not None:
+                params_dict[param] = param_value
+
+        return self._http_client._request("GET", "/files", params=params_dict)
 
 
     def get(self, file_id: str) -> Dict:
