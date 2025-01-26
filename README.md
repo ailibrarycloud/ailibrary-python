@@ -1,11 +1,6 @@
 # OFFICIAL AILIBRARY REPO \( work in progress \)
 
-DO NOT MAKE ANY CHANGES TO MAIN. PLEASE CREATE A BRANCH AND MAKE YOUR CHANGES THERE. DO NOT MERGE THAT BRANCH TO MAIN.	
+DO NOT MAKE ANY CHANGES TO MAIN. PLEASE CREATE A BRANCH AND MAKE YOUR CHANGES THERE. DO NOT MERGE THAT BRANCH TO MAIN.
 
-
-questions so far:
-1) various versions? should i have a src/ailibrary/v1/ ?
-2) how to organize the package? for example in src/ailibrary/ should i have various modules like agent.py, utilities.py, etc, where each module contains the apis for that entity? or should it be like src/ailibrary/agent/function\_1.py, src/ailibrary/agent/function\_2.py, src/ailibrary/utilities/function\_1.py, src/ailibrary/utilities/function\_2.py
-3) global variables? domain name, version name, etc?
-4) CI/CD?
+The following documentation is used for the code: https://docs.ailibrary.ai/
 
