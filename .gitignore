@@ -1,8 +1,12 @@
 /.venv/
 /.vscode/
 /.pytest_cache/
+/dist/
+/testing/
 .env
 build.log
 requirements.in
 **/__pycache__/
 *.pyc
+# Ignore egg-info
+*.egg-info/
