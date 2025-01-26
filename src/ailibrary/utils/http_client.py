@@ -12,6 +12,14 @@ class _HTTPClient:
             "Content-Type": "application/json"
         }
     
+
+    def _stringify(list_of_strings: str):
+        """ 
+        input example: ["A", "list", "of", "words"]
+        return value example: "'A', 'list', 'of', 'words'"
+        """
+        return "'" + "', '".join(list_of_strings) + "'"
+
     def _request(
         self, 
         method: str, 

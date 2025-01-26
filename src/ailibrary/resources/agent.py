@@ -1,6 +1,8 @@
 from typing import Dict, List, Optional, Literal
 from ..utils.http_client import _HTTPClient
 
+###### WHAT IF USER PROVIDES THE WRONG TYPES OF VARIABLES? eg user passes a list instead of a string?
+###### rather than use a million if statements in each function, how can we validate the data?
 
 class Agent:
     """Client for interacting with the AI Library Agent API."""
@@ -55,11 +57,12 @@ class Agent:
         """Update an existing agent."""
 
         payload = {"namespace": namespace}
+        acceptable_types = ["notebook", "chat", "voice"]
         optional_params = [title, type, instructions, description, coverimage, intromessage, knowledge_search, knowledge_id]
         for param in optional_params:
             ### What if title is specified but its an empty string? or the title is not found?
-            if param == "type" and param not in ["notebook", "chat", "voice", None]:
-                raise ValueError("Invalid agent type. If specified, must be one of: 'notebook', 'chat', 'voice' .")
+            if param == "type" and param and param not in acceptable_types:
+                raise ValueError(f"Invalid agent type. If specified, must be one of: {self._http_client._stringify(acceptable_types)} .")
             elif param:   
                 payload[param] = param
         return self._http_client._request("PUT", f"/agent/{namespace}", json=payload)
@@ -76,12 +79,13 @@ class Agent:
         Args:
             namespace: The agent namespace
             messages: List of message dictionaries (at least one).
-                    Requirements:
-                        - At least one message
-                        - Required key: 'role'possible values: 'assistant', 'user', 'system'.
-                        - 
-                        Required keys: 'role' and 'content'.
-                        'session_id: Optional session identifier
+                Requirements:
+                    - At least one message
+                    - Required key: 'role' 
+                        - Possible values: 'assistant', 'user', 'system'
+                    - Required key: 'content'
+                        - Possible values: any string
+            'session_id: Optional session identifier
         """
         if not messages:
             raise ValueError("Messages list cannot be empty")
