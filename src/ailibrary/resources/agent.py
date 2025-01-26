@@ -25,10 +25,13 @@ class Agent:
 
         ### What if title is None or an empty string?
         payload = {"title": title}
-        optional_params = [instructions, description, coverimage, intromessage, knowledge_search, knowledge_id]
+        optional_params = {"instructions": instructions, "description": description,
+                           "coverimage": coverimage, "intromessage": intromessage,
+                           "knowledge_search": knowledge_search, "knowledge_id": knowledge_id}
         for param in optional_params:
-            if param:
-                payload[param] = param
+            param_value = optional_params[param]
+            if param_value is not None:
+                payload[param] = param_value
         return self._http_client._request("POST", "/agent/create", json=payload)
 
 
@@ -58,13 +61,18 @@ class Agent:
 
         payload = {"namespace": namespace}
         acceptable_types = ["notebook", "chat", "voice"]
-        optional_params = [title, type, instructions, description, coverimage, intromessage, knowledge_search, knowledge_id]
+
+        optional_params = {"title": title, "type": type, "instructions": instructions,
+                           "description": description, "coverimage": coverimage, 
+                           "intromessage": intromessage, "knowledge_search": knowledge_search,
+                           "knowledge_id": knowledge_id}
         for param in optional_params:
             ### What if title is specified but its an empty string? or the title is not found?
-            if param == "type" and param and param not in acceptable_types:
+            param_value = optional_params[param]
+            if param == "type" and param_value and param_value not in acceptable_types:
                 raise ValueError(f"Invalid agent type. If specified, must be one of: {self._http_client._stringify(acceptable_types)} .")
-            elif param:   
-                payload[param] = param
+            elif param_value is not None:   
+                payload[param] = param_value
         return self._http_client._request("PUT", f"/agent/{namespace}", json=payload)
 
 
@@ -85,7 +93,7 @@ class Agent:
                         - Possible values: 'assistant', 'user', 'system'
                     - Required key: 'content'
                         - Possible values: any string
-            'session_id: Optional session identifier
+            session_id: Optional session identifier
         """
         if not messages:
             raise ValueError("Messages list cannot be empty")

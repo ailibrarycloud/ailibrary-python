@@ -20,6 +20,7 @@ class _HTTPClient:
         """
         return "'" + "', '".join(list_of_strings) + "'"
 
+
     def _request(
         self, 
         method: str, 
@@ -30,8 +31,8 @@ class _HTTPClient:
         stream: bool = False
     ) -> Any:
         """Make an HTTP request to the API."""
+
         url = f"{self.base_url}{endpoint}"
-        
         response = requests.request(
             method=method,
             url=url,

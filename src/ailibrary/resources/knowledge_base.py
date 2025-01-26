@@ -47,10 +47,11 @@ class KnowledgeBase:
         payload = {
             "type": type
         }
-        optional_params = [meta, options]
+        optional_params = {"meta": meta, "options": options}
         for param in optional_params:
-            if param:
-                payload[param] = param
+            param_value = optional_params[param]
+            if param_value is not None:
+                payload[param] = param_value
         return self._http_client._request("PUT", f"/knowledgebase/{knowledge_id}", json=payload)
 
 
