@@ -1,10 +1,10 @@
 import _setup_tests
 
 
-def test_knowledge_base(client):
+def test_knowledge_base(client, args):
     knowledge_base = client.knowledge_base
-
-    kb_data = knowledge_base.create("test_kb")  # Create a knowledge base
+    name = args.get("name", "Test_Knowledge_Base")
+    kb_data = knowledge_base.create(name)  # Create a knowledge base
     print(f"knowledge_base.create() response: {kb_data}")
 
     knowledge_id = kb_data["id"]
@@ -30,6 +30,7 @@ def test_knowledge_base(client):
 
 if __name__ == "__main__":
     client = _setup_tests.__setup()
+    args = {"name": "test_kb"}
     print("Running test_knowledge_base:")
-    test_knowledge_base(client)
+    test_knowledge_base(client, args)
     print("Finished running test_knowledge_base")

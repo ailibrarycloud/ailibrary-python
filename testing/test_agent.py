@@ -1,9 +1,10 @@
 import _setup_tests
 
-
-def test_agent(client, title, update_title="Updated Agent"):
+def test_agent(client, args):
     """ Test basic functionality of agent.py """
     agent = client.agent
+    title = args.get("title", "Test_Agent")
+    update_title = args.get("update_title", "Updated_Agent")
 
     agent_data = agent.create(title, description="This is a test agent.") # test create()
     print(f"agent.create() response:\n {agent_data}")
@@ -30,7 +31,7 @@ def test_agent(client, title, update_title="Updated Agent"):
 
 if __name__ == "__main__":
     client = _setup_tests.__setup()  
+    args = {"title": "", "update_title": ""}
     print("Running test_agent:")
-    title = ""
-    test_agent(client, title)
+    test_agent(client, args)
     print("Finished running test_agent")
