@@ -2,7 +2,7 @@ from typing import Dict, List, Optional, BinaryIO
 from ..utils.http_client import _HTTPClient
 
 
-# fastapi UploadFile
+# fastapi UploadFile?
 
 class Files:
     """Files resource for managing file uploads and operations."""
@@ -14,12 +14,11 @@ class Files:
     def upload(self, files: List[BinaryIO], knowledge_id: Optional[str] = None) -> List[Dict]:
         """Upload files to AI Library."""
 
-        ### where/how is the knowledge_id passed to the client? 
         files_data = [('files', file) for file in files]
-        # params = {}
-        # if knowledge_id:
-        #     params['knowledgeId'] = knowledge_id
-        return self._http_client._request("POST", "/files", files=files_data)
+        payload = {}
+        if knowledge_id:
+            payload['knowledgeId'] = knowledge_id
+        return self._http_client._request("POST", "/files", files=files_data, json=payload)
 
 
     def list_files(self, page: Optional[int] = None, limit: Optional[int] = None) -> Dict:

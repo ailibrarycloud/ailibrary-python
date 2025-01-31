@@ -2,7 +2,6 @@
 /.vscode/
 /.pytest_cache/
 /dist/
-/testing/
 .env
 .env.sample
 build.log
