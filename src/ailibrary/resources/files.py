@@ -1,8 +1,8 @@
 from typing import Dict, List, Optional, BinaryIO
 from ..utils.http_client import _HTTPClient
 
-###### WHAT IF USER PROVIDES THE WRONG TYPES OF VARIABLES? eg user passes a list instead of a string?
-###### rather than use a million if statements in each function, how can we validate the data?
+
+# fastapi UploadFile
 
 class Files:
     """Files resource for managing file uploads and operations."""
@@ -14,7 +14,6 @@ class Files:
     def upload(self, files: List[BinaryIO], knowledge_id: Optional[str] = None) -> List[Dict]:
         """Upload files to AI Library."""
 
-        ### verify files is correct here
         ### where/how is the knowledge_id passed to the client? 
         files_data = [('files', file) for file in files]
         # params = {}

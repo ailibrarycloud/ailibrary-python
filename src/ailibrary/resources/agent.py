@@ -1,8 +1,6 @@
 from typing import Dict, List, Optional, Literal
 from ..utils.http_client import _HTTPClient
 
-###### WHAT IF USER PROVIDES THE WRONG TYPES OF VARIABLES? eg user passes a list instead of a string?
-###### rather than use a million if statements in each function, how can we validate the data?
 
 class Agent:
     """Client for interacting with the AI Library Agent API."""
@@ -23,7 +21,8 @@ class Agent:
     ) -> Dict:
         """Create a new agent with the specified parameters."""
 
-        ### What if title is None or an empty string?
+        if not title:
+            raise ValueError("Title cannot be empty")
         payload = {"title": title}
         optional_params = {"instructions": instructions, "description": description,
                            "coverimage": coverimage, "intromessage": intromessage,
@@ -67,7 +66,6 @@ class Agent:
                            "intromessage": intromessage, "knowledge_search": knowledge_search,
                            "knowledge_id": knowledge_id}
         for param in optional_params:
-            ### What if title is specified but its an empty string? or the title is not found?
             param_value = optional_params[param]
             if param == "type" and param_value and param_value not in valid_types:
                 raise ValueError(f"Invalid agent type. If specified, must be one of: {self._http_client._stringify(valid_types)} .")
@@ -95,9 +93,11 @@ class Agent:
                         - Possible values: any string
             session_id: Optional session identifier
         """
+        if not namespace:
+            raise ValueError("Namespace cannot be empty")
         if not messages:
             raise ValueError("Messages list cannot be empty")
-        
+    
         valid_roles = {"assistant", "user", "system"}
         for msg in messages:
             if not isinstance(msg, dict):
@@ -109,7 +109,6 @@ class Agent:
             if not isinstance(msg["content"], str):
                 raise ValueError("Message content must be a string")
 
-        ### What if namespace is None or empty?
         payload = {
             "namespace": namespace,
             "messages": messages

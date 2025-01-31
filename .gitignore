@@ -4,6 +4,7 @@
 /dist/
 /testing/
 .env
+.env.sample
 build.log
 requirements.in
 **/__pycache__/

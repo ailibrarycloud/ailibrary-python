@@ -1,8 +1,6 @@
 from ..utils.http_client import _HTTPClient
 from typing import Dict, List, Optional
 
-###### WHAT IF USER PROVIDES THE WRONG TYPES OF VARIABLES? eg user passes a list instead of a string?
-###### rather than use a million if statements in each function, how can we validate the data?
 
 class KnowledgeBase:
     """Knowledge Base resource for managing vector databases."""
@@ -13,7 +11,8 @@ class KnowledgeBase:
 
     def create(self, name: str, meta: Optional[Dict] = None) -> Dict:
         """Create a new knowledge base."""
-        ### What if name is None or an empty string?
+        if not name:
+            raise ValueError("Name cannot be empty")
         payload = {"name": name}
         if meta:
             payload["meta"] = meta
@@ -27,7 +26,8 @@ class KnowledgeBase:
 
     def get(self, knowledge_id: str) -> Dict:
         """Retrieve a knowledge base by ID."""
-        ### What if knowledge_id is None or an empty string?
+        if not knowledge_id:
+            raise ValueError("Knowledge ID cannot be empty")
         return self._http_client._request("GET", f"/knowledgebase/{knowledge_id}")
 
 

@@ -1,8 +1,6 @@
 from typing import Dict, List
 from ..utils.http_client import _HTTPClient
 
-###### WHAT IF USER PROVIDES THE WRONG TYPES OF VARIABLES? eg user passes a list instead of a string?
-###### rather than use a million if statements in each function, how can we validate the data?
 
 class Utilities:
     """Utility functions to support AI agents."""
