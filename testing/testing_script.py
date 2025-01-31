@@ -9,6 +9,7 @@ def test_agent(client):
 
     title = "test_agent_kushagra_1"  # Create an agent
     agent_data = agent.create(title, description="This is a test agent.")
+
     print(f"agent.create() response: {agent_data}")
     
     namespace = agent_data["namespace"]
@@ -33,28 +34,29 @@ def test_agent(client):
 
 def test_knowledge_base(client):
     knowledge_base = client.knowledge_base
+    name = "test_kb"
 
-    kb_data = knowledge_base.create("test_kb")  # Create a knowledge base
+    kb_data = knowledge_base.create(name)  # Create a knowledge base
     print(f"knowledge_base.create() response: {kb_data}")
 
-    knowledge_id = kb_data["id"]
+    k_id = kb_data["knowledgeId"]
 
     kbs = knowledge_base.list_knowledge_bases()  # List all knowledge bases
     print(f"knowledge_base.list_knowledge_bases() response: {kbs}")
 
-    kb_info = knowledge_base.get(knowledge_id)  # Get a knowledge base by ID
+    kb_info = knowledge_base.get(k_id)  # Get a knowledge base by ID
     print(f"knowledge_base.get() response: {kb_info}")
 
-    source_data = knowledge_base.add_source(knowledge_id, type="docs")  # Add a source to the knowledge base
+    source_data = knowledge_base.add_source(k_id, type="docs")  # Add a source to the knowledge base
     print(f"knowledge_base.add_source() response: {source_data}")
 
-    kb_status = knowledge_base.get_status(knowledge_id)  # Get the status of the knowledge base
+    kb_status = knowledge_base.get_status(k_id)  # Get the status of the knowledge base
     print(f"knowledge_base.get_status() response: {kb_status}")
 
-    sources = knowledge_base.list_sources(knowledge_id)  # List all sources in the knowledge base
+    sources = knowledge_base.list_sources(k_id)  # List all sources in the knowledge base
     print(f"knowledge_base.list_sources() response: {sources}")
 
-    delete_sources_response = knowledge_base.delete_sources(knowledge_id, values=[source_data["id"]])  # Delete sources from the knowledge base
+    delete_sources_response = knowledge_base.delete_sources(k_id, values=[source_data["id"]])  # Delete sources from the knowledge base
     print(f"knowledge_base.delete_sources() response: {delete_sources_response}")
 
 
@@ -112,7 +114,7 @@ if __name__ == "__main__":
     # api_key = "Please let me in"
     load_dotenv()
     api_key = os.environ["DEV_KEY"]
-    
+
     client = ai.AILibraryClient(api_key)
     tests = [test_agent, test_knowledge_base, test_files, test_utilities, test_notes]
     for test in tests:
