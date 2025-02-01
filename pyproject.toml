@@ -3,23 +3,23 @@ requires = ["setuptools>=61.0", "wheel"]  # Build tools needed
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "ailibrary"
-version = "0.1.0"
-description = ""
-readme = "README.md"
-# license = {text = "MIT"}
-authors = [
-    # {name = "", email = "your.email@example.com"}
-]
-dependencies = [
-    "requests==2.32.3"         # Add your required libraries here
-]
+name = "ailibrary" # ?
+version = "0.1.0" # ?
+description = "" #?
 requires-python = ">=3.9"
+readme = "README.md" #?
+authors = [
+    {name = "", email = "your.email@example.com"} #?
+]
 classifiers = [
     "Programming Language :: Python :: 3",
-    # "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent"
 ]
+license = {text = ""} #?
+dynamic = ["dependencies"]
+
+[tool.setuptools.dynamic]
+dependencies = {file = ["requirements.txt"]}
 
 [tool.setuptools.packages.find]
 where = ["src"]  # Tell setuptools to look for packages in the 'src' folder

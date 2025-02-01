@@ -1,7 +1,6 @@
 /.venv/
 /.vscode/
 /.pytest_cache/
-/dist/
 .env
 .env.sample
 build.log
@@ -10,3 +9,5 @@ requirements.in
 *.pyc
 # Ignore egg-info
 *.egg-info/
+/dist/
+build/
