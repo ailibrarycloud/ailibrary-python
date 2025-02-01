@@ -1,6 +1,4 @@
-# OFFICIAL AILIBRARY REPO \( work in progress \)
+# AI Library Python API Library
 
-DO NOT MAKE ANY CHANGES TO MAIN. PLEASE CREATE A BRANCH AND MAKE YOUR CHANGES THERE. DO NOT MERGE THAT BRANCH TO MAIN.
-
-The following documentation is used for the code: https://docs.ailibrary.ai/
+The AI Library Python library provides convenient access to the AI Library REST API from any Python 3.8+ application. The library includes type definitions for all request params and response fields, and offers both synchronous and asynchronous clients.  
 
