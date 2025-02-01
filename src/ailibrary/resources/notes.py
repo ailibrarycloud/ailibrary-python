@@ -86,7 +86,7 @@ class Notes:
         return self._http_client._request("GET", f"/notes/{note_id}")
 
 
-    def delete_for_resource(
+    def delete_notes_in_resource(
         self,
         resource: str,
         resource_id: str,
