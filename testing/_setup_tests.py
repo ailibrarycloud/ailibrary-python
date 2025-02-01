@@ -7,4 +7,6 @@ def __setup():
     load_dotenv()
     api_key = os.environ["DEV_KEY"]
     client = ai.AILibraryClient(api_key)
+    
     return client
+
