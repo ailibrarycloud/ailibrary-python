@@ -3,6 +3,7 @@ import sys
 from fastapi import UploadFile
 from typing import List
 
+
 def get_args():
     """ Get arguments from command line """
     num_args = len(sys.argv)
@@ -29,22 +30,23 @@ def create_file_list(file_paths: str) -> List[UploadFile]:
 
 def test_files(client, args):
     files = client.files
-    file_paths = args.get("files", ["test_file.txt"])
+    file_paths = args.get("files", ["testing/test_file.docs"])
+
     upload_file_list = create_file_list(file_paths)
 
     upload_response = files.upload(upload_file_list)  # Upload a file
-    print(f"files.upload() response: {upload_response}")
+    print(f"files.upload() response:\n{upload_response}\n")
 
     file_id = upload_response[0]["id"]
 
     all_files = files.list_files()  # List all files
-    print(f"files.list_files() response: {all_files}")
+    print(f"files.list_files() response:\n{all_files}\n")
 
     file_info = files.get(file_id)  # Get a file by ID
-    print(f"files.get() response: {file_info}")
+    print(f"files.get() response:\n{file_info}\n")
 
     delete_response = files.delete(file_id)  # Delete a file
-    print(f"files.delete() response: {delete_response}")
+    print(f"files.delete() response:\n{delete_response}\n")
 
 
 if __name__ == "__main__":
@@ -56,5 +58,5 @@ if __name__ == "__main__":
 
     # run test
     print("Running test_files:\n")
-    test_files(client)
+    test_files(client, args)
     print("Finished running test_files\n")
