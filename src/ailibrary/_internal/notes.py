@@ -88,27 +88,25 @@ class _Notes:
         return self._http_client._request("GET", f"/v1/notes/{note_id}")
 
 
-    def delete_notes_in_resource(
+    def delete_notes(
         self,
         resource: str,
         resource_id: str,
-        values: Optional[List[str]] = None,
+        values: List[str] = None,
         delete_all: bool = None
     ) -> Dict:
-        """Delete notes for a resource."""
-
-        
+        """Delete notes for a resource.
+        <resource> and <resource_id> are required, as well as 
+        one of the following: <values> or <delete_all>.
+        If <values> is not provided, <delete_all> must be true.
+        """
         self._check_resource(resource)
-        payload = {"delete_all": delete_all}
-        optional_params = {"values": values, "delete_all": delete_all}
-        for param in optional_params:
-            param_value = optional_params[param]
-            if param_value is not None:
-                payload[param] = param_value
-
+        if (not values and not delete_all):
+            raise ValueError("One of the following is required: values or delete_all=True.")
+        
+        payload = {"resource": resource, "resource_id": resource_id}
+        if delete_all:
+            payload["delete_all"] = delete_all  # doesn't matter what values are, delete all notes
+        else:
+            payload["values"] = values # only delete notes with these values
         return self._http_client._request("DELETE", f"/v1/notes/{resource}/{resource_id}", json=payload)
-
-
-    def delete(self, note_id: str) -> Dict:
-        """Delete a note by ID."""
-        return self._http_client._request("DELETE", f"/v1/notes/{note_id}")
