@@ -10,9 +10,11 @@ class Notes:
         self.VALID_RESOURCES = ["agent", "knowledgebase", "file"]
         self._http_client = http_client
 
+
     def _check_role(self, role: str):
         if role not in self.VALID_ROLES:
             raise ValueError(f"Invalid role. Valid roles: {self._http_client._stringify(self.VALID_ROLES)} .")
+
 
     def _check_resource(self, resource: str):
         if resource not in self.VALID_RESOURCES:

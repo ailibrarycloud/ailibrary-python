@@ -6,9 +6,10 @@ class _HTTPClient:
     """Handles HTTP requests to the AI Library API."""
     
     def __init__(self, api_key: str, base_url: str):
-        self.base_url = base_url
-        if base_url[-1] != "/":
-            self.base_url += "/"
+        if base_url[-1] == "/":
+            self.base_url = base_url[:-1]
+        else:
+            self.base_url = base_url
 
         self.headers = {
             "X-Library-Key": api_key,
