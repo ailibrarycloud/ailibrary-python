@@ -1,8 +1,7 @@
 from typing import Dict, List, Optional, BinaryIO
+from fastapi import UploadFile
 from ..utils.http_client import _HTTPClient
 
-
-# fastapi UploadFile?
 
 class Files:
     """Files resource for managing file uploads and operations."""
@@ -11,8 +10,10 @@ class Files:
         self._http_client = http_client
 
 
-    def upload(self, files: List[BinaryIO], knowledge_id: Optional[str] = None) -> List[Dict]:
-        """Upload files to AI Library."""
+    def upload(self, files: List[UploadFile], knowledge_id: Optional[str] = None) -> List[Dict]:
+        """Upload files to AI Library.
+        files is a list where each element contains a path to the file.
+        """
 
         files_data = [('files', file) for file in files]
         payload = {}

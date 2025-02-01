@@ -7,18 +7,20 @@ from test_utilities import test_utilities
 
 
 ### This is the main test script that runs all the tests
-tests = {"test_agent": [test_agent, {}], 
-         "test_knowledge_base": [test_knowledge_base, {}], 
-         "test_files": [test_files, {}], 
-         "test_notes": [test_notes, {}], 
-         "test_utilities": [test_utilities, {}]}
+tests = {"test_agent": test_agent, 
+         "test_knowledge_base": test_knowledge_base, 
+         "test_files": test_files,
+         "test_notes": test_notes,
+         "test_utilities": test_utilities}
 
+args = {"test_agent": {}, 
+        "test_knowledge_base": {}, "test_files": {}, "test_notes": {}, "test_utilities": {}}
 
 if __name__ == "__main__":
     client = _setup_tests.__setup()    
 
     for test_name in tests:
-        test, args = tests[test_name]
+        test = tests[test_name]
         try:
             print(f"Running test: {test_name}")
             test(client, args)
