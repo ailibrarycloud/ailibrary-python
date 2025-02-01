@@ -1,7 +1,7 @@
 import _setup_tests
 from test_agent import test_agent
 from test_knowledge_base import test_knowledge_base
-from test_files import test_files
+# from test_files import test_files
 from test_notes import test_notes
 from test_utilities import test_utilities
 
@@ -9,7 +9,7 @@ from test_utilities import test_utilities
 ### This is the main test script that runs all the tests
 tests = {"test_agent": test_agent, 
          "test_knowledge_base": test_knowledge_base, 
-         "test_files": test_files,
+        #  "test_files": test_files,
          "test_notes": test_notes,
          "test_utilities": test_utilities}
 

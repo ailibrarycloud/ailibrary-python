@@ -2,7 +2,7 @@ from typing import Dict, List, Optional
 from ..utils.http_client import _HTTPClient
 
 
-class Notes:
+class _Notes:
     """Notes resource for managing notes on resources."""
 
     def __init__(self, http_client: _HTTPClient):
@@ -56,13 +56,13 @@ class Notes:
         }
         if meta:
             payload["meta"] = meta
-        return self._http_client._request("POST", "/notes", json=payload)
+        return self._http_client._request("POST", "/v1/notes", json=payload)
 
 
     def get_for_resource(self, resource: str, resource_id: str) -> List[Dict]:
         """Get notes for a resource."""
         self._check_resource(resource)
-        return self._http_client._request("GET", f"/notes/{resource}/{resource_id}")
+        return self._http_client._request("GET", f"/v1/notes/{resource}/{resource_id}")
 
 
     def update(
@@ -80,12 +80,12 @@ class Notes:
         }
         if meta:
             payload["meta"] = meta
-        return self._http_client._request("PUT", f"/notes/{note_id}", json=payload)
+        return self._http_client._request("PUT", f"/v1/notes/{note_id}", json=payload)
 
 
     def get(self, note_id: str) -> Dict:
         """Get a note by ID."""
-        return self._http_client._request("GET", f"/notes/{note_id}")
+        return self._http_client._request("GET", f"/v1/notes/{note_id}")
 
 
     def delete_notes_in_resource(
@@ -96,6 +96,8 @@ class Notes:
         delete_all: bool = None
     ) -> Dict:
         """Delete notes for a resource."""
+
+        
         self._check_resource(resource)
         payload = {"delete_all": delete_all}
         optional_params = {"values": values, "delete_all": delete_all}
@@ -104,9 +106,9 @@ class Notes:
             if param_value is not None:
                 payload[param] = param_value
 
-        return self._http_client._request("DELETE", f"/notes/{resource}/{resource_id}", json=payload)
+        return self._http_client._request("DELETE", f"/v1/notes/{resource}/{resource_id}", json=payload)
 
 
     def delete(self, note_id: str) -> Dict:
         """Delete a note by ID."""
-        return self._http_client._request("DELETE", f"/notes/{note_id}")
+        return self._http_client._request("DELETE", f"/v1/notes/{note_id}")

@@ -2,7 +2,7 @@ from typing import Dict, List, Optional, Literal
 from ..utils.http_client import _HTTPClient
 
 
-class Agent:
+class _Agent:
     """Client for interacting with the AI Library Agent API."""
 
     def __init__(self, http_client: _HTTPClient):
@@ -31,17 +31,17 @@ class Agent:
             param_value = optional_params[param]
             if param_value is not None:
                 payload[param] = param_value
-        return self._http_client._request("POST", "/agent/create", json=payload)
+        return self._http_client._request("POST", "/v1/agent/create", json=payload)
 
 
     def get(self, namespace: str) -> Dict:
         """Retrieve information about an agent."""
-        return self._http_client._request("GET", f"/agent/{namespace}")
+        return self._http_client._request("GET", f"/v1/agent/{namespace}")
 
 
     def list_agents(self) -> Dict:
         """List all agents."""
-        return self._http_client._request("GET", "/agent")
+        return self._http_client._request("GET", "/v1/agent")
 
 
     def update(
@@ -71,12 +71,12 @@ class Agent:
                 raise ValueError(f"Invalid agent type. If specified, must be one of: {self._http_client._stringify(valid_types)} .")
             elif param_value is not None:   
                 payload[param] = param_value
-        return self._http_client._request("PUT", f"/agent/{namespace}", json=payload)
+        return self._http_client._request("PUT", f"/v1/agent/{namespace}", json=payload)
 
 
     def delete(self, namespace: str) -> Dict:
         """Delete an agent."""
-        return self._http_client._request("DELETE", f"/agent/{namespace}")
+        return self._http_client._request("DELETE", f"/v1/agent/{namespace}")
 
 
     def chat(self, namespace: str, messages: List[Dict[str, str]], session_id: Optional[str] = None) -> Dict:
@@ -116,4 +116,4 @@ class Agent:
         if session_id:
             payload["session_id"] = session_id
 
-        return self._http_client._request("POST", f"/agent/{namespace}/chat", json=payload)
+        return self._http_client._request("POST", f"/v1/agent/{namespace}/chat", json=payload)

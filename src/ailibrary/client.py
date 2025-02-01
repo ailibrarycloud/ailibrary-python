@@ -1,21 +1,21 @@
 from typing import Optional
-from .resources.agent import Agent
-from .resources.knowledge_base import KnowledgeBase
-from .resources.files import Files
-from .resources.utilities import Utilities
-from .resources.notes import Notes
+from ._internal.agent import _Agent
+from ._internal.knowledge_base import _KnowledgeBase
+from ._internal.files import _Files
+from ._internal.utilities import _Utilities
+from ._internal.notes import _Notes
 from .utils.http_client import _HTTPClient
 
 
-class AILibraryClient:
+class AILibrary:
     """Main client for interacting with the AI Library API."""
 
-    def __init__(self, api_key: str, base_url: str = "https://api.ailibrary.ai/v1"):
-        self._http_client = _HTTPClient(api_key, base_url)
+    def __init__(self, api_key: str, domain: str = "https://api.ailibrary.ai/"):
+        self._http_client = _HTTPClient(api_key, domain)
 
         # Initialize resources
-        self.agent = Agent(self._http_client)
-        self.knowledge_base = KnowledgeBase(self._http_client)
-        self.files = Files(self._http_client)
-        self.utilities = Utilities(self._http_client)
-        self.notes = Notes(self._http_client)
+        self.agent = _Agent(self._http_client)
+        self.knowledge_base = _KnowledgeBase(self._http_client)
+        self.files = _Files(self._http_client)
+        self.utilities = _Utilities(self._http_client)
+        self.notes = _Notes(self._http_client)

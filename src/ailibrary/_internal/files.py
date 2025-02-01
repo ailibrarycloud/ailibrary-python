@@ -2,7 +2,7 @@ from typing import Dict, List, Optional, BinaryIO
 from ..utils.http_client import _HTTPClient
 
 
-class Files:
+class _Files:
     """Files resource for managing file uploads and operations."""
 
     def __init__(self, http_client: _HTTPClient):
@@ -18,7 +18,7 @@ class Files:
         payload = {}
         if knowledge_id:
             payload['knowledgeId'] = knowledge_id
-        return self._http_client._request("POST", "/files", files=files_data, json=payload)
+        return self._http_client._request("POST", "/v1/files", files=files_data, json=payload)
 
 
     def list_files(self, page: Optional[int] = None, limit: Optional[int] = None) -> Dict:
@@ -30,14 +30,14 @@ class Files:
             if param_value is not None:
                 params_dict[param] = param_value
 
-        return self._http_client._request("GET", "/files", params=params_dict)
+        return self._http_client._request("GET", "/v1/files", params=params_dict)
 
 
     def get(self, file_id: str) -> Dict:
         """Retrieve a file by ID."""
-        return self._http_client._request("GET", f"/files/{file_id}")
+        return self._http_client._request("GET", f"/v1/files/{file_id}")
 
 
     def delete(self, file_id: str) -> Dict:
         """Delete a file."""
-        return self._http_client._request("DELETE", f"/files/{file_id}")
+        return self._http_client._request("DELETE", f"/v1/files/{file_id}")
