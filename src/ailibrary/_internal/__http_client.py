@@ -1,8 +1,8 @@
 import requests
-from typing import Dict, Optional, Any, BinaryIO
+from typing import Dict, List, Tuple, Optional, Any, BinaryIO
 
 
-class __HTTPClient:
+class _HTTPClient:
     """Handles HTTP requests to the AI Library API."""
     
     def __init__(self, api_key: str, base_url: str):
@@ -31,7 +31,7 @@ class __HTTPClient:
         endpoint: str, 
         params: Optional[Dict] = None,
         json: Optional[Dict] = None,
-        files: Optional[Dict[str, BinaryIO]] = None,
+        files: Optional[List[Tuple[str, Tuple[str, BinaryIO, str]]]] = None,
         stream: bool = False,
         # response_no_json: bool = False
     ) -> Any:

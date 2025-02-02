@@ -1,20 +1,20 @@
-from typing import Dict, List, Optional, BinaryIO
-from .__http_client import __HTTPClient
+from typing import Dict, List, Tuple, Optional, BinaryIO
+from .__http_client import _HTTPClient
 
 
 class _Files:
     """Files resource for managing file uploads and operations."""
 
-    def __init__(self, http_client: __HTTPClient):
+    def __init__(self, http_client: _HTTPClient):
         self._http_client = http_client
 
 
-    def upload(self, files: list, knowledge_id: Optional[str] = None) -> List[Dict]:
+    def upload(self, files: List[str], knowledge_id: Optional[str] = None) -> List[Dict]:
         """Upload files to AI Library.
         files is a list where each element contains a path to the file.
         """
 
-        files_data = [('files', file) for file in files]
+        files_data = [("files", (file_path, open(file_path, "rb"), "application/json")) for file_path in files]
         payload = {}
         if knowledge_id:
             payload['knowledgeId'] = knowledge_id

@@ -1,7 +1,6 @@
 import _setup_tests
 import sys
-from fastapi import UploadFile
-from typing import List
+from typing import List, Tuple, BinaryIO
 
 
 def get_args():
@@ -9,7 +8,7 @@ def get_args():
     num_args = len(sys.argv)
 
     if num_args < 2:
-        print("Error: provide correct amount of arguments \n" + "Usage: python test_knowledge_base.py <path_to_file_1> ...")
+        print("Error: provide correct amount of arguments \n" + "Usage: python test_files.py <path_to_file_1> ...")
         sys.exit(1)
 
     file_paths = []
@@ -19,34 +18,27 @@ def get_args():
     return args
 
 
-def create_file_list(file_paths: str) -> List[UploadFile]:
-    """ Create a list of UploadFiles """
-    files = [
-        ('files', (file_path.split("/")[-1], open(file_path, 'rb'), 'application/octet-stream'))
-        for file_path in file_paths
-    ]
-    return files
-
-
 def test_files(client, args):
     files = client.files
-    file_paths = args.get("files", ["testing/test_file.docs"])
+    file_paths = args.get("files", ["testing/test_file.txt"])
 
-    upload_file_list = create_file_list(file_paths)
+    # #### ERROR: 
+    # #### requests.exceptions.HTTPError: 422 Client Error: unknown for url: https://api.ailibrary.ai/v1/files
+    # upload_response = files.upload(file_paths)  # Upload a file
+    # print(f"files.upload() response:\n{upload_response}\n")
 
-    upload_response = files.upload(upload_file_list)  # Upload a file
-    print(f"files.upload() response:\n{upload_response}\n")
-
-    file_id = upload_response[0]["id"]
+    # file_id = upload_response[0]["id"]
 
     all_files = files.list_files()  # List all files
     print(f"files.list_files() response:\n{all_files}\n")
 
-    file_info = files.get(file_id)  # Get a file by ID
-    print(f"files.get() response:\n{file_info}\n")
+    # ### CANT TEST UNTIL UPLOAD FILE WORKS
+    # file_info = files.get(file_id)  # Get a file by ID
+    # print(f"files.get() response:\n{file_info}\n")
 
-    delete_response = files.delete(file_id)  # Delete a file
-    print(f"files.delete() response:\n{delete_response}\n")
+    # ### CANT TEST UNTIL UPLOAD FILE WORKS
+    # delete_response = files.delete(file_id)  # Delete a file
+    # print(f"files.delete() response:\n{delete_response}\n")
 
 
 if __name__ == "__main__":

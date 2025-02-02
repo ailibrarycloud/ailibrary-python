@@ -1,11 +1,11 @@
 from typing import Dict, List, Optional, Literal
-from .__http_client import __HTTPClient
+from .__http_client import _HTTPClient
 
 
 class _Agent:
     """Client for interacting with the AI Library Agent API."""
 
-    def __init__(self, http_client: __HTTPClient):
+    def __init__(self, http_client: _HTTPClient):
         self._http_client = http_client
 
 
