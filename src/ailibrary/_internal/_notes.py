@@ -1,11 +1,11 @@
 from typing import Dict, List, Optional
-from ..utils.http_client import _HTTPClient
+from .__http_client import __HTTPClient
 
 
 class _Notes:
     """Notes resource for managing notes on resources."""
 
-    def __init__(self, http_client: _HTTPClient):
+    def __init__(self, http_client: __HTTPClient):
         self.VALID_ROLES = ["assistant", "user", "system"]
         self.VALID_RESOURCES = ["agent", "knowledgebase", "file"]
         self._http_client = http_client

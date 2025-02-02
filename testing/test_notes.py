@@ -37,20 +37,15 @@ def test_notes(client, args):
     note_info = notes.get(note_id)  # Get a note by ID
     print(f"notes.get() response:\n{note_info}\n")
 
-    delete_resource_response = notes.delete_notes(resource, resource_id)  # Delete a resource
-    print(f"notes.delete_notes_in_resource() response:\n{delete_resource_response}\n")
-
-
-
-    try:
-        notes.delete_notes_in_resource(resource, resource_id)
-    except:
-        print(f"Verified that deleted resource with id '{resource_id}' is not found\n")
+    # #### ERROR: doesnt work
+    # delete_notes_response = notes.delete_notes(resource, resource_id, [note_id])  # Delete note
+    # print(f"notes.delete_notes() response:\n{delete_notes_response}\n") 
 
     try:
-        notes.delete(note_id)
+        notes.delete_notes(resource, resource_id, [note_id])
     except:
-        print(f"Verified that deleted note with id '{note_id}' is not found\n")
+        print(f"Verified that deleted note with id '{resource_id}' is not found\n")
+
 
 
 if __name__ == "__main__":

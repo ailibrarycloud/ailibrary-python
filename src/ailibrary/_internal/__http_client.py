@@ -2,7 +2,7 @@ import requests
 from typing import Dict, Optional, Any, BinaryIO
 
 
-class _HTTPClient:
+class __HTTPClient:
     """Handles HTTP requests to the AI Library API."""
     
     def __init__(self, api_key: str, base_url: str):
@@ -32,7 +32,8 @@ class _HTTPClient:
         params: Optional[Dict] = None,
         json: Optional[Dict] = None,
         files: Optional[Dict[str, BinaryIO]] = None,
-        stream: bool = False
+        stream: bool = False,
+        # response_no_json: bool = False
     ) -> Any:
         """Make an HTTP request to the API."""
 
@@ -46,6 +47,8 @@ class _HTTPClient:
             files=files,
             stream=stream
         )
-        
+
+        # if response_no_json:
+        #     return response
         response.raise_for_status()
         return response.json()

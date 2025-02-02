@@ -1,11 +1,11 @@
 from typing import Dict, List, Optional, Literal
-from ..utils.http_client import _HTTPClient
+from .__http_client import __HTTPClient
 
 
 class _Agent:
     """Client for interacting with the AI Library Agent API."""
 
-    def __init__(self, http_client: _HTTPClient):
+    def __init__(self, http_client: __HTTPClient):
         self._http_client = http_client
 
 
@@ -116,4 +116,5 @@ class _Agent:
         if session_id:
             payload["session_id"] = session_id
 
+        # return self._http_client._request("POST", f"/v1/agent/{namespace}/chat", json=payload, response_no_json=True)
         return self._http_client._request("POST", f"/v1/agent/{namespace}/chat", json=payload)

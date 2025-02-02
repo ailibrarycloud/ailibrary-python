@@ -1,11 +1,11 @@
 from typing import Dict, List, Optional, BinaryIO
-from ..utils.http_client import _HTTPClient
+from .__http_client import __HTTPClient
 
 
 class _Files:
     """Files resource for managing file uploads and operations."""
 
-    def __init__(self, http_client: _HTTPClient):
+    def __init__(self, http_client: __HTTPClient):
         self._http_client = http_client
 
 

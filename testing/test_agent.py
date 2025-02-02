@@ -35,6 +35,10 @@ def test_agent(client, args):
     updated_agent = agent.update(namespace, update_title)  # Update the agent
     print(f"agent.update() response:\n{updated_agent}\n")
 
+    # #### ERROR: the response is not valid JSON
+    # chat_response = agent.chat(namespace, [{"role": "user", "content": "Hello there! Who are you?"}])  # Chat with the agent
+    # print(f"agent.chat() response:\n{chat_response}\n") 
+
     deleted_agent = agent.delete(namespace)  # Delete the agent
     print(f"agent.delete() response:\n{deleted_agent}\n")
 

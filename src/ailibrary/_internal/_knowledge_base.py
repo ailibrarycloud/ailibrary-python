@@ -1,11 +1,11 @@
-from ..utils.http_client import _HTTPClient
+from .__http_client import __HTTPClient
 from typing import Dict, List, Optional
 
 
 class _KnowledgeBase:
     """Knowledge Base resource for managing vector databases."""
 
-    def __init__(self, http_client: _HTTPClient):
+    def __init__(self, http_client: __HTTPClient):
         self._http_client = http_client
 
 
