@@ -24,10 +24,10 @@ def test_files(client, args):
 
     # #### ERROR: 
     # #### requests.exceptions.HTTPError: 422 Client Error: unknown for url: https://api.ailibrary.ai/v1/files
-    # upload_response = files.upload(file_paths)  # Upload a file
-    # print(f"files.upload() response:\n{upload_response}\n")
+    upload_response = files.upload(file_paths)  # Upload a file
+    print(f"files.upload() response:\n{upload_response}\n")
 
-    # file_id = upload_response[0]["id"]
+    file_id = upload_response[0]["id"]
 
     all_files = files.list_files()  # List all files
     print(f"files.list_files() response:\n{all_files}\n")
