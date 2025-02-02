@@ -36,18 +36,21 @@ class _KnowledgeBase:
         knowledge_id: str,
         type: str,
         meta: Optional[Dict] = None,
-        options: Optional[Dict] = None
+        urls: Optional[Dict] = None
     ) -> Dict:
         """Add sources to a knowledge base."""
         
-        valid_types = ["docs"]
+        valid_types = ["docs", "web", "youtube"]
         if type not in valid_types:
             raise ValueError(f"Invalid type. Valid types: {self._http_client._stringify(valid_types)} .")
 
         payload = {
-            "type": type
+            "type": type,
+            "options": {
+                "urls": urls
+            }
         }
-        optional_params = {"meta": meta, "options": options}
+        optional_params = {"meta": meta}
         for param in optional_params:
             param_value = optional_params[param]
             if param_value is not None:
