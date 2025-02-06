@@ -16,14 +16,14 @@ def test_knowledge_base(client, args):
     knowledge_base = client.knowledge_base
     name = args.get("name", "Test_Knowledge_Base")
 
-    # kb_data = knowledge_base.create(name)  # Create a knowledge base
-    # print(f"knowledge_base.create() response:\n{kb_data}\n")
+    kb_data = knowledge_base.create(name)  # Create a knowledge base
+    print(f"knowledge_base.create() response:\n{kb_data}\n")
 
-    # knowledge_id = kb_data["knowledgeId"]
+    knowledge_id = kb_data["knowledgeId"]
 
-    # kbs = knowledge_base.list_knowledge_bases()  # List all knowledge bases
-    # print(f"knowledge_base.list_knowledge_bases() response:\n{kbs}\n")
-    knowledge_id = "testkbkush_1738818233453025"
+    kbs = knowledge_base.list_knowledge_bases()  # List all knowledge bases
+    print(f"knowledge_base.list_knowledge_bases() response:\n{kbs}\n")
+
     kb_info = knowledge_base.get(knowledge_id)  # Get a knowledge base by ID
     print(f"knowledge_base.get() response:\n{kb_info}\n")
     
@@ -37,6 +37,7 @@ def test_knowledge_base(client, args):
 
     # # need to figure this out
     # source_info = knowledge_base.get_source(knowledge_id, ????)  # Get a source by ???
+    # source_info = knowledge_base.get_source(knowledge_id, source_data["id"])  # Get a source
     # print(f"knowledge_base.get_source() response:\n{source_info}\n")
 
     sources = knowledge_base.list_sources(knowledge_id)  # List all sources in the knowledge base

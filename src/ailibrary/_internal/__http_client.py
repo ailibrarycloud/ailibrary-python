@@ -31,6 +31,7 @@ class _HTTPClient:
         endpoint: str, 
         params: Optional[Dict] = None,
         data: Optional[Dict] = None,
+        json: Optional[Dict] = None,
         files: Optional[List[Tuple[str, Tuple[str, BinaryIO, str]]]] = None,
         stream: bool = False,
         # response_no_json: bool = False
@@ -44,9 +45,11 @@ class _HTTPClient:
             headers=self.headers,
             params=params,
             data=data,
+            json=json,
             files=files,
             stream=stream
         )
+        # print(response.json())
 
         # if response_no_json:
         #     return response

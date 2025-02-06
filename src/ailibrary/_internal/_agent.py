@@ -31,7 +31,7 @@ class _Agent:
             param_value = optional_params[param]
             if param_value is not None:
                 payload[param] = param_value
-        return self._http_client._request("POST", "/v1/agent/create", data=payload)
+        return self._http_client._request("POST", "/v1/agent/create", json=payload)
 
 
     def get(self, namespace: str) -> Dict:
@@ -71,7 +71,7 @@ class _Agent:
                 raise ValueError(f"Invalid agent type. If specified, must be one of: {self._http_client._stringify(valid_types)} .")
             elif param_value is not None:   
                 payload[param] = param_value
-        return self._http_client._request("PUT", f"/v1/agent/{namespace}", data=payload)
+        return self._http_client._request("PUT", f"/v1/agent/{namespace}", json=payload)
 
 
     def delete(self, namespace: str) -> Dict:
@@ -116,5 +116,5 @@ class _Agent:
         if session_id:
             payload["session_id"] = session_id
 
-        # return self._http_client._request("POST", f"/v1/agent/{namespace}/chat", data=payload, response_no_data=True)
-        return self._http_client._request("POST", f"/v1/agent/{namespace}/chat", data=payload)
+        # return self._http_client._request("POST", f"/v1/agent/{namespace}/chat", json=payload, response_no_json=True)
+        return self._http_client._request("POST", f"/v1/agent/{namespace}/chat", json=payload)
