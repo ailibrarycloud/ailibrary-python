@@ -4,7 +4,9 @@ The AI Library Python library provides convenient access to the AI Library REST 
 
 ## Installation
 
-`pip install openai`
+```
+pip install ailibrary
+```
 
 ## Usage
 
@@ -19,25 +21,28 @@ client = ai.AILibrary(
 
 ## Creating your first agent
 
+Initialise your agent
 ```
-// initialise your agent
 sales_agent = client.agent.create(
     title = "Sales Agent"
     instructions="You are a sales agent trying to qualify a lead. You are receiving this "
     )
-
-// add training files
+```
+Add training files
+```
 client.files.upload(
     files = ['/local/path/to/file.pdf'], //txt, pdf, pptx, docx, xlsx
     knowledge_id = sales_agent.knowledge_id
 )
-
-<!-- Check status of the agent knowledge -->
-
+```
+Check status of the agent knowledge
+```
 print(client.knowledge_base.get_status())
+```
 
-<!-- Run agent -->
+Chat with agent
 
+```
 completion = agent.chat(
     messages = [
         {
