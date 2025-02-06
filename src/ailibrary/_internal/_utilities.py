@@ -11,13 +11,13 @@ class _Utilities:
 
     def web_search(self, search_terms: List[str]) -> List[Dict]:
         """Search the web for terms."""
-        return self._http_client._request("POST", "/v1/utilities/websearch", json={
+        return self._http_client._request("POST", "/v1/utilities/websearch", data={
             "search_terms": search_terms
         })
 
 
     def web_parser(self, urls: List[str]) -> List[Dict]:
         """Parse web pages for content."""
-        return self._http_client._request("POST", "/v1/utilities/webparser", json={
+        return self._http_client._request("POST", "/v1/utilities/webparser", data={
             "urls": urls
         })

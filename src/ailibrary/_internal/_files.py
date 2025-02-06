@@ -2,7 +2,6 @@ from typing import Dict, List, Tuple, Optional, BinaryIO
 from .__http_client import _HTTPClient
 import mimetypes
 import os
-import requests
 
 
 class _Files:
@@ -15,12 +14,7 @@ class _Files:
         """Upload files to AI Library.
         files is a list where each element contains a path to the file.
         """
-        key = self._http_client.headers["X-Library-Key"]
-        domain = self._http_client.base_url
-        url = domain + "/v1/files"
-        headers = {
-            'X-Library-Key': key
-        }
+
         payload = {}
         if knowledge_id:
             payload['knowledgeId'] = knowledge_id
@@ -31,9 +25,9 @@ class _Files:
                 ('files', (file_name, open(file, 'rb'), mime_type))
             ]
 
-        res = requests.request(
-            "POST", url, headers=headers, data=payload, files=files)
-        return res.text
+        return self._http_client._request("POST", "/v1/files", data=payload, files=files)
+
+
 
     def list_files(self, page: Optional[int] = None, limit: Optional[int] = None) -> Dict:
         """List all files."""

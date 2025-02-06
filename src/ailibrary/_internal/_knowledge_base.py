@@ -16,7 +16,7 @@ class _KnowledgeBase:
         payload = {"name": name}
         if meta:
             payload["meta"] = meta
-        return self._http_client._request("POST", "/v1/knowledgebase", json=payload)
+        return self._http_client._request("POST", "/v1/knowledgebase", data=payload)
 
 
     def list_knowledge_bases(self) -> Dict:
@@ -55,7 +55,7 @@ class _KnowledgeBase:
             param_value = optional_params[param]
             if param_value is not None:
                 payload[param] = param_value
-        return self._http_client._request("PUT", f"/v1/knowledgebase/{knowledge_id}", json=payload)
+        return self._http_client._request("PUT", f"/v1/knowledgebase/{knowledge_id}", data=payload)
 
 
     def get_status(self, knowledge_id: str) -> Dict:
@@ -83,4 +83,4 @@ class _KnowledgeBase:
         payload = {"values": values}
         if delete_all:
             payload["delete_all"] = delete_all
-        return self._http_client._request("DELETE", f"/v1/knowledgebase/{knowledge_id}/source", json=payload)
+        return self._http_client._request("DELETE", f"/v1/knowledgebase/{knowledge_id}/source", data=payload)

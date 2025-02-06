@@ -56,7 +56,7 @@ class _Notes:
         }
         if meta:
             payload["meta"] = meta
-        return self._http_client._request("POST", "/v1/notes", json=payload)
+        return self._http_client._request("POST", "/v1/notes", data=payload)
 
 
     def get_for_resource(self, resource: str, resource_id: str) -> List[Dict]:
@@ -80,7 +80,7 @@ class _Notes:
         }
         if meta:
             payload["meta"] = meta
-        return self._http_client._request("PUT", f"/v1/notes/{note_id}", json=payload)
+        return self._http_client._request("PUT", f"/v1/notes/{note_id}", data=payload)
 
 
     def get(self, note_id: str) -> Dict:
@@ -109,4 +109,4 @@ class _Notes:
             payload["delete_all"] = delete_all  # doesn't matter what values are, delete all notes
         else:
             payload["values"] = values # only delete notes with these values
-        return self._http_client._request("DELETE", f"/v1/notes/{resource}/{resource_id}", json=payload)
+        return self._http_client._request("DELETE", f"/v1/notes/{resource}/{resource_id}", data=payload)

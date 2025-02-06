@@ -13,7 +13,7 @@ class _HTTPClient:
 
         self.headers = {
             "X-Library-Key": api_key,
-            "Content-Type": "application/json"
+            # "Content-Type": "application/json"
         }
     
 
@@ -30,7 +30,7 @@ class _HTTPClient:
         method: str, 
         endpoint: str, 
         params: Optional[Dict] = None,
-        json: Optional[Dict] = None,
+        data: Optional[Dict] = None,
         files: Optional[List[Tuple[str, Tuple[str, BinaryIO, str]]]] = None,
         stream: bool = False,
         # response_no_json: bool = False
@@ -43,7 +43,7 @@ class _HTTPClient:
             url=url,
             headers=self.headers,
             params=params,
-            json=json,
+            data=data,
             files=files,
             stream=stream
         )
