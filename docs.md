@@ -81,13 +81,13 @@ Returns the JSON response containing information about the new agent object.
 
 ```python
 {
-    'coverimage': 'https://www.ailibrary.ai/ailibrary.svg', 
-    'description': 'An AI assistant for sales inquiries', 
-    'intromessage': 'How can I help you today?', 
-    'namespace': 'Sales Assistant', 
-    'title': 'test_agent_kushagra', 
-    'type': 'chat', 
-    'instructions': 'You are a helpful assistant. Answer the questions based on the information you are given. If answer is not available in the context, try to navigate the conversation smartly. Answer in English only.'
+    "coverimage": "https://www.ailibrary.ai/ailibrary.svg", 
+    "description": "An AI assistant for sales inquiries", 
+    "intromessage": "How can I help you today?", 
+    "namespace": "Sales Assistant", 
+    "title": "test_agent_kushagra", 
+    "type": "chat", 
+    "instructions": "You are a helpful assistant. Answer the questions based on the information you are given. If answer is not available in the context, try to navigate the conversation smartly. Answer in English only."
 }
 ```
 
