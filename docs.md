@@ -3,60 +3,39 @@
 ## Table of Contents
 - [AI Library Python API Documentation](#ai-library-python-api-documentation)
   - [Table of Contents](#table-of-contents)
-  - [1. Introduction](#1-introduction)
-    - [About](#about)
-    - [Basic Usage](#basic-usage)
-    - [Tutorials](#tutorials)
-  - [2. Getting Started](#2-getting-started)
-    - [Installation](#installation)
-    - [Authentication](#authentication)
-    - [Configuration?](#configuration)
-  - [3. API Reference](#3-api-reference)
-    - [Authentication](#authentication-1)
-    - [3.1 Agents](#31-agents)
-    - [3.2 Knowledge Bases](#32-knowledge-bases)
-    - [3.3 Files](#33-files)
-    - [3.4 Notes](#34-notes)
-    - [3.5 Utilities](#35-utilities)
-    - [Error Handling](#error-handling)
-  - [4. Examples](#4-examples)
-  - [5. Advanced Features](#5-advanced-features)
-  - [6. Best Practices](#6-best-practices)
-  - [7. Troubleshooting](#7-troubleshooting)
-  - [8. FAQ](#8-faq)
-  - [9. Contributing](#9-contributing)
-  - [10. License](#10-license)
-  - [11. Changelog](#11-changelog)
-  - [12. Contact & Support](#12-contact--support)
+  - [Authentication](#authentication)
+  - [Agents](#agents)
+    - [Create agent](#create-agent)
+    - [Get agent](#get-agent)
+    - [List agents](#list-agents)
+    - [Update agent](#update-agent)
+    - [Delete agent](#delete-agent)
+    - [Chat with agent](#chat-with-agent)
+  - [Knowledge Bases](#knowledge-bases)
+    - [Create knowledge base](#create-knowledge-base)
+    - [List knowledge bases](#list-knowledge-bases)
+    - [Get knowledge base](#get-knowledge-base)
+    - [Add source to knowledge base](#add-source-to-knowledge-base)
+    - [Get knowledge base status](#get-knowledge-base-status)
+    - [Get source](#get-source)
+    - [List sources](#list-sources)
+    - [Delete sources](#delete-sources)
+  - [Files](#files)
+    - [Upload files](#upload-files)
+    - [List files](#list-files)
+    - [Get file](#get-file)
+    - [Delete file](#delete-file)
+  - [Notes](#notes)
+    - [Add note](#add-note)
+    - [Get note](#get-note)
+    - [Get notes for resource](#get-notes-for-resource)
+    - [Update note](#update-note)
+    - [Delete notes](#delete-notes)
+  - [Utilities](#utilities)
+    - [Web search](#web-search)
+    - [Web parser](#web-parser)
 
-## 1. Introduction
-### About
-- Overview of the package
-- Key features
-- Purpose and scope
-### Basic Usage
-- Simple examples to run the package
-### Tutorials
-- Step-by-step guides for various features and tasks
-
-
-## 2. Getting Started
-### Installation
-- Installation methods (pip, npm, etc.)
-- System requirements
-### Authentication
-- Explain how client works
-- API keys
-### Configuration?
-- Configuration options
-- Environment variables and file settings
-
-
-## 3. API Reference
-
-The AI Library API is organized around REST. The API accepts JSON-encoded request bodies, returns JSON-encoded responses, and uses standard HTTP response codes.
-
-### Authentication
+## Authentication
 
 The AI Library API uses API keys for authentication. You can obtain your API key from your AI Library dashboard.
 
@@ -70,11 +49,11 @@ client = ai.AILibrary(
 )
 ```
 
-### 3.1 Agents
+## Agents
 
-Agents are AI assistants that can be customized with specific instructions and knowledge bases.
+The Agents API enables you to create, manage, and interact with AI assistants. These agents can be customized with specific instructions, knowledge bases, and conversation settings. Use this API to build intelligent conversational interfaces for your applications.
 
-#### Create agent
+### Create agent
 
 ```python
 agent = client.agent.create(
@@ -109,7 +88,7 @@ Returns an agent object.
 }
 ```
 
-#### Get agent
+### Get agent
 
 ```python
 agent = client.agent.get(namespace="sales-assistant-abc123")
@@ -135,7 +114,7 @@ Returns the agent object.
 }
 ```
 
-#### List agents
+### List agents
 
 ```python
 agents = client.agent.list_agents()
@@ -162,7 +141,7 @@ Returns a list of agent objects.
 }
 ```
 
-#### Update agent
+### Update agent
 
 ```python
 updated_agent = client.agent.update(
@@ -199,7 +178,7 @@ Returns the updated agent object.
 }
 ```
 
-#### Delete agent
+### Delete agent
 
 ```python
 response = client.agent.delete(namespace="sales-assistant-abc123")
@@ -222,13 +201,16 @@ Returns a deletion confirmation.
 }
 ```
 
-#### Chat with agent
+### Chat with agent
 
 ```python
 response = client.agent.chat(
     namespace="sales-assistant-abc123",
     messages=[
-        {"role": "user", "content": "Hello, can you help me?"}
+        {"role": "system", "content": "You are a helpful sales assistant."},
+        {"role": "user", "content": "Hello, can you help me?"},
+        {"role": "assistant", "content": "Of course! How can I assist you?"},
+        {"role": "user", "content": "I'm looking for pricing information."}
     ],
     session_id="session_xyz789"  # Optional
 )
@@ -239,15 +221,38 @@ response = client.agent.chat(
 | Parameter | Type | Required | Description |
 |-----------|------|----------|-------------|
 | `namespace` | string | Required | The agent's unique identifier |
-| `messages` | array | Required | Array of message objects with `role` and `content` |
+| `messages` | array | Required | Array of message objects representing the conversation history. Must contain at least one message. |
 | `session_id` | string | Optional | Session identifier for conversation continuity |
 
-**Message Object**
+**Message Object Schema**
 
-| Field | Type | Required | Description |
-|-------|------|----------|-------------|
-| `role` | string | Required | One of: "user", "assistant", "system" |
-| `content` | string | Required | The message content |
+Each object in the `messages` array must have the following structure:
+
+| Field | Type | Required | Allowed Values | Description |
+|-------|------|----------|----------------|-------------|
+| `role` | string | Required | "system", "user", or "assistant" | Identifies who sent the message |
+| `content` | string | Required | Any non-empty string | The content of the message |
+
+**Example Messages Array**
+```python
+messages=[
+    # System message setting the context
+    {
+        "role": "system",
+        "content": "You are a helpful sales assistant."
+    },
+    # User message
+    {
+        "role": "user",
+        "content": "What are your prices?"
+    },
+    # Assistant's previous response
+    {
+        "role": "assistant",
+        "content": "I'd be happy to help you with pricing information."
+    }
+]
+```
 
 **Returns**
 
@@ -255,17 +260,17 @@ Returns a chat completion object.
 
 ```python
 {
-    "response": "Hello! Yes, I'd be happy to help you...",
+    "response": "Our pricing starts at $10/month for the basic plan...",
     "session_id": "session_xyz789",
     "conversation_id": "conv_abc123"
 }
 ```
 
-### 3.2 Knowledge Bases
+## Knowledge Bases
 
-Knowledge bases store and process documents that agents can reference during conversations.
+The Knowledge Bases API enables you to create and manage vector databases that store and process documents. These knowledge bases can be associated with agents to provide them with specific information and context for their responses.
 
-#### Create knowledge base
+### Create knowledge base
 
 ```python
 kb = client.knowledge_base.create(
@@ -295,7 +300,7 @@ Returns a knowledge base object.
 }
 ```
 
-#### List knowledge bases
+### List knowledge bases
 
 ```python
 knowledge_bases = client.knowledge_base.list_knowledge_bases()
@@ -322,7 +327,7 @@ Returns a list of knowledge base objects.
 }
 ```
 
-#### Get knowledge base
+### Get knowledge base
 
 ```python
 kb = client.knowledge_base.get(knowledge_id="kb_abc123")
@@ -354,7 +359,7 @@ Returns a knowledge base object with its sources.
 }
 ```
 
-#### Add source to knowledge base
+### Add source to knowledge base
 
 ```python
 source = client.knowledge_base.add_source(
@@ -387,7 +392,7 @@ Returns a source object.
 }
 ```
 
-#### Get knowledge base status
+### Get knowledge base status
 
 ```python
 status = client.knowledge_base.get_status(knowledge_id="kb_abc123")
@@ -417,7 +422,7 @@ Returns the processing status of the knowledge base and its sources.
 }
 ```
 
-#### Get source
+### Get source
 
 ```python
 source = client.knowledge_base.get_source(
@@ -447,7 +452,7 @@ Returns a source object.
 }
 ```
 
-#### List sources
+### List sources
 
 ```python
 sources = client.knowledge_base.list_sources(knowledge_id="kb_abc123")
@@ -475,7 +480,7 @@ Returns a list of source objects.
 ]
 ```
 
-#### Delete sources
+### Delete sources
 
 ```python
 response = client.knowledge_base.delete_sources(
@@ -505,11 +510,11 @@ Returns a deletion confirmation.
 }
 ```
 
-### 3.3 Files
+## Files
 
 The Files API allows you to upload and manage files that can be processed by knowledge bases.
 
-#### Upload files
+### Upload files
 
 ```python
 uploaded_files = client.files.upload(
@@ -522,7 +527,7 @@ uploaded_files = client.files.upload(
 
 | Parameter | Type | Required | Description |
 |-----------|------|----------|-------------|
-| `files` | array | Required | Array of file paths to upload |
+| `files` | list | Required | List of file paths to upload |
 | `knowledge_id` | string | Optional | Knowledge base to associate files with |
 
 **Supported File Types**
@@ -534,7 +539,7 @@ uploaded_files = client.files.upload(
 
 **Returns**
 
-Returns an array of file objects.
+Returns an list of file objects.
 
 ```python
 [
@@ -548,7 +553,7 @@ Returns an array of file objects.
 ]
 ```
 
-#### List files
+### List files
 
 ```python
 files = client.files.list_files(
@@ -584,7 +589,7 @@ Returns a paginated list of file objects.
 }
 ```
 
-#### Get file
+### Get file
 
 ```python
 file = client.files.get(file_id="file_abc123")
@@ -610,7 +615,7 @@ Returns a file object.
 }
 ```
 
-#### Delete file
+### Delete file
 
 ```python
 response = client.files.delete(file_id="file_abc123")
@@ -633,11 +638,11 @@ Returns a deletion confirmation.
 }
 ```
 
-### 3.4 Notes
+## Notes
 
-The Notes API allows you to add annotations and comments to various resources.
+The Notes API allows you to add annotations and comments to various resources within the AI Library. Notes can be attached to agents, knowledge bases, and files to provide additional context or documentation.
 
-#### Add note
+### Add note
 
 ```python
 note = client.notes.add(
@@ -674,7 +679,7 @@ Returns the created note object.
 }
 ```
 
-#### Get note
+### Get note
 
 ```python
 note = client.notes.get(note_id="note_xyz789")
@@ -701,7 +706,7 @@ Returns a note object.
 }
 ```
 
-#### Get notes for resource
+### Get notes for resource
 
 ```python
 notes = client.notes.get_for_resource(
@@ -733,7 +738,7 @@ Returns a list of note objects.
 ]
 ```
 
-#### Update note
+### Update note
 
 ```python
 updated_note = client.notes.update(
@@ -766,7 +771,7 @@ Returns the updated note object.
 }
 ```
 
-#### Delete notes
+### Delete notes
 
 ```python
 response = client.notes.delete_notes(
@@ -798,11 +803,11 @@ Returns a deletion confirmation.
 }
 ```
 
-### 3.5 Utilities
+## Utilities
 
-The Utilities API provides additional functionality to enhance agent capabilities.
+The Utilities API provides additional functionality to enhance agent capabilities, including web search and content parsing features.
 
-#### Web search
+### Web search
 
 ```python
 results = client.utilities.web_search(
@@ -831,7 +836,7 @@ Returns an array of search result objects.
 ]
 ```
 
-#### Web parser
+### Web parser
 
 ```python
 parsed_content = client.utilities.web_parser(
@@ -862,64 +867,3 @@ Returns an array of parsed page objects.
     }
 ]
 ```
-
-### Error Handling
-
-The API uses conventional HTTP response codes to indicate the success or failure of requests.
-
-- `200` - Success
-- `400` - Bad Request
-- `401` - Unauthorized
-- `403` - Forbidden
-- `404` - Not Found
-- `429` - Too Many Requests
-- `500` - Internal Server Error
-
-Error responses include a message providing more details about the error:
-
-```python
-{
-    "error": {
-        "message": "Invalid API key provided",
-        "type": "authentication_error",
-        "code": 401
-    }
-}
-```
-
-## 4. Examples
-- Common use cases and comprehensive examples
-
-
-## 5. Advanced Features
-- Detailed examples using complex scenarios
-
-
-## 6. Best Practices
-- Coding standards and recommended usage
-
-
-## 7. Troubleshooting
-- Common issues and resolution steps
-
-
-## 8. FAQ
-- Frequently asked questions
-
-
-## 9. Contributing
-- Guidelines for contributing to the project
-- Code of conduct
-
-
-## 10. License
-- Licensing terms and conditions
-
-
-## 11. Changelog
-- Version history and updates
-
-
-## 12. Contact & Support
-- Support channels
-- Contact information
