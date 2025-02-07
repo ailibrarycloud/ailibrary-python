@@ -12,3 +12,4 @@ recreate_package.sh
 *.egg-info/
 /dist/
 build/
+recreate_package.sh
