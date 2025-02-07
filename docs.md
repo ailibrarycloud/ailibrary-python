@@ -81,10 +81,13 @@ Returns an agent object.
 
 ```python
 {
-    "namespace": "sales-assistant-abc123",
-    "title": "Sales Assistant",
-    "description": "An AI assistant for sales inquiries",
-    "knowledge_id": "kb_123abc"
+    'coverimage': 'https://www.ailibrary.ai/ailibrary.svg', 
+    'description': 'An AI assistant for sales inquiries', 
+    'intromessage': 'How can I help you today?', 
+    'namespace': 'Sales Assistant', 
+    'title': 'test_agent_kushagra', 
+    'type': 'chat', 
+    'instructions': 'You are a helpful assistant. Answer the questions based on the information you are given. If answer is not available in the context, try to navigate the conversation smartly. Answer in English only.'
 }
 ```
 
@@ -105,12 +108,25 @@ agent = client.agent.get(namespace="sales-assistant-abc123")
 Returns the agent object.
 
 ```python
+# {
+#     "namespace": "sales-assistant-abc123",
+#     "title": "Sales Assistant",
+#     "description": "An AI assistant for sales inquiries",
+#     "instructions": "You are a helpful sales assistant...",
+#     "knowledge_id": "kb_123abc"
+# }
 {
-    "namespace": "sales-assistant-abc123",
-    "title": "Sales Assistant",
-    "description": "An AI assistant for sales inquiries",
-    "instructions": "You are a helpful sales assistant...",
-    "knowledge_id": "kb_123abc"
+    'coverimage': 'https://www.ailibrary.ai/ailibrary.svg',
+    'created_timestamp': '2025-02-07 01:11:16', 
+    'description': 'An AI assistant for sales inquiries', 
+    'intromessage': 'How can I help you today?', 
+    'namespace': 'Sales Assistant',
+    'response_schema': None,
+    'showcase': None, 
+    'status': None, 
+    'title': 'test_agent_kushagra', 
+    'type': 'chat', 
+    'instructions': 'You are a helpful assistant. Answer the questions based on the information you are given. If answer is not available in the context, try to navigate the conversation smartly. Answer in English only.'
 }
 ```
 
@@ -135,6 +151,7 @@ Returns a list of agent objects.
             "namespace": "agent-abc123",
             "title": "Sales Assistant",
             "description": "Sales inquiry assistant"
+            # ... other agent info
         },
         # ... more agents
     ]
@@ -170,12 +187,7 @@ updated_agent = client.agent.update(
 Returns the updated agent object.
 
 ```python
-{
-    "namespace": "sales-assistant-abc123",
-    "title": "Updated Sales Assistant",
-    "instructions": "New instructions...",
-    # ... other updated properties
-}
+{'response': 'success'}
 ```
 
 ### Delete agent

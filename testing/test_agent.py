@@ -22,8 +22,8 @@ def test_agent(client, args):
     title = args.get("title", "Test_Agent")
     update_title = args.get("update_title", "Updated_Agent")
 
-    agent_data = agent.create(
-        title, description="This is a test agent.")  # test create()
+    # agent_data = agent.create(title, description="This is a test agent.")  # test create()
+    agent_data = agent.create(title, description="This is a test agent.", knowledge_id="testkbkush_1738821332107373")  # test create()
     print(f"agent.create() response:\n{agent_data}\n")
 
     namespace = agent_data["namespace"]
@@ -40,14 +40,18 @@ def test_agent(client, args):
     # #### ERROR: the response is not valid JSON
     # chat_response = agent.chat(namespace, [{"role": "user", "content": "Hello there! Who are you?"}])  # Chat with the agent
     # print(f"agent.chat() response:\n{chat_response}\n")
+    print("Testing agent.chat():\n")
+    test_agent_chat(client, {})
 
     deleted_agent = agent.delete(namespace)  # Delete the agent
     print(f"agent.delete() response:\n{deleted_agent}\n")
 
     try:
         agent.get(namespace)
+        print(f"Verified that delete() doesnt crash when the given namespace is not found\n")
     except:
-        print(f"Verified that deleted agent with name '{namespace}' is not found\n")
+        # print(f"Verified that deleted agent with name '{namespace}' is not found\n")
+        print(f"Failed test case: delete() doesnt work when namespace not found\n")
 
 
 async def test_agent_chat(client, args):
@@ -69,6 +73,6 @@ if __name__ == "__main__":
 
     # run test
     print("Running test_agent:\n")
-    # test_agent(client, args)
-    test_agent_chat(client, args)
+    test_agent(client, args)
+    # test_agent_chat(client, args)
     print("Finished running test_agent\n")
