@@ -38,6 +38,7 @@ def test_files(client, args):
 
     try:
         files.delete(file_id)
+        print(f"Verified that delete() doesnt crash when the file_id is not found\n")        
     except:
         print(f"Failed test case: delete() doesnt work when file_id not found\n")
 

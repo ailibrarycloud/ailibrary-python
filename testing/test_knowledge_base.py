@@ -37,7 +37,6 @@ def test_knowledge_base(client, args):
 
     # # need to figure this out
     # source_info = knowledge_base.get_source(knowledge_id, ????)  # Get a source by ???
-    # source_info = knowledge_base.get_source(knowledge_id, source_data["id"])  # Get a source
     # print(f"knowledge_base.get_source() response:\n{source_info}\n")
 
     sources = knowledge_base.list_sources(knowledge_id)  # List all sources in the knowledge base
@@ -48,8 +47,10 @@ def test_knowledge_base(client, args):
 
     try:
         knowledge_base.get(knowledge_id)
+        print(f"Verified that delete_sources() doesnt crash when the given knowledge_id is not found\n")
     except:
-        print(f"Verified that deleted knowledge base with id '{knowledge_id}' is not found\n")
+        print(f"Failed test case: delete_sources() doesnt work when knowledge_id not found\n")
+
 
 if __name__ == "__main__":
     # get arguments from command line

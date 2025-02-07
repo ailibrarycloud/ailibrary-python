@@ -42,6 +42,7 @@ def test_notes(client, args):
 
     try:
         notes.delete_notes(resource, resource_id, [note_id])
+        print(f"Verified that delete_notes() doesnt crash when the given noteID is not found\n")
     except:
         print(f"Failed test case: delete_notes() doesnt work when noteID not found\n")
 

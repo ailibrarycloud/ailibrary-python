@@ -77,7 +77,7 @@ agent = client.agent.create(
 
 **Returns**
 
-Returns an agent object.
+Returns the JSON response containing information about the new agent object.
 
 ```python
 {
@@ -105,7 +105,7 @@ agent = client.agent.get(namespace="sales-assistant-abc123")
 
 **Returns**
 
-Returns the agent object.
+Returns the JSON response containing information about the matching agent, if found.
 
 ```python
 # {
@@ -142,7 +142,7 @@ No parameters required.
 
 **Returns**
 
-Returns a list of agent objects.
+Returns the JSON response containing list of agents and meta info.
 
 ```python
 {
@@ -154,7 +154,9 @@ Returns a list of agent objects.
             # ... other agent info
         },
         # ... more agents
-    ]
+    ],
+
+    "meta": {...}
 }
 ```
 
@@ -184,7 +186,7 @@ updated_agent = client.agent.update(
 
 **Returns**
 
-Returns the updated agent object.
+Returns a confirmation for the update operation.
 
 ```python
 {'response': 'success'}
@@ -208,8 +210,8 @@ Returns a deletion confirmation.
 
 ```python
 {
-    "status": "success",
-    "message": "Agent deleted successfully"
+    'statusCode': 200,
+    'message': 'Agent deleted successfully'
 }
 ```
 
@@ -296,11 +298,11 @@ kb = client.knowledge_base.create(
 | Parameter | Type | Required | Description |
 |-----------|------|----------|-------------|
 | `name` | string | Required | Name of the knowledge base |
-| `meta` | object | Optional | Additional metadata for the knowledge base |
+| `meta` | dict | Optional | Additional metadata for the knowledge base |
 
 **Returns**
 
-Returns a knowledge base object.
+Returns a JSON response for a knowledge base object.
 
 ```python
 {

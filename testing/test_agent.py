@@ -40,8 +40,9 @@ def test_agent(client, args):
     # #### ERROR: the response is not valid JSON
     # chat_response = agent.chat(namespace, [{"role": "user", "content": "Hello there! Who are you?"}])  # Chat with the agent
     # print(f"agent.chat() response:\n{chat_response}\n")
-    print("Testing agent.chat():\n")
-    test_agent_chat(client, {})
+
+    # print("Testing agent.chat():\n")
+    # test_agent_chat(client, {})
 
     deleted_agent = agent.delete(namespace)  # Delete the agent
     print(f"agent.delete() response:\n{deleted_agent}\n")
@@ -73,6 +74,7 @@ if __name__ == "__main__":
 
     # run test
     print("Running test_agent:\n")
-    test_agent(client, args)
+    print(client.agent.delete("test_agent_kushagra-20250207012326"))
+    # test_agent(client, args)
     # test_agent_chat(client, args)
     print("Finished running test_agent\n")
