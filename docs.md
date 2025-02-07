@@ -87,7 +87,8 @@ Returns the JSON response containing information about the new agent object.
     "namespace": "Sales Assistant", 
     "title": "test_agent_kushagra", 
     "type": "chat", 
-    "instructions": "You are a helpful assistant. Answer the questions based on the information you are given. If answer is not available in the context, try to navigate the conversation smartly. Answer in English only."
+    "instructions": "You are a helpful assistant. Answer the questions based on the information you are given. If answer is not available in the context, try to navigate the conversation smartly. Answer in English only.",
+    "meta": {"type": "support"}
 }
 ```
 
@@ -108,25 +109,19 @@ agent = client.agent.get(namespace="sales-assistant-abc123")
 Returns the JSON response containing information about the matching agent, if found.
 
 ```python
-# {
-#     "namespace": "sales-assistant-abc123",
-#     "title": "Sales Assistant",
-#     "description": "An AI assistant for sales inquiries",
-#     "instructions": "You are a helpful sales assistant...",
-#     "knowledge_id": "kb_123abc"
-# }
 {
-    'coverimage': 'https://www.ailibrary.ai/ailibrary.svg',
-    'created_timestamp': '2025-02-07 01:11:16', 
-    'description': 'An AI assistant for sales inquiries', 
-    'intromessage': 'How can I help you today?', 
-    'namespace': 'Sales Assistant',
-    'response_schema': None,
-    'showcase': None, 
-    'status': None, 
-    'title': 'test_agent_kushagra', 
-    'type': 'chat', 
-    'instructions': 'You are a helpful assistant. Answer the questions based on the information you are given. If answer is not available in the context, try to navigate the conversation smartly. Answer in English only.'
+    "coverimage": "https://www.ailibrary.ai/ailibrary.svg",
+    "created_timestamp": "2025-02-07 01:11:16", 
+    "description": "An AI assistant for sales inquiries", 
+    "intromessage": "How can I help you today?", 
+    "namespace": "Sales Assistant",
+    "response_schema": null,
+    "showcase": null, 
+    "status": null, 
+    "title": "test_agent_kushagra", 
+    "type": "chat", 
+    "instructions": "You are a helpful assistant. Answer the questions based on the information you are given. If answer is not available in the context, try to navigate the conversation smartly. Answer in English only.",
+    "meta": {"type": "support"}
 }
 ```
 
@@ -150,13 +145,11 @@ Returns the JSON response containing list of agents and meta info.
         {
             "namespace": "agent-abc123",
             "title": "Sales Assistant",
-            "description": "Sales inquiry assistant"
-            # ... other agent info
-        },
-        # ... more agents
+            "description": "Sales inquiry assistant",
+            "meta": {"type": "support"}
+        }
     ],
-
-    "meta": {...}
+    "meta": {"page": 1}
 }
 ```
 
@@ -189,7 +182,7 @@ updated_agent = client.agent.update(
 Returns a confirmation for the update operation.
 
 ```python
-{'response': 'success'}
+{"response": "success"}
 ```
 
 ### Delete agent
@@ -210,8 +203,8 @@ Returns a deletion confirmation.
 
 ```python
 {
-    'statusCode': 200,
-    'message': 'Agent deleted successfully'
+    "statusCode": 200,
+    "message": "Agent deleted successfully"
 }
 ```
 
@@ -221,10 +214,21 @@ Returns a deletion confirmation.
 response = client.agent.chat(
     namespace="sales-assistant-abc123",
     messages=[
-        {"role": "system", "content": "You are a helpful sales assistant."},
-        {"role": "user", "content": "Hello, can you help me?"},
-        {"role": "assistant", "content": "Of course! How can I assist you?"},
-        {"role": "user", "content": "I'm looking for pricing information."}
+        {
+            "role": "system",
+            "content": "You are a helpful sales assistant.",
+            "meta": {"type": "instruction"}
+        },
+        {
+            "role": "user",
+            "content": "What are your prices?",
+            "meta": {"type": "query"}
+        },
+        {
+            "role": "assistant",
+            "content": "I'd be happy to help you with pricing information.",
+            "meta": {"type": "response"}
+        }
     ],
     session_id="session_xyz789"  # Optional
 )
@@ -246,24 +250,25 @@ Each object in the `messages` list must have the following structure:
 |-------|------|----------|----------------|-------------|
 | `role` | string | Required | "system", "user", or "assistant" | Identifies who sent the message |
 | `content` | string | Required | Any non-empty string | The content of the message |
+| `meta` | object | Optional | Additional metadata for the message |
 
 **Example Messages List**
 ```python
 messages=[
-    # System message setting the context
     {
         "role": "system",
-        "content": "You are a helpful sales assistant."
+        "content": "You are a helpful sales assistant.",
+        "meta": {"type": "instruction"}
     },
-    # User message
     {
         "role": "user",
-        "content": "What are your prices?"
+        "content": "What are your prices?",
+        "meta": {"type": "query"}
     },
-    # Assistant's previous response
     {
         "role": "assistant",
-        "content": "I'd be happy to help you with pricing information."
+        "content": "I'd be happy to help you with pricing information.",
+        "meta": {"type": "response"}
     }
 ]
 ```
@@ -276,7 +281,8 @@ Returns a chat completion object.
 {
     "response": "Our pricing starts at $10/month for the basic plan...",
     "session_id": "session_xyz789",
-    "conversation_id": "conv_abc123"
+    "conversation_id": "conv_abc123",
+    "meta": {"type": "pricing"}
 }
 ```
 
@@ -304,14 +310,11 @@ kb = client.knowledge_base.create(
 Returns a JSON response for the new knowledge base object.
 
 ```python
-# {
-#     "knowledgeId": "kb_abc123",
-#     "name": "Product Documentation",
-#     "meta": {
-#         "category": "technical"
-#     }
-# }
-{'status': 'success', 'knowledgeId': 'kb_abc123'}
+{
+    "status": "success", 
+    "knowledgeId": "kb_abc123",
+    "meta": {"type": "documentation"}
+}
 ```
 
 ### List knowledge bases
@@ -337,7 +340,7 @@ Returns the JSON response containing list of knolwedge bases and meta info.
         },
         # ... more knowledge bases
     ],
-    "meta": {...}
+    "meta": {"total": 10, "page": 1}
 }
 ```
 
@@ -359,21 +362,21 @@ Returns a JSON response containing info about the knowledge base object, if foun
 
 ```python
 {
-    'title': 'Title of Knowledge Base',
-    'knowledgeId': 'kb_abc123',
-    'status': 'processing',
-    'sources': 0,
-    'generations': 0,
-    'addhistory': 1,
-    'visibility': 'private',
-    'default_prompts': None,
-    'default_model': None,
-    'default_urls': None,
-    'userName': 'Kushagra Agrawal',
-    'userEmail': 'kush.agr02@gmail.com',
-    'special_event': None,
-    'star': None,
-    'meta': None
+    "title": "Title of Knowledge Base",
+    "knowledgeId": "kb_abc123",
+    "status": "processing",
+    "sources": 0,
+    "generations": 0,
+    "addhistory": 1,
+    "visibility": "private",
+    "default_prompts": None,
+    "default_model": None,
+    "default_urls": None,
+    "userName": "Kushagra Agrawal",
+    "userEmail": "kush.agr02@gmail.com",
+    "special_event": None,
+    "star": None,
+    "meta": None
 }
 ```
 
@@ -479,9 +482,12 @@ Returns a list of source objects or an empty string if there are no sources for 
 ```python
 [
     {
-        # ... source info
-    },
-    # ... more sources
+        "sourceId": "src_xyz789",
+        "type": "docs",
+        "status": "processed",
+        "meta": {"category": "documentation"},
+        "url": "https://example.com/docs.pdf"
+    }
 ]
 ```
 
@@ -540,16 +546,14 @@ uploaded_files = client.files.upload(
 Returns an list of file objects.
 
 ```python
-# knowledge_id?
 [
     {
-        'url': 'https://domain/corbett/email/file_name.txt',
-        'id': 1232,
-        'bytes': 17,
-        'name': 'file_name.txt'
-    },
-    
-    # ... other files
+        "url": "https://domain/corbett/email/file_name.txt",
+        "id": 1232,
+        "bytes": 17,
+        "name": "file_name.txt",
+        "meta": {"type": "document"}
+    }
 ]
 ```
 
@@ -575,18 +579,16 @@ Returns the JSON response containing list of files and meta info.
 
 ```python
 {
-    'files': [
+    "files": [
         {
-            'bytes': 17,
-            'created_timestamp': 'YYYY-MM-DD hh:mm:ss',
-            'id': 1232,
-            'name': 'file_name.txt'
-            'url': 'https://domain/corbett/email/file_name.txt',
-        },
-        # ... other files
+            "bytes": 17,
+            "created_timestamp": "YYYY-MM-DD hh:mm:ss",
+            "id": 1232,
+            "name": "file_name.txt",
+            "url": "https://domain/corbett/email/file_name.txt"
+        }
     ],
-    
-    'meta': {'limit': 10, 'next_page': 2, 'prev_page': '', 'total_items': 2}
+    "meta": {"prev_page": "", "next_page": "2"}
 }
 ```
 
@@ -608,11 +610,11 @@ Returns a file object.
 
 ```python
 {
-    'bytes': 17,
-    'created_timestamp': 'YYYY-MM-DD hh:mm:ss',
-    'id': 1232,
-    'name': 'file_name.txt'
-    'url': 'https://domain/corbett/email/file_name.txt'
+    "bytes": 17,
+    "created_timestamp": "YYYY-MM-DD hh:mm:ss",
+    "id": 1232,
+    "name": "file_name.txt",
+    "url": "https://domain/corbett/email/file_name.txt"
 }
 ```
 
@@ -633,7 +635,7 @@ response = client.files.delete(file_id="file_abc123")
 Returns a deletion confirmation.
 
 ```python
-{'response': 'Record successfully deleted'}
+{"response": "Record successfully deleted"}
 ```
 
 ## Notes
@@ -658,7 +660,7 @@ note = client.notes.add(
     role="user",
     resource="agent",
     resource_id="agent_abc123",
-    meta={"priority": "high"}
+    meta={"priority": "high", "type": "internal"}
 )
 ```
 
@@ -698,15 +700,16 @@ Returns a JSON response containing information about the note object, if found.
 
 ```python
 {
-    'content': 'note content',
-    'created_timestamp': 'YYYY-MM-DD hh:mm:ss',
-    'noteId': 'note_xyz789',
-    'resource': 'agent',
-    'resource_id': 'agent_name',
-    'role': 'user',
-    'updated_timestamp': 'YYYY-MM-DD hh:mm:ss',
-    'userEmail': 'username@email.com',
-    'userName': 'FirstName LastName'
+    "content": "note content",
+    "created_timestamp": "YYYY-MM-DD hh:mm:ss",
+    "noteId": "note_xyz789",
+    "resource": "agent",
+    "resource_id": "agent_name",
+    "role": "user",
+    "updated_timestamp": "YYYY-MM-DD hh:mm:ss",
+    "userEmail": "username@email.com",
+    "userName": "FirstName LastName",
+    "meta": {"type": "internal"}
 }
 ```
 
@@ -732,22 +735,15 @@ Returns the JSON response containing list of notes and meta info.
 
 ```python
 {
-    'meta': {'current_page': 1, 'limit': 50, 'next_page': '', 'prev_page': '', 'total_items': 1, 'total_pages': 1}, 
-    'notes': 
-    [
+    "notes": [
         {
-            'content': 'note content',
-            'created_timestamp': 'YYYY-MM-DD hh:mm:ss',
-            'noteId': 'note_xyz789',
-            'resource': 'agent',
-            'resource_id': 'agent_name',
-            'role': 'user',
-            'updated_timestamp': 'YYYY-MM-DD hh:mm:ss',
-            'userEmail': 'username@gmail.com',
-            'userName': 'FirstName LastName'
-        },
-        # ... other notes
-    ]
+            "content": "note content",
+            "created_timestamp": "YYYY-MM-DD hh:mm:ss",
+            "meta": {"type": "internal"},
+            "role": "user"
+        }
+    ],
+    "meta": {"page": 1, "limit": 10}
 }
 ```
 
@@ -758,7 +754,7 @@ updated_note = client.notes.update(
     note_id="note_xyz789",
     content="Updated information",
     role="user",
-    meta={"priority": "low"}
+    meta={"priority": "low", "type": "update"}
 )
 ```
 
@@ -777,8 +773,9 @@ Returns an update confirmation.
 
 ```python
 {
-    'status': 'success',
-    'message': 'Note updated successfully'
+    "status": "success",
+    "message": "Note updated successfully",
+    "meta": {"type": "update"}
 }
 ```
 
@@ -848,14 +845,11 @@ Returns an list of search result objects.
                 "url": "https://en.wikipedia.org/wiki/Human",
                 "isFamilyFriendly": True,
                 "language": "en",
-                "full_text": "Human - WikipediaCarl Linnaeus coined the name Homo sapiens. All modern humans are classified into the species Homo sapiens...",
-            },
-            # ... other sources objects
-        ],
-    },
-    # ... other term objects
+                "full_text": "Human - WikipediaCarl Linnaeus coined the name Homo sapiens. All modern humans are classified into the species Homo sapiens..."
+            }
+        ]
+    }
 ]
-
 ```
 
 ### Web parser
@@ -888,18 +882,15 @@ Returns an list of parsed page objects.
                 "url": "https://www.ailibrary.ai/blog",
                 "title": "AI Library Status",
                 "description": "Welcome to AI Library's home for real-time and historical data on system performance.",
-                "type": "web",
+                "type": "web"
             },
             {
                 "url": "https://www.ailibrary.ai/about",
                 "title": "AI Library · GitHub",
                 "description": "AI Library enables faster generative AI adoption in enterprises - AI Library",
-                "type": "web",
-            },
-            # ... more related urls
-        ],
-    },
-    # ... more parsed page objects
+                "type": "web"
+            }
+        ]
+    }
 ]
-
 ```
