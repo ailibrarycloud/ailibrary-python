@@ -1,5 +1,7 @@
 from typing import Dict, List, Optional, Literal
 from .__http_client import _HTTPClient
+import json
+import requests
 
 
 class _Agent:
@@ -7,7 +9,6 @@ class _Agent:
 
     def __init__(self, http_client: _HTTPClient):
         self._http_client = http_client
-
 
     def create(
         self,
@@ -33,16 +34,13 @@ class _Agent:
                 payload[param] = param_value
         return self._http_client._request("POST", "/v1/agent/create", json=payload)
 
-
     def get(self, namespace: str) -> Dict:
         """Retrieve information about an agent."""
         return self._http_client._request("GET", f"/v1/agent/{namespace}")
 
-
     def list_agents(self) -> Dict:
         """List all agents."""
         return self._http_client._request("GET", "/v1/agent")
-
 
     def update(
         self,
@@ -62,26 +60,25 @@ class _Agent:
         valid_types = ["notebook", "chat", "voice"]
 
         optional_params = {"title": title, "type": type, "instructions": instructions,
-                           "description": description, "coverimage": coverimage, 
+                           "description": description, "coverimage": coverimage,
                            "intromessage": intromessage, "knowledge_search": knowledge_search,
                            "knowledge_id": knowledge_id}
         for param in optional_params:
             param_value = optional_params[param]
             if param == "type" and param_value and param_value not in valid_types:
-                raise ValueError(f"Invalid agent type. If specified, must be one of: {self._http_client._stringify(valid_types)} .")
-            elif param_value is not None:   
+                raise ValueError(f"Invalid agent type. If specified, must be one of: {
+                                 self._http_client._stringify(valid_types)} .")
+            elif param_value is not None:
                 payload[param] = param_value
         return self._http_client._request("PUT", f"/v1/agent/{namespace}", json=payload)
-
 
     def delete(self, namespace: str) -> Dict:
         """Delete an agent."""
         return self._http_client._request("DELETE", f"/v1/agent/{namespace}")
 
-
     def chat(self, namespace: str, messages: List[Dict[str, str]], session_id: Optional[str] = None) -> Dict:
         """Chat with an agent.
-    
+
         Args:
             namespace: The agent namespace
             messages: List of message dictionaries (at least one).
@@ -97,24 +94,34 @@ class _Agent:
             raise ValueError("Namespace cannot be empty")
         if not messages:
             raise ValueError("Messages list cannot be empty")
-    
+
         valid_roles = {"assistant", "user", "system"}
         for msg in messages:
             if not isinstance(msg, dict):
                 raise ValueError("Each message must be a dictionary")
             if "role" not in msg or "content" not in msg:
-                raise ValueError("Each message must contain 'role' and 'content' keys")
+                raise ValueError(
+                    "Each message must contain 'role' and 'content' keys")
             if msg["role"] not in valid_roles:
                 raise ValueError(f"Message role must be one of {valid_roles}")
             if not isinstance(msg["content"], str):
                 raise ValueError("Message content must be a string")
 
-        payload = {
-            "namespace": namespace,
-            "messages": messages
+        domain = self._http_client.base_url
+        url = f"{domain}/v1/agent/{namespace}/chat"
+        payload = json.dumps({
+            "messages": messages,
+            "session_id": session_id if session_id else "test-session",
+        })
+        headers = {
+            'Content-Type': 'application/json',
+            'X-Library-Key': self._http_client.headers["X-Library-Key"]
         }
-        if session_id:
-            payload["session_id"] = session_id
-
-        # return self._http_client._request("POST", f"/v1/agent/{namespace}/chat", json=payload, response_no_json=True)
-        return self._http_client._request("POST", f"/v1/agent/{namespace}/chat", json=payload)
+        # response = requests.request("POST", url, headers=headers, data=payload)
+        with requests.request("POST", url, headers=headers, data=payload, stream=True) as response:
+            response.raise_for_status()
+            for chunk in response.iter_content(chunk_size=8192):
+                if chunk:
+                    decoded_chunk = chunk.decode('utf-8')
+                    yield decoded_chunk
+        
