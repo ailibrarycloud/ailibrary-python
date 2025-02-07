@@ -839,21 +839,21 @@ Returns an list of search result objects.
 ```python
 [
     {
-        "term": "AI",
-        "prompt_context": "AILibraryGenerative AI Platform to rapidly build conversational agents...",
+        "term": "humans",
+        "prompt_context": "Human - WikipediaCarl Linnaeus coined the name Homo sapiens. All modern humans ...",
         "sources": [
             {
-                "title": "AILibrary",
-                "description": "Generative AI Platform to rapidly build conversational agents...",
-                "url": "https://www.ailibrary.ai/",
+                "title": "Human - Wikipedia",
+                "description": "Carl Linnaeus coined the name Homo sapiens. All modern humans are classified into the species Homo sapiens, coined by ...",
+                "url": "https://en.wikipedia.org/wiki/Human",
                 "isFamilyFriendly": True,
                 "language": "en",
-                "full_text": "AILibraryGenerative AI Platform to rapidly build conversational agents...",
+                "full_text": "Human - WikipediaCarl Linnaeus coined the name Homo sapiens. All modern humans are classified into the species Homo sapiens...",
             },
-            # ... other sources
+            # ... other sources objects
         ],
     },
-    # ... other terms
+    # ... other term objects
 ]
 
 ```
@@ -882,7 +882,7 @@ Returns an list of parsed page objects.
         "url": "https://www.ailibrary.ai",
         "title": "AI Library Agent Builder Platform",
         "domain": "https://www.ailibrary.ai",
-        "body": "AI LibraryAI LibraryOpen main menuAgentsUse CasesPricingBUILD YOUR AGENTLog in →Generative AI Platform to rapidly build conversational agents...",
+        "body": "AI LibraryAI LibraryOpen main menuAgentsUse CasesPricingBUILD YOUR AGENTLog in →Generative AI Platform to rapidly build ...",
         "relatedurls": [
             {
                 "url": "https://www.ailibrary.ai/blog",
