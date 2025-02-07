@@ -27,6 +27,9 @@ def test_files(client, args):
 
     file_id = upload_response[0]["id"]
 
+    print(f"{upload_response[0]}\n")
+    print(f"{file_id}\n")
+
     all_files = files.list_files()  # List all files
     print(f"files.list_files() response:\n{all_files}\n")
 

@@ -18,7 +18,7 @@ class _Agent:
         coverimage: Optional[str] = None,
         intromessage: Optional[str] = None,
         knowledge_search: Optional[bool] = None,
-        knowledge_id: Optional[str] = None
+        knowledgeId: Optional[str] = None
     ) -> Dict:
         """Create a new agent with the specified parameters."""
 
@@ -27,7 +27,7 @@ class _Agent:
         payload = {"title": title}
         optional_params = {"instructions": instructions, "description": description,
                            "coverimage": coverimage, "intromessage": intromessage,
-                           "knowledge_search": knowledge_search, "knowledge_id": knowledge_id}
+                           "knowledge_search": knowledge_search, "knowledgeId": knowledgeId}
         for param in optional_params:
             param_value = optional_params[param]
             if param_value is not None:
@@ -52,7 +52,7 @@ class _Agent:
         coverimage: Optional[str] = None,
         intromessage: Optional[str] = None,
         knowledge_search: Optional[bool] = None,
-        knowledge_id: Optional[str] = None
+        knowledgeId: Optional[str] = None
     ) -> Dict:
         """Update an existing agent."""
 
@@ -62,12 +62,11 @@ class _Agent:
         optional_params = {"title": title, "type": type, "instructions": instructions,
                            "description": description, "coverimage": coverimage,
                            "intromessage": intromessage, "knowledge_search": knowledge_search,
-                           "knowledge_id": knowledge_id}
+                           "knowledgeId": knowledgeId}
         for param in optional_params:
             param_value = optional_params[param]
             if param == "type" and param_value and param_value not in valid_types:
-                raise ValueError(f"Invalid agent type. If specified, must be one of: {
-                                 self._http_client._stringify(valid_types)} .")
+                raise ValueError(f"Invalid agent type. If specified, must be one of: {self._http_client._stringify(valid_types)} .")
             elif param_value is not None:
                 payload[param] = param_value
         return self._http_client._request("PUT", f"/v1/agent/{namespace}", json=payload)

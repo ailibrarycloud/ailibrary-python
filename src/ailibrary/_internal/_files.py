@@ -10,14 +10,14 @@ class _Files:
     def __init__(self, http_client: _HTTPClient):
         self._http_client = http_client
 
-    def upload(self, files: List[str], knowledge_id: Optional[str] = None) -> List[Dict]:
+    def upload(self, files: List[str], knowledgeId: Optional[str] = None) -> List[Dict]:
         """Upload files to AI Library.
         files is a list where each element contains a path to the file.
         """
 
         payload = {}
-        if knowledge_id:
-            payload['knowledgeId'] = knowledge_id
+        if knowledgeId:
+            payload['knowledgeId'] = knowledgeId
         for file in files:
             file_name = os.path.basename(file)
             mime_type = mimetypes.guess_type(file)[0]
@@ -40,10 +40,10 @@ class _Files:
 
         return self._http_client._request("GET", "/v1/files", params=params_dict)
 
-    def get(self, file_id: str) -> Dict:
+    def get(self, file_id: int) -> Dict:
         """Retrieve a file by ID."""
         return self._http_client._request("GET", f"/v1/files/{file_id}")
 
-    def delete(self, file_id: str) -> Dict:
+    def delete(self, file_id: int) -> Dict:
         """Delete a file."""
         return self._http_client._request("DELETE", f"/v1/files/{file_id}")
