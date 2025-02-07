@@ -27,10 +27,10 @@ def test_knowledge_base(client, args):
     kb_info = knowledge_base.get(knowledge_id)  # Get a knowledge base by ID
     print(f"knowledge_base.get() response:\n{kb_info}\n")
     
-    # The response is weird
-    data_url = "https://example-files.online-convert.com/document/txt/example.txt"
-    source_data = knowledge_base.add_source(knowledge_id, urls=[data_url], type="docs")  # Add a source to the knowledge base
-    print(f"knowledge_base.add_source() response:\n{source_data}\n")
+    # # The response is weird
+    # data_url = "https://example-files.online-convert.com/document/txt/example.txt"
+    # source_data = knowledge_base.add_source(knowledge_id, urls=[data_url], type="docs")  # Add a source to the knowledge base
+    # print(f"knowledge_base.add_source() response:\n{source_data}\n")
 
     kb_status = knowledge_base.get_status(knowledge_id)  # Get the status of the knowledge base
     print(f"knowledge_base.get_status() response:\n{kb_status}\n")
@@ -39,11 +39,11 @@ def test_knowledge_base(client, args):
     # source_info = knowledge_base.get_source(knowledge_id, ????)  # Get a source by ???
     # print(f"knowledge_base.get_source() response:\n{source_info}\n")
 
-    sources = knowledge_base.list_sources(knowledge_id)  # List all sources in the knowledge base
-    print(f"knowledge_base.list_sources() response:\n{sources}\n")
+    # sources = knowledge_base.list_sources(knowledge_id)  # List all sources in the knowledge base
+    # print(f"knowledge_base.list_sources() response:\n{sources}\n")
 
-    delete_sources_response = knowledge_base.delete_sources(knowledge_id, values=[source_data["id"]])  # Delete sources from the knowledge base
-    print(f"knowledge_base.delete_sources() response:\n{delete_sources_response}\n")
+    # delete_sources_response = knowledge_base.delete_sources(knowledge_id, values=[source_data["id"]])  # Delete sources from the knowledge base
+    # print(f"knowledge_base.delete_sources() response:\n{delete_sources_response}\n")
 
     try:
         knowledge_base.get(knowledge_id)

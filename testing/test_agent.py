@@ -22,8 +22,7 @@ def test_agent(client, args):
     title = args.get("title", "Test_Agent")
     update_title = args.get("update_title", "Updated_Agent")
 
-    # agent_data = agent.create(title, description="This is a test agent.")  # test create()
-    agent_data = agent.create(title, description="This is a test agent.", knowledge_id="testkbkush_1738821332107373")  # test create()
+    agent_data = agent.create(title, description="This is a test agent.")  # test create()
     print(f"agent.create() response:\n{agent_data}\n")
 
     namespace = agent_data["namespace"]
@@ -74,7 +73,6 @@ if __name__ == "__main__":
 
     # run test
     print("Running test_agent:\n")
-    print(client.agent.delete("test_agent_kushagra-20250207012326"))
     # test_agent(client, args)
     # test_agent_chat(client, args)
     print("Finished running test_agent\n")

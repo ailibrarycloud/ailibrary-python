@@ -302,16 +302,17 @@ kb = client.knowledge_base.create(
 
 **Returns**
 
-Returns a JSON response for a knowledge base object.
+Returns a JSON response for the new knowledge base object.
 
 ```python
-{
-    "knowledgeId": "kb_abc123",
-    "name": "Product Documentation",
-    "meta": {
-        "category": "technical"
-    }
-}
+# {
+#     "knowledgeId": "kb_abc123",
+#     "name": "Product Documentation",
+#     "meta": {
+#         "category": "technical"
+#     }
+# }
+{'status': 'success', 'knowledgeId': 'kb_abc123'}
 ```
 
 ### List knowledge bases
@@ -326,18 +327,18 @@ No parameters required.
 
 **Returns**
 
-Returns a list of knowledge base objects.
+Returns the JSON response containing list of knolwedge bases and meta info.
 
 ```python
 {
-    "knowledge_bases": [
+    "knowledgebases": [
         {
             "knowledgeId": "kb_abc123",
-            "name": "Product Documentation",
-            "meta": {"category": "technical"}
+            # ... other knolwedge base info
         },
         # ... more knowledge bases
-    ]
+    ],
+    "meta": {...}
 }
 ```
 
@@ -355,21 +356,25 @@ kb = client.knowledge_base.get(knowledge_id="kb_abc123")
 
 **Returns**
 
-Returns a knowledge base object with its sources.
+Returns a JSON response containing info about the knowledge base object, if found.
 
 ```python
 {
-    "knowledgeId": "kb_abc123",
-    "name": "Product Documentation",
-    "meta": {"category": "technical"},
-    "sources": [
-        {
-            "sourceId": "src_xyz789",
-            "type": "docs",
-            "status": "processed"
-        }
-        # ... more sources
-    ]
+    'title': 'Title of Knowledge Base',
+    'knowledgeId': 'kb_abc123',
+    'status': 'processing',
+    'sources': 0,
+    'generations': 0,
+    'addhistory': 1,
+    'visibility': 'private',
+    'default_prompts': None,
+    'default_model': None,
+    'default_urls': None,
+    'userName': 'Kushagra Agrawal',
+    'userEmail': 'kush.agr02@gmail.com',
+    'special_event': None,
+    'star': None,
+    'meta': None
 }
 ```
 
@@ -420,20 +425,10 @@ status = client.knowledge_base.get_status(knowledge_id="kb_abc123")
 
 **Returns**
 
-Returns the processing status of the knowledge base and its sources.
+Returns the processing status of the knowledge base as a string.
 
 ```python
-{
-    "status": "processing",
-    "progress": 45.5,
-    "sources": [
-        {
-            "sourceId": "src_xyz789",
-            "status": "processing",
-            "progress": 45.5
-        }
-    ]
-}
+"available"
 ```
 
 ### Get source
@@ -480,15 +475,12 @@ sources = client.knowledge_base.list_sources(knowledge_id="kb_abc123")
 
 **Returns**
 
-Returns a list of source objects.
+Returns a list of source objects or an empty string if there are no sources for the specified knowledge base.
 
 ```python
 [
     {
-        "sourceId": "src_xyz789",
-        "type": "docs",
-        "status": "processed",
-        "meta": {"category": "documentation"}
+        # ... source info
     },
     # ... more sources
 ]
