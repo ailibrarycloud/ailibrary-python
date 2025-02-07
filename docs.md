@@ -235,19 +235,19 @@ response = client.agent.chat(
 | Parameter | Type | Required | Description |
 |-----------|------|----------|-------------|
 | `namespace` | string | Required | The agent's unique identifier |
-| `messages` | array | Required | Array of message objects representing the conversation history. Must contain at least one message. |
+| `messages` | list | Required | List of message objects representing the conversation history. Must contain at least one message. |
 | `session_id` | string | Optional | Session identifier for conversation continuity |
 
 **Message Object Schema**
 
-Each object in the `messages` array must have the following structure:
+Each object in the `messages` list must have the following structure:
 
 | Field | Type | Required | Allowed Values | Description |
 |-------|------|----------|----------------|-------------|
 | `role` | string | Required | "system", "user", or "assistant" | Identifies who sent the message |
 | `content` | string | Required | Any non-empty string | The content of the message |
 
-**Example Messages Array**
+**Example Messages List**
 ```python
 messages=[
     # System message setting the context
@@ -289,7 +289,6 @@ The Knowledge Bases API enables you to create and manage vector databases that s
 ```python
 kb = client.knowledge_base.create(
     name="Product Documentation",
-    meta={"category": "technical"}
 )
 ```
 
@@ -395,7 +394,7 @@ source = client.knowledge_base.add_source(
 |-----------|------|----------|-------------|
 | `knowledge_id` | string | Required | The knowledge base identifier |
 | `type` | string | Required | Type of source: "docs", "web", or "youtube" |
-| `urls` | array | Optional | Array of URLs to process |
+| `urls` | list | Optional | List of URLs to process |
 | `meta` | object | Optional | Additional metadata for the source |
 
 **Returns**
@@ -500,7 +499,7 @@ response = client.knowledge_base.delete_sources(
 | Parameter | Type | Required | Description |
 |-----------|------|----------|-------------|
 | `knowledge_id` | string | Required | The knowledge base identifier |
-| `values` | array | Optional | List of source IDs to delete |
+| `values` | list | Optional | List of source IDs to delete |
 | `delete_all` | boolean | Optional | If true, deletes all sources |
 
 Note: Either `values` or `delete_all` must be specified.
@@ -536,26 +535,21 @@ uploaded_files = client.files.upload(
 | `files` | list | Required | List of file paths to upload |
 | `knowledge_id` | string | Optional | Knowledge base to associate files with |
 
-**Supported File Types**
-- Text files (.txt)
-- PDF documents (.pdf)
-- Microsoft Word documents (.docx)
-- Microsoft PowerPoint presentations (.pptx)
-- Microsoft Excel spreadsheets (.xlsx)
-
 **Returns**
 
 Returns an list of file objects.
 
 ```python
+# knowledge_id?
 [
     {
-        "fileId": "file_abc123",
-        "filename": "document.pdf",
-        "mimetype": "application/pdf",
-        "size": 1234567,
-        "status": "uploaded"
-    }
+        'url': 'https://domain/corbett/email/file_name.txt',
+        'id': 1232,
+        'bytes': 17,
+        'name': 'file_name.txt'
+    },
+    
+    # ... other files
 ]
 ```
 
@@ -577,21 +571,22 @@ files = client.files.list_files(
 
 **Returns**
 
-Returns a paginated list of file objects.
+Returns the JSON response containing list of files and meta info.
 
 ```python
 {
-    "files": [
+    'files': [
         {
-            "fileId": "file_abc123",
-            "filename": "document.pdf",
-            "mimetype": "application/pdf",
-            "size": 1234567
-        }
+            'bytes': 17,
+            'created_timestamp': 'YYYY-MM-DD hh:mm:ss',
+            'id': 1232,
+            'name': 'file_name.txt'
+            'url': 'https://domain/corbett/email/file_name.txt',
+        },
+        # ... other files
     ],
-    "total": 45,
-    "page": 1,
-    "limit": 10
+    
+    'meta': {'limit': 10, 'next_page': 2, 'prev_page': '', 'total_items': 2}
 }
 ```
 
@@ -613,11 +608,11 @@ Returns a file object.
 
 ```python
 {
-    "fileId": "file_abc123",
-    "filename": "document.pdf",
-    "mimetype": "application/pdf",
-    "size": 1234567,
-    "uploadDate": "2024-03-20T10:30:00Z"
+    'bytes': 17,
+    'created_timestamp': 'YYYY-MM-DD hh:mm:ss',
+    'id': 1232,
+    'name': 'file_name.txt'
+    'url': 'https://domain/corbett/email/file_name.txt'
 }
 ```
 
@@ -638,10 +633,7 @@ response = client.files.delete(file_id="file_abc123")
 Returns a deletion confirmation.
 
 ```python
-{
-    "status": "success",
-    "message": "File deleted successfully"
-}
+{'response': 'Record successfully deleted'}
 ```
 
 ## Notes
@@ -793,7 +785,7 @@ response = client.notes.delete_notes(
 |-----------|------|----------|-------------|
 | `resource` | string | Required | One of: "agent", "knowledgebase", "file" |
 | `resource_id` | string | Required | ID of the resource |
-| `values` | array | Optional | List of note IDs to delete |
+| `values` | list | Optional | List of note IDs to delete |
 | `delete_all` | boolean | Optional | If true, deletes all notes for the resource |
 
 Note: Either `values` or `delete_all` must be specified.
@@ -825,11 +817,11 @@ results = client.utilities.web_search(
 
 | Parameter | Type | Required | Description |
 |-----------|------|----------|-------------|
-| `search_terms` | array | Required | Array of search terms |
+| `search_terms` | list | Required | List of search terms |
 
 **Returns**
 
-Returns an array of search result objects.
+Returns an list of search result objects.
 
 ```python
 [
@@ -854,11 +846,11 @@ parsed_content = client.utilities.web_parser(
 
 | Parameter | Type | Required | Description |
 |-----------|------|----------|-------------|
-| `urls` | array | Required | Array of URLs to parse |
+| `urls` | list | Required | List of URLs to parse |
 
 **Returns**
 
-Returns an array of parsed page objects.
+Returns an list of parsed page objects.
 
 ```python
 [
