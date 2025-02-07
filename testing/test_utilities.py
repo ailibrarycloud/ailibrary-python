@@ -14,5 +14,6 @@ def test_utilities(client):
 if __name__ == "__main__":
     client = _setup_tests.__setup()
     print("Running test_utilities:\n")
-    test_utilities(client)
+    print(client.utilities.web_search(["stocks"]))
+    # test_utilities(client)
     print("Finished running test_utilities\n")

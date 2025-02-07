@@ -705,7 +705,7 @@ Returns a JSON response containing information about the note object, if found.
     'resource_id': 'agent_name',
     'role': 'user',
     'updated_timestamp': 'YYYY-MM-DD hh:mm:ss',
-    'userEmail': 'username@gmail.com',
+    'userEmail': 'username@email.com',
     'userName': 'FirstName LastName'
 }
 ```
@@ -839,12 +839,23 @@ Returns an list of search result objects.
 ```python
 [
     {
-        "title": "AI Library Documentation",
-        "url": "https://docs.ailibrary.ai",
-        "snippet": "Official documentation for AI Library...",
-        "source": "ailibrary.ai"
-    }
+        "term": "AI",
+        "prompt_context": "AILibraryGenerative AI Platform to rapidly build conversational agents...",
+        "sources": [
+            {
+                "title": "AILibrary",
+                "description": "Generative AI Platform to rapidly build conversational agents...",
+                "url": "https://www.ailibrary.ai/",
+                "isFamilyFriendly": True,
+                "language": "en",
+                "full_text": "AILibraryGenerative AI Platform to rapidly build conversational agents...",
+            },
+            # ... other sources
+        ],
+    },
+    # ... other terms
 ]
+
 ```
 
 ### Web parser
@@ -868,13 +879,27 @@ Returns an list of parsed page objects.
 ```python
 [
     {
-        "url": "https://example.com/article",
-        "title": "Example Article",
-        "content": "The extracted content of the webpage...",
-        "metadata": {
-            "author": "John Doe",
-            "publishDate": "2024-03-20"
-        }
-    }
+        "url": "https://www.ailibrary.ai",
+        "title": "AI Library Agent Builder Platform",
+        "domain": "https://www.ailibrary.ai",
+        "body": "AI LibraryAI LibraryOpen main menuAgentsUse CasesPricingBUILD YOUR AGENTLog in →Generative AI Platform to rapidly build conversational agents...",
+        "relatedurls": [
+            {
+                "url": "https://www.ailibrary.ai/blog",
+                "title": "AI Library Status",
+                "description": "Welcome to AI Library's home for real-time and historical data on system performance.",
+                "type": "web",
+            },
+            {
+                "url": "https://www.ailibrary.ai/about",
+                "title": "AI Library · GitHub",
+                "description": "AI Library enables faster generative AI adoption in enterprises - AI Library",
+                "type": "web",
+            },
+            # ... more related urls
+        ],
+    },
+    # ... more parsed page objects
 ]
+
 ```
