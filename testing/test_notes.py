@@ -28,8 +28,8 @@ def test_notes(client, args):
 
     note_id = note_data["noteId"]
 
-    resource_notes = notes.get_for_resource(resource, resource_id)  # Get notes for a resource
-    print(f"notes.get_for_resource() response:\n{resource_notes}\n")
+    resource_notes = notes.get_resource_notes(resource, resource_id)  # Get notes for a resource
+    print(f"notes.get_resource_notes() response:\n{resource_notes}\n")
 
     update_response = notes.update(note_id, "Updated note content", "user")  # Update a note
     print(f"notes.update() response:\n{update_response}\n")

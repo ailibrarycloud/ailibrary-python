@@ -640,6 +640,16 @@ Returns a deletion confirmation.
 
 The Notes API allows you to add annotations and comments to various resources within the AI Library. Notes can be attached to agents, knowledge bases, and files to provide additional context or documentation.
 
+Here are some common parameters required for multiple functions and their restrictions.
+
+**Common Parameters**
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `role` | string | One of: "assistant", "user", "system" |
+| `resource` | string | One of: "agent", "knowledgebase", "file" |
+| `resource_id` | string | Identifier of the resource. The expected value depends on the resource type:<br>- For `resource="agent"`: use the agent's namespace<br>- For `resource="knowledgebase"`: use the knowledgeId<br>- For `resource="file"`: use the file id |
+
 ### Add note
 
 ```python
@@ -657,24 +667,17 @@ note = client.notes.add(
 | Parameter | Type | Required | Description |
 |-----------|------|----------|-------------|
 | `content` | string | Required | The note content |
-| `role` | string | Required | One of: "assistant", "user", "system" |
-| `resource` | string | Required | One of: "agent", "knowledgebase", "file" |
-| `resource_id` | string | Required | ID of the associated resource |
+| `role` | string | Required | See "Common Parameters" at the start of section |
+| `resource` | string | Required | See "Common Parameters" at the start of section |
+| `resource_id` | string | Required | See "Common Parameters" at the start of section |
 | `meta` | object | Optional | Additional metadata for the note |
 
 **Returns**
 
-Returns the created note object.
+Returns a JSON response confirming a new note was created, as well as the id of the note.
 
 ```python
-{
-    "noteId": "note_xyz789",
-    "content": "Important information about this agent",
-    "role": "user",
-    "resource": "agent",
-    "resourceId": "agent_abc123",
-    "createdAt": "2024-03-20T10:30:00Z"
-}
+{'status': 'success', 'noteId': 'note_xyz789'}
 ```
 
 ### Get note
@@ -691,23 +694,26 @@ note = client.notes.get(note_id="note_xyz789")
 
 **Returns**
 
-Returns a note object.
+Returns a JSON response containing information about the note object, if found.
 
 ```python
 {
-    "noteId": "note_xyz789",
-    "content": "Important information about this agent",
-    "role": "user",
-    "resource": "agent",
-    "resourceId": "agent_abc123",
-    "createdAt": "2024-03-20T10:30:00Z"
+    'content': 'note content',
+    'created_timestamp': 'YYYY-MM-DD hh:mm:ss',
+    'noteId': 'note_xyz789',
+    'resource': 'agent',
+    'resource_id': 'agent_name',
+    'role': 'user',
+    'updated_timestamp': 'YYYY-MM-DD hh:mm:ss',
+    'userEmail': 'username@gmail.com',
+    'userName': 'FirstName LastName'
 }
 ```
 
 ### Get notes for resource
 
 ```python
-notes = client.notes.get_for_resource(
+notes = client.notes.get_resource_notes(
     resource="agent",
     resource_id="agent_abc123"
 )
@@ -717,23 +723,32 @@ notes = client.notes.get_for_resource(
 
 | Parameter | Type | Required | Description |
 |-----------|------|----------|-------------|
-| `resource` | string | Required | One of: "agent", "knowledgebase", "file" |
-| `resource_id` | string | Required | ID of the resource |
+| `resource` | string | Required | See "Common Parameters" at the start of section |
+| `resource_id` | string | Required | See "Common Parameters" at the start of section |
 
 **Returns**
 
-Returns a list of note objects.
+Returns the JSON response containing list of notes and meta info.
 
 ```python
-[
-    {
-        "noteId": "note_xyz789",
-        "content": "Important information about this agent",
-        "role": "user",
-        "createdAt": "2024-03-20T10:30:00Z"
-    },
-    # ... more notes
-]
+{
+    'meta': {'current_page': 1, 'limit': 50, 'next_page': '', 'prev_page': '', 'total_items': 1, 'total_pages': 1}, 
+    'notes': 
+    [
+        {
+            'content': 'note content',
+            'created_timestamp': 'YYYY-MM-DD hh:mm:ss',
+            'noteId': 'note_xyz789',
+            'resource': 'agent',
+            'resource_id': 'agent_name',
+            'role': 'user',
+            'updated_timestamp': 'YYYY-MM-DD hh:mm:ss',
+            'userEmail': 'username@gmail.com',
+            'userName': 'FirstName LastName'
+        },
+        # ... other notes
+    ]
+}
 ```
 
 ### Update note
@@ -753,19 +768,17 @@ updated_note = client.notes.update(
 |-----------|------|----------|-------------|
 | `note_id` | string | Required | The note identifier |
 | `content` | string | Required | New note content |
-| `role` | string | Required | One of: "assistant", "user", "system" |
+| `role` | string | Required | See "Common Parameters" at the start of section |
 | `meta` | object | Optional | Updated metadata |
 
 **Returns**
 
-Returns the updated note object.
+Returns an update confirmation.
 
 ```python
 {
-    "noteId": "note_xyz789",
-    "content": "Updated information",
-    "role": "user",
-    "updatedAt": "2024-03-20T11:30:00Z"
+    'status': 'success',
+    'message': 'Note updated successfully'
 }
 ```
 
@@ -783,12 +796,12 @@ response = client.notes.delete_notes(
 
 | Parameter | Type | Required | Description |
 |-----------|------|----------|-------------|
-| `resource` | string | Required | One of: "agent", "knowledgebase", "file" |
-| `resource_id` | string | Required | ID of the resource |
+| `resource` | string | Required | See "Common Parameters" at the start of section |
+| `resource_id` | string | Required | See "Common Parameters" at the start of section |
 | `values` | list | Optional | List of note IDs to delete |
 | `delete_all` | boolean | Optional | If true, deletes all notes for the resource |
 
-Note: Either `values` or `delete_all` must be specified.
+Note: Either `values` or `delete_all=True` must be specified. If both are specified then `delete_all` takes precedence.
 
 **Returns**
 

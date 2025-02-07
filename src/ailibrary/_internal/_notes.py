@@ -59,7 +59,7 @@ class _Notes:
         return self._http_client._request("POST", "/v1/notes", json=payload)
 
 
-    def get_for_resource(self, resource: str, resource_id: str) -> List[Dict]:
+    def get_resource_notes(self, resource: str, resource_id: str) -> List[Dict]:
         """Get notes for a resource."""
         self._check_resource(resource)
         return self._http_client._request("GET", f"/v1/notes/{resource}/{resource_id}")
