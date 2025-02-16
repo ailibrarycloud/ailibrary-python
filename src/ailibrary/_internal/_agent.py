@@ -1,10 +1,9 @@
 from typing import Dict, List, Optional, Generator
 from .__http_client import _HTTPClient
-import json
 import requests
-from ..types.agent.requests import AgentCreateRequest, AgentUpdateRequest
-from ..types.agent.responses import AgentResponse, AgentData
-# from ..types.chat.requests import ChatRequest, Message
+from ..types.agent.requests import AgentCreateRequest, AgentUpdateRequest, ChatRequest
+from ..types.agent.responses import AgentResponse, AgentListResponse, AgentData
+from ..types.chat.responses import ChatResponse
 from ..types.shared.enums import HTTPMethod
 
 
@@ -28,13 +27,19 @@ class _Agent:
 
     def get(self, namespace: str) -> AgentResponse:
         """Retrieve information about an agent."""
-        response = self._http_client._request(HTTPMethod.GET, f"/v1/agent/{namespace}")
+        response = self._http_client._request(
+            HTTPMethod.GET,
+            f"/v1/agent/{namespace}"
+        )
         return AgentResponse(**response)
 
-    def list_agents(self) -> List[AgentData]:
+    def list_agents(self) -> AgentListResponse:
         """List all agents."""
-        response = self._http_client._request(HTTPMethod.GET, "/v1/agent")
-        return [AgentData(**agent) for agent in response.get("agents", [])]
+        response = self._http_client._request(
+            HTTPMethod.GET,
+            "/v1/agent"
+        )
+        return AgentListResponse(**response)
 
     def update(self, namespace: str, **kwargs) -> AgentResponse:
         """Update an existing agent."""
@@ -48,26 +53,23 @@ class _Agent:
 
     def delete(self, namespace: str) -> AgentResponse:
         """Delete an agent."""
-        response = self._http_client._request(HTTPMethod.DELETE, f"/v1/agent/{namespace}")
+        response = self._http_client._request(
+            HTTPMethod.DELETE,
+            f"/v1/agent/{namespace}"
+        )
         return AgentResponse(**response)
 
-    def chat(self, namespace: str, messages: List[Dict], session_id: Optional[str] = None) -> Generator[str, None, None]:
+    def chat(self, namespace: str, messages: List[Dict], stream: bool = False) -> Generator[str, None, None]:
         """Chat with an agent."""
-        request = ChatRequest(
-            namespace=namespace,
-            messages=[Message(**msg) for msg in messages],
-            session_id=session_id
-        )
-        
-        domain = self._http_client.base_url
-        url = f"{domain}/v1/agent/{namespace}/chat"
+        request = ChatRequest(messages=messages)
+        url = f"{self._http_client.base_url}/v1/agent/{namespace}/chat"
         payload = request.model_dump_json()
         headers = {
             'Content-Type': 'application/json',
             'X-Library-Key': self._http_client.headers["X-Library-Key"]
         }
 
-        with requests.request(HTTPMethod.POST, url, headers=headers, data=payload, stream=True) as response:
+        with requests.request(HTTPMethod.POST.value, url, headers=headers, data=payload, stream=True) as response:
             response.raise_for_status()
             for chunk in response.iter_content(chunk_size=8192):
                 if chunk:

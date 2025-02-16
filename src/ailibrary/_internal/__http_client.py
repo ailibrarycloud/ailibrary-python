@@ -1,5 +1,8 @@
 import requests
 from typing import Dict, List, Tuple, Optional, Any, BinaryIO
+from ..types.http_client.requests import HTTPRequest
+from ..types.http_client.responses import HTTPResponse, ErrorResponse
+from ..types.shared.enums import HTTPMethod
 
 
 class _HTTPClient:
@@ -17,7 +20,8 @@ class _HTTPClient:
         }
     
 
-    def _stringify(list_of_strings: str):
+    @staticmethod
+    def _stringify(list_of_strings: List[str]) -> str:
         """ 
         input example: ["A", "list", "of", "words"]
         return value example: "'A', 'list', 'of', 'words'"
@@ -27,7 +31,7 @@ class _HTTPClient:
 
     def _request(
         self, 
-        method: str, 
+        method: HTTPMethod, 
         endpoint: str, 
         params: Optional[Dict] = None,
         data: Optional[Dict] = None,
@@ -37,21 +41,37 @@ class _HTTPClient:
         # response_no_json: bool = False
     ) -> Any:
         """Make an HTTP request to the API."""
-
-        url = f"{self.base_url}{endpoint}"
-        response = requests.request(
+        request = HTTPRequest(
             method=method,
-            url=url,
-            headers=self.headers,
+            endpoint=endpoint,
             params=params,
             data=data,
             json=json,
             files=files,
             stream=stream
         )
-        # print(response.json())
 
-        # if response_no_json:
-        #     return response
-        response.raise_for_status()
-        return response.json()
+        url = f"{self.base_url}{request.endpoint}"
+        try:
+            response = requests.request(
+                method=request.method.value,
+                url=url,
+                headers=self.headers,
+                params=request.params,
+                data=request.data,
+                json=request.json,
+                files=request.files,
+                stream=request.stream
+            )
+            # print(response.json())
+
+            # if response_no_json:
+            #     return response
+            response.raise_for_status()
+            return response.json()
+        except requests.exceptions.RequestException as e:
+            raise ErrorResponse(
+                status_code=e.response.status_code if e.response else 500,
+                message=str(e),
+                error=e.response.json() if e.response else None
+            )

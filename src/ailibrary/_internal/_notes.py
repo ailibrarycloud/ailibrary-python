@@ -22,16 +22,16 @@ class _Notes:
     def add(
         self,
         content: str,
-        role: str,
-        resource: str,
+        role: RoleType,
+        resource: ResourceType,
         resource_id: str,
         meta: Optional[Dict] = None
     ) -> NoteResponse:
         """Add a note to a resource.
             Args:
                 content: The content of the note
-                role: Possible values: RoleType enum values
-                resource: Possible values: ResourceType enum values
+                role: RoleType enum value
+                resource: ResourceType enum value
                 resource_id:
                     if resource == ResourceType.AGENT:
                         resource_id is namespace
@@ -55,7 +55,7 @@ class _Notes:
         )
         return NoteResponse(**response)
 
-    def get_resource_notes(self, resource: str, resource_id: str) -> NoteListResponse:
+    def get_resource_notes(self, resource: ResourceType, resource_id: str) -> NoteListResponse:
         """Get notes for a resource."""
         response = self._http_client._request(
             HTTPMethod.GET,
@@ -63,16 +63,23 @@ class _Notes:
         )
         return NoteListResponse(**response)
 
+    def get(self, note_id: str) -> NoteResponse:
+        """Get a note by ID."""
+        response = self._http_client._request(
+            HTTPMethod.GET,
+            f"/v1/notes/{note_id}"
+        )
+        return NoteResponse(**response)
+
     def update(
         self,
         note_id: str,
         content: str,
-        role: str,
+        role: RoleType,
         meta: Optional[Dict] = None
     ) -> NoteResponse:
         """Update a note."""
         request = NoteUpdateRequest(
-            note_id=note_id,
             content=content,
             role=role,
             meta=meta
@@ -84,26 +91,14 @@ class _Notes:
         )
         return NoteResponse(**response)
 
-    def get(self, note_id: str) -> NoteResponse:
-        """Get a note by ID."""
-        response = self._http_client._request(
-            HTTPMethod.GET,
-            f"/v1/notes/{note_id}"
-        )
-        return NoteResponse(**response)
-
     def delete_notes(
         self,
-        resource: str,
+        resource: ResourceType,
         resource_id: str,
         values: Optional[List[str]] = None,
         delete_all: Optional[bool] = None
     ) -> NoteResponse:
-        """Delete notes for a resource.
-        resource and resource_id are required, as well as 
-        one of the following: values or delete_all.
-        If values is not provided, delete_all must be true.
-        """
+        """Delete notes for a resource."""
         request = NoteDeleteRequest(
             resource=resource,
             resource_id=resource_id,
