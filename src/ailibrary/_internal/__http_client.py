@@ -1,4 +1,5 @@
 import requests
+import aiohttp
 from typing import Dict, List, Tuple, Optional, Any, BinaryIO
 
 
@@ -36,8 +37,7 @@ class _HTTPClient:
         stream: bool = False,
         # response_no_json: bool = False
     ) -> Any:
-        """Make an HTTP request to the API."""
-
+        """Make a synchronous HTTP request to the API."""
         url = f"{self.base_url}{endpoint}"
         response = requests.request(
             method=method,
@@ -55,3 +55,55 @@ class _HTTPClient:
         #     return response
         response.raise_for_status()
         return response.json()
+
+
+    async def _async_request(
+        self,
+        method: str,
+        endpoint: str,
+        params: Optional[Dict] = None,
+        data: Optional[Dict] = None,
+        json: Optional[Dict] = None,
+        stream: bool = False,
+    ) -> Any:
+        """Make an asynchronous HTTP request to the API."""
+        url = f"{self.base_url}{endpoint}"
+        
+        async with aiohttp.ClientSession() as session:
+            async with session.request(
+                method=method,
+                url=url,
+                headers=self.headers,
+                params=params,
+                data=data,
+                json=json
+            ) as response:
+                response.raise_for_status()
+                
+                if stream:
+                    return response.content
+                
+                return await response.json()
+
+
+    async def _async_stream(
+        self,
+        method: str,
+        endpoint: str,
+        params: Optional[Dict] = None,
+        data: Optional[Dict] = None,
+        json: Optional[Dict] = None,
+    ):
+        """Make an asynchronous streaming HTTP request to the API."""
+        response_content = await self._async_request(
+            method=method,
+            endpoint=endpoint,
+            params=params,
+            data=data,
+            json=json,
+            stream=True
+        )
+        
+        async for chunk in response_content.iter_any():
+            if chunk:
+                yield chunk.decode('utf-8')

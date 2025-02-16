@@ -1,5 +1,6 @@
 import _setup_tests
 import sys
+import asyncio
 
 
 def get_args():
@@ -54,7 +55,7 @@ def test_agent(client, args):
         print(f"Failed test case: delete() doesnt work when namespace not found\n")
 
 
-async def test_agent_chat(client, args):
+async def test_agent_chat(client):
     response = await client.agent.chat(
         "gricare_demo", [{"role": "user", "content": "Hello there! Who are you?"}])
     async def text_iterator():
@@ -74,5 +75,5 @@ if __name__ == "__main__":
     # run test
     print("Running test_agent:\n")
     # test_agent(client, args)
-    # test_agent_chat(client, args)
+    asyncio.run(test_agent_chat(client))
     print("Finished running test_agent\n")

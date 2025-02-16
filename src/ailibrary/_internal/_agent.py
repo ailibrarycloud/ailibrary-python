@@ -75,7 +75,7 @@ class _Agent:
         """Delete an agent."""
         return self._http_client._request("DELETE", f"/v1/agent/{namespace}")
 
-    def chat(self, namespace: str, messages: List[Dict[str, str]], session_id: Optional[str] = None) -> Dict:
+    async def chat(self, namespace: str, messages: List[Dict[str, str]], session_id: Optional[str] = None):
         """Chat with an agent.
 
         Args:
@@ -88,6 +88,9 @@ class _Agent:
                     - Required key: 'content'
                         - Possible values: any string
             session_id: Optional session identifier
+        
+        Returns:
+            An async generator that yields chunks of the response as they arrive.
         """
         if not namespace:
             raise ValueError("Namespace cannot be empty")
@@ -99,28 +102,21 @@ class _Agent:
             if not isinstance(msg, dict):
                 raise ValueError("Each message must be a dictionary")
             if "role" not in msg or "content" not in msg:
-                raise ValueError(
-                    "Each message must contain 'role' and 'content' keys")
+                raise ValueError("Each message must contain 'role' and 'content' keys")
             if msg["role"] not in valid_roles:
                 raise ValueError(f"Message role must be one of {valid_roles}")
             if not isinstance(msg["content"], str):
                 raise ValueError("Message content must be a string")
 
-        domain = self._http_client.base_url
-        url = f"{domain}/v1/agent/{namespace}/chat"
-        payload = json.dumps({
+        payload = {
             "messages": messages,
             "session_id": session_id if session_id else "test-session",
-        })
-        headers = {
-            'Content-Type': 'application/json',
-            'X-Library-Key': self._http_client.headers["X-Library-Key"]
         }
-        # response = requests.request("POST", url, headers=headers, data=payload)
-        with requests.request("POST", url, headers=headers, data=payload, stream=True) as response:
-            response.raise_for_status()
-            for chunk in response.iter_content(chunk_size=8192):
-                if chunk:
-                    decoded_chunk = chunk.decode('utf-8')
-                    yield decoded_chunk
+
+        async for chunk in self._http_client._async_stream(
+            method="POST",
+            endpoint=f"/v1/agent/{namespace}/chat",
+            json=payload
+        ):
+            yield chunk
         
