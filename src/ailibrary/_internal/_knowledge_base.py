@@ -1,5 +1,18 @@
+from typing import List, Optional, Dict
 from .__http_client import _HTTPClient
-from typing import Dict, List, Optional
+from ..types.knowledge_base.requests import (
+    KnowledgeBaseCreateRequest,
+    SourceAddRequest,
+    DeleteSourcesRequest
+)
+from ..types.knowledge_base.responses import (
+    KnowledgeBaseResponse,
+    KnowledgeBaseListResponse,
+    SourceListResponse,
+    KnowledgeBaseData,
+    SourceData
+)
+from ..types.shared.enums import HTTPMethod
 
 
 class _KnowledgeBase:
@@ -8,28 +21,27 @@ class _KnowledgeBase:
     def __init__(self, http_client: _HTTPClient):
         self._http_client = http_client
 
-
-    def create(self, name: str, meta: Optional[Dict] = None) -> Dict:
+    def create(self, name: str, meta: Optional[Dict] = None) -> KnowledgeBaseResponse:
         """Create a new knowledge base."""
-        if not name:
-            raise ValueError("Name cannot be empty")
-        payload = {"name": name}
-        if meta:
-            payload["meta"] = meta
-        return self._http_client._request("POST", "/v1/knowledgebase", json=payload)
+        request = KnowledgeBaseCreateRequest(name=name, meta=meta)
+        response = self._http_client._request(
+            HTTPMethod.POST,
+            "/v1/knowledgebase",
+            json=request.model_dump(exclude_none=True)
+        )
+        return KnowledgeBaseResponse(**response)
 
-
-    def list_knowledge_bases(self) -> Dict:
+    def list_knowledge_bases(self) -> KnowledgeBaseListResponse:
         """List all knowledge bases."""
-        return self._http_client._request("GET", "/v1/knowledgebase")
+        response = self._http_client._request(HTTPMethod.GET, "/v1/knowledgebase")
+        return KnowledgeBaseListResponse(**response)
 
-
-    def get(self, knowledgeId: str) -> Dict:
+    def get(self, knowledgeId: str) -> KnowledgeBaseResponse:
         """Retrieve a knowledge base by ID."""
         if not knowledgeId:
             raise ValueError("Knowledge ID cannot be empty")
-        return self._http_client._request("GET", f"/v1/knowledgebase/{knowledgeId}")
-
+        response = self._http_client._request(HTTPMethod.GET, f"/v1/knowledgebase/{knowledgeId}")
+        return KnowledgeBaseResponse(**response)
 
     def add_source(
         self,
@@ -37,50 +49,52 @@ class _KnowledgeBase:
         type: str,
         meta: Optional[Dict] = None,
         urls: Optional[Dict] = None
-    ) -> Dict:
+    ) -> KnowledgeBaseResponse:
         """Add sources to a knowledge base."""
-        
-        valid_types = ["docs", "web", "youtube"]
-        if type not in valid_types:
-            raise ValueError(f"Invalid type. Valid types: {self._http_client._stringify(valid_types)} .")
+        request = SourceAddRequest(
+            type=type,
+            urls=urls,
+            meta=meta
+        )
+        response = self._http_client._request(
+            HTTPMethod.PUT,
+            f"/v1/knowledgebase/{knowledgeId}",
+            json=request.model_dump(exclude_none=True)
+        )
+        return KnowledgeBaseResponse(**response)
 
-        payload = {
-            "type": type,
-            "options": {
-                "urls": urls
-            }
-        }
-        optional_params = {"meta": meta}
-        for param in optional_params:
-            param_value = optional_params[param]
-            if param_value is not None:
-                payload[param] = param_value
-        return self._http_client._request("PUT", f"/v1/knowledgebase/{knowledgeId}", json=payload)
-
-
-    def get_status(self, knowledgeId: str) -> Dict:
+    def get_status(self, knowledgeId: str) -> KnowledgeBaseResponse:
         """Get knowledge base processing status."""
-        return self._http_client._request("GET", f"/v1/knowledgebase/{knowledgeId}/status")
+        response = self._http_client._request(HTTPMethod.GET, f"/v1/knowledgebase/{knowledgeId}/status")
+        return KnowledgeBaseResponse(**response)
 
-
-    def get_source(self, knowledgeId: str, source_id: str) -> Dict:
+    def get_source(self, knowledgeId: str, source_id: str) -> SourceData:
         """Retrieve source details."""
-        return self._http_client._request("GET", f"/v1/knowledgebase/{knowledgeId}/{source_id}")
+        response = self._http_client._request(
+            HTTPMethod.GET,
+            f"/v1/knowledgebase/{knowledgeId}/{source_id}"
+        )
+        return SourceData(**response)
 
-
-    def list_sources(self, knowledgeId: str) -> List[Dict]:
+    def list_sources(self, knowledgeId: str) -> SourceListResponse:
         """List all sources in a knowledge base."""
-        return self._http_client._request("GET", f"/v1/knowledgebase/{knowledgeId}/sources")
-
+        response = self._http_client._request(
+            HTTPMethod.GET,
+            f"/v1/knowledgebase/{knowledgeId}/sources"
+        )
+        return SourceListResponse(**response)
 
     def delete_sources(
         self,
         knowledgeId: str,
         values: List[str],
         delete_all: Optional[bool] = False
-    ) -> Dict:
+    ) -> KnowledgeBaseResponse:
         """Delete sources from a knowledge base."""
-        payload = {"values": values}
-        if delete_all:
-            payload["delete_all"] = delete_all
-        return self._http_client._request("DELETE", f"/v1/knowledgebase/{knowledgeId}/source", json=payload)
+        request = DeleteSourcesRequest(values=values, delete_all=delete_all)
+        response = self._http_client._request(
+            HTTPMethod.DELETE,
+            f"/v1/knowledgebase/{knowledgeId}/source",
+            json=request.model_dump(exclude_none=True)
+        )
+        return KnowledgeBaseResponse(**response)

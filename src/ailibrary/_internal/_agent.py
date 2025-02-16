@@ -1,9 +1,11 @@
-from typing import Dict, List, Optional, Literal
+from typing import Dict, List, Optional, Generator
 from .__http_client import _HTTPClient
 import json
 import requests
 from ..types.agent.requests import AgentCreateRequest, AgentUpdateRequest
-from ..types.chat.requests import ChatRequest, Message
+from ..types.agent.responses import AgentResponse, AgentData
+# from ..types.chat.requests import ChatRequest, Message
+from ..types.shared.enums import HTTPMethod
 
 
 class _Agent:
@@ -13,36 +15,41 @@ class _Agent:
         self._http_client = http_client
 
 
-    def create(self, **kwargs) -> Dict:
+    def create(self, **kwargs) -> AgentResponse:
         """Create a new agent with the specified parameters."""
         request = AgentCreateRequest(**kwargs)
-        return self._http_client._request(
-            "POST", 
-            "/v1/agent/create", 
+        response = self._http_client._request(
+            HTTPMethod.POST,
+            "/v1/agent/create",
             json=request.model_dump(exclude_none=True)
         )
+        return AgentResponse(**response)
 
 
-    def get(self, namespace: str) -> Dict:
+    def get(self, namespace: str) -> AgentResponse:
         """Retrieve information about an agent."""
-        return self._http_client._request("GET", f"/v1/agent/{namespace}")
+        response = self._http_client._request(HTTPMethod.GET, f"/v1/agent/{namespace}")
+        return AgentResponse(**response)
 
-    def list_agents(self) -> Dict:
+    def list_agents(self) -> List[AgentData]:
         """List all agents."""
-        return self._http_client._request("GET", "/v1/agent")
+        response = self._http_client._request(HTTPMethod.GET, "/v1/agent")
+        return [AgentData(**agent) for agent in response.get("agents", [])]
 
-    def update(self, namespace: str, **kwargs) -> Dict:
+    def update(self, namespace: str, **kwargs) -> AgentResponse:
         """Update an existing agent."""
         request = AgentUpdateRequest(namespace=namespace, **kwargs)
-        return self._http_client._request(
-            "PUT",
+        response = self._http_client._request(
+            HTTPMethod.PUT,
             f"/v1/agent/{namespace}",
             json=request.model_dump(exclude_none=True)
         )
+        return AgentResponse(**response)
 
-    def delete(self, namespace: str) -> Dict:
+    def delete(self, namespace: str) -> AgentResponse:
         """Delete an agent."""
-        return self._http_client._request("DELETE", f"/v1/agent/{namespace}")
+        response = self._http_client._request(HTTPMethod.DELETE, f"/v1/agent/{namespace}")
+        return AgentResponse(**response)
 
     def chat(self, namespace: str, messages: List[Dict], session_id: Optional[str] = None) -> Generator[str, None, None]:
         """Chat with an agent."""
@@ -60,10 +67,9 @@ class _Agent:
             'X-Library-Key': self._http_client.headers["X-Library-Key"]
         }
 
-        with requests.request("POST", url, headers=headers, data=payload, stream=True) as response:
+        with requests.request(HTTPMethod.POST, url, headers=headers, data=payload, stream=True) as response:
             response.raise_for_status()
             for chunk in response.iter_content(chunk_size=8192):
                 if chunk:
-                    decoded_chunk = chunk.decode('utf-8')
-                    yield decoded_chunk
+                    yield chunk.decode('utf-8')
         

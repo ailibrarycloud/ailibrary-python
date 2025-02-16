@@ -1,25 +1,23 @@
-from typing import Dict, List, Optional
+from typing import List, Optional, Dict
 from .__http_client import _HTTPClient
+from ..types.notes.requests import (
+    NoteCreateRequest,
+    NoteUpdateRequest,
+    NoteDeleteRequest
+)
+from ..types.notes.responses import (
+    NoteResponse,
+    NoteListResponse,
+    NoteData
+)
+from ..types.shared.enums import HTTPMethod, ResourceType, RoleType
 
 
 class _Notes:
     """Notes resource for managing notes on resources."""
 
     def __init__(self, http_client: _HTTPClient):
-        self.VALID_ROLES = ["assistant", "user", "system"]
-        self.VALID_RESOURCES = ["agent", "knowledgebase", "file"]
         self._http_client = http_client
-
-
-    def _check_role(self, role: str):
-        if role not in self.VALID_ROLES:
-            raise ValueError(f"Invalid role. Valid roles: {self._http_client._stringify(self.VALID_ROLES)} .")
-
-
-    def _check_resource(self, resource: str):
-        if resource not in self.VALID_RESOURCES:
-            raise ValueError(f"Invalid resource. Valid resources: {self._http_client._stringify(self.VALID_RESOURCES)} .")
-
 
     def add(
         self,
@@ -28,42 +26,42 @@ class _Notes:
         resource: str,
         resource_id: str,
         meta: Optional[Dict] = None
-    ) -> Dict:
+    ) -> NoteResponse:
         """Add a note to a resource.
             Args:
                 content: The content of the note
-                role: Possible values: see self.VALID_ROLES
-                resource: Possible values: see self.VALID_RESOURCES
+                role: Possible values: RoleType enum values
+                resource: Possible values: ResourceType enum values
                 resource_id:
-                    if resouce == 'agent':
+                    if resource == ResourceType.AGENT:
                         resource_id is namespace
-                    if resouce == 'knowledgebase'
+                    if resource == ResourceType.KNOWLEDGE_BASE:
                         resource_id is knowledgeId
-                    if resouce == 'file'
+                    if resource == ResourceType.FILE:
                         resource_id is id
-
-                meta: Optional arg
+                meta: Optional metadata
         """
+        request = NoteCreateRequest(
+            content=content,
+            role=role,
+            resource=resource,
+            resource_id=resource_id,
+            meta=meta
+        )
+        response = self._http_client._request(
+            HTTPMethod.POST,
+            "/v1/notes",
+            json=request.model_dump(exclude_none=True)
+        )
+        return NoteResponse(**response)
 
-        self._check_role(role)
-        self._check_resource(resource)
-        
-        payload = {
-            "content": content,
-            "role": role,
-            "resource": resource,
-            "resource_id": resource_id
-        }
-        if meta:
-            payload["meta"] = meta
-        return self._http_client._request("POST", "/v1/notes", json=payload)
-
-
-    def get_resource_notes(self, resource: str, resource_id: str) -> List[Dict]:
+    def get_resource_notes(self, resource: str, resource_id: str) -> NoteListResponse:
         """Get notes for a resource."""
-        self._check_resource(resource)
-        return self._http_client._request("GET", f"/v1/notes/{resource}/{resource_id}")
-
+        response = self._http_client._request(
+            HTTPMethod.GET,
+            f"/v1/notes/{resource}/{resource_id}"
+        )
+        return NoteListResponse(**response)
 
     def update(
         self,
@@ -71,42 +69,50 @@ class _Notes:
         content: str,
         role: str,
         meta: Optional[Dict] = None
-    ) -> Dict:
+    ) -> NoteResponse:
         """Update a note."""
-        self._check_role(role)
-        payload = {
-            "content": content,
-            "role": role
-        }
-        if meta:
-            payload["meta"] = meta
-        return self._http_client._request("PUT", f"/v1/notes/{note_id}", json=payload)
+        request = NoteUpdateRequest(
+            note_id=note_id,
+            content=content,
+            role=role,
+            meta=meta
+        )
+        response = self._http_client._request(
+            HTTPMethod.PUT,
+            f"/v1/notes/{note_id}",
+            json=request.model_dump(exclude_none=True)
+        )
+        return NoteResponse(**response)
 
-
-    def get(self, note_id: str) -> Dict:
+    def get(self, note_id: str) -> NoteResponse:
         """Get a note by ID."""
-        return self._http_client._request("GET", f"/v1/notes/{note_id}")
-
+        response = self._http_client._request(
+            HTTPMethod.GET,
+            f"/v1/notes/{note_id}"
+        )
+        return NoteResponse(**response)
 
     def delete_notes(
         self,
         resource: str,
         resource_id: str,
-        values: List[str] = None,
-        delete_all: bool = None
-    ) -> Dict:
+        values: Optional[List[str]] = None,
+        delete_all: Optional[bool] = None
+    ) -> NoteResponse:
         """Delete notes for a resource.
-        <resource> and <resource_id> are required, as well as 
-        one of the following: <values> or <delete_all>.
-        If <values> is not provided, <delete_all> must be true.
+        resource and resource_id are required, as well as 
+        one of the following: values or delete_all.
+        If values is not provided, delete_all must be true.
         """
-        self._check_resource(resource)
-        if (not values and not delete_all):
-            raise ValueError("One of the following is required: values or delete_all=True.")
-        
-        payload = {"resource": resource, "resource_id": resource_id}
-        if delete_all:
-            payload["delete_all"] = delete_all  # doesn't matter what values are, delete all notes
-        else:
-            payload["values"] = values # only delete notes with these values
-        return self._http_client._request("DELETE", f"/v1/notes/{resource}/{resource_id}", json=payload)
+        request = NoteDeleteRequest(
+            resource=resource,
+            resource_id=resource_id,
+            values=values,
+            delete_all=delete_all
+        )
+        response = self._http_client._request(
+            HTTPMethod.DELETE,
+            f"/v1/notes/{resource}/{resource_id}",
+            json=request.model_dump(exclude_none=True)
+        )
+        return NoteResponse(**response)
