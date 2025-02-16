@@ -46,7 +46,7 @@ class _Files:
         response = self._http_client._request(
             HTTPMethod.GET,
             "/v1/files",
-            params=pagination.model_dump(exclude_none=True)
+            params=pagination.model_dump()
         )
         return FileListResponse(**response)
 

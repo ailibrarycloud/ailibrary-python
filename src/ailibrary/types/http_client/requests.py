@@ -1,8 +1,8 @@
 from typing import Optional, Dict, List, Tuple, BinaryIO
-from pydantic import BaseModel
+from pydantic import 
 from ..shared.enums import HTTPMethod
 
-class HTTPRequest(BaseModel):
+class HTTPRequest():
     method: HTTPMethod
     endpoint: str
     params: Optional[Dict] = None

@@ -20,7 +20,7 @@ class _Agent:
         response = self._http_client._request(
             HTTPMethod.POST,
             "/v1/agent/create",
-            json=request.model_dump(exclude_none=True)
+            json=request.model_dump()
         )
         return AgentResponse(**response)
 
@@ -47,7 +47,7 @@ class _Agent:
         response = self._http_client._request(
             HTTPMethod.PUT,
             f"/v1/agent/{namespace}",
-            json=request.model_dump(exclude_none=True)
+            json=request.model_dump()
         )
         return AgentResponse(**response)
 

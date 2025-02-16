@@ -22,7 +22,7 @@ class _Utilities:
         response = self._http_client._request(
             HTTPMethod.POST,
             "/v1/utilities/websearch",
-            json=request.model_dump(exclude_none=True)
+            json=request.model_dump()
         )
         return WebSearchResponse(**response)
 
@@ -32,6 +32,6 @@ class _Utilities:
         response = self._http_client._request(
             HTTPMethod.POST,
             "/v1/utilities/webparser",
-            json=request.model_dump(exclude_none=True)
+            json=request.model_dump()
         )
         return WebParserResponse(**response)

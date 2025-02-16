@@ -1,8 +1,8 @@
 from typing import List
-from pydantic import BaseModel, Field
+from pydantic import , Field
 
-class WebSearchRequest(BaseModel):
+class WebSearchRequest():
     search_terms: List[str] = Field(..., min_items=1)
 
-class WebParserRequest(BaseModel):
+class WebParserRequest():
     urls: List[str] = Field(..., min_items=1)

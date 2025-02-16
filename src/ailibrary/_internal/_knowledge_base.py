@@ -27,7 +27,7 @@ class _KnowledgeBase:
         response = self._http_client._request(
             HTTPMethod.POST,
             "/v1/knowledgebase",
-            json=request.model_dump(exclude_none=True)
+            json=request.model_dump()
         )
         return KnowledgeBaseResponse(**response)
 
@@ -59,7 +59,7 @@ class _KnowledgeBase:
         response = self._http_client._request(
             HTTPMethod.PUT,
             f"/v1/knowledgebase/{knowledgeId}",
-            json=request.model_dump(exclude_none=True)
+            json=request.model_dump()
         )
         return KnowledgeBaseResponse(**response)
 
@@ -95,6 +95,6 @@ class _KnowledgeBase:
         response = self._http_client._request(
             HTTPMethod.DELETE,
             f"/v1/knowledgebase/{knowledgeId}/source",
-            json=request.model_dump(exclude_none=True)
+            json=request.model_dump()
         )
         return KnowledgeBaseResponse(**response)

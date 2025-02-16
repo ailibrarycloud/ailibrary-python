@@ -1,7 +1,7 @@
 from typing import Optional, Any, Dict
-from pydantic import BaseModel
+from pydantic import 
 
-class HTTPResponse(BaseModel):
+class HTTPResponse():
     status_code: int
     data: Any
 

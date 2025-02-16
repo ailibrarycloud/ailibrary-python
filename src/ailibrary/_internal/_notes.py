@@ -51,7 +51,7 @@ class _Notes:
         response = self._http_client._request(
             HTTPMethod.POST,
             "/v1/notes",
-            json=request.model_dump(exclude_none=True)
+            json=request.model_dump()
         )
         return NoteResponse(**response)
 
@@ -87,7 +87,7 @@ class _Notes:
         response = self._http_client._request(
             HTTPMethod.PUT,
             f"/v1/notes/{note_id}",
-            json=request.model_dump(exclude_none=True)
+            json=request.model_dump()
         )
         return NoteResponse(**response)
 
@@ -108,6 +108,6 @@ class _Notes:
         response = self._http_client._request(
             HTTPMethod.DELETE,
             f"/v1/notes/{resource}/{resource_id}",
-            json=request.model_dump(exclude_none=True)
+            json=request.model_dump()
         )
         return NoteResponse(**response)

@@ -1,17 +1,17 @@
 from typing import Optional, Dict, List
-from pydantic import BaseModel, Field
+from pydantic import , Field
 from ..shared.base import MetaModel
 
 class KnowledgeBaseCreateRequest(MetaModel):
     name: str = Field(..., min_length=1)
 
-class SourceOptions(BaseModel):
+class SourceOptions():
     urls: Optional[Dict[str, str]] = None
 
 class AddSourceRequest(MetaModel):
     type: str = Field(..., pattern="^(docs|web|youtube)$")
     options: SourceOptions
     
-class DeleteSourcesRequest(BaseModel):
+class DeleteSourcesRequest():
     values: Optional[List[str]] = None
     delete_all: Optional[bool] = None

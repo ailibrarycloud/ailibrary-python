@@ -1,5 +1,5 @@
 from typing import Optional, List
-from pydantic import BaseModel, Field
+from pydantic import , Field
 from ..shared.base import MetaModel
 from ..shared.enums import ResourceType, RoleType
 
@@ -13,7 +13,7 @@ class NoteUpdateRequest(MetaModel):
     content: str = Field(..., min_length=1)
     role: RoleType
 
-class NoteDeleteRequest(BaseModel):
+class NoteDeleteRequest():
     resource: ResourceType
     resource_id: str
     values: Optional[List[str]] = None

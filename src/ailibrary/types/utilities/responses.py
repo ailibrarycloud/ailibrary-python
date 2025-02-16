@@ -1,13 +1,13 @@
 from typing import List, Dict
-from pydantic import BaseModel
+from pydantic import 
 from ..shared.responses import APIResponse
 
-class SearchResult(BaseModel):
+class SearchResult():
     title: str
     url: str
     snippet: str
 
-class ParseResult(BaseModel):
+class ParseResult():
     url: str
     content: str
     metadata: Dict
