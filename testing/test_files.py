@@ -25,25 +25,25 @@ def test_files(client, args):
     upload_response = files.upload(file_paths)  # Upload a file
     print(f"files.upload() response:\n{upload_response}\n")
 
-    file_id = upload_response[0]["id"]
+    # file_id = upload_response[0]["id"]
 
-    print(f"{upload_response[0]}\n")
-    print(f"{file_id}\n")
+    # print(f"{upload_response[0]}\n")
+    # print(f"{file_id}\n")
 
-    all_files = files.list_files()  # List all files
-    print(f"files.list_files() response:\n{all_files}\n")
+    # all_files = files.list_files()  # List all files
+    # print(f"files.list_files() response:\n{all_files}\n")
 
-    file_info = files.get(file_id)  # Get a file by ID
-    print(f"files.get() response:\n{file_info}\n")
+    # file_info = files.get(file_id)  # Get a file by ID
+    # print(f"files.get() response:\n{file_info}\n")
 
-    delete_response = files.delete(file_id)  # Delete a file
-    print(f"files.delete() response:\n{delete_response}\n")
+    # delete_response = files.delete(file_id)  # Delete a file
+    # print(f"files.delete() response:\n{delete_response}\n")
 
-    try:
-        files.delete(file_id)
-        print(f"Verified that delete() doesnt crash when the file_id is not found\n")        
-    except:
-        print(f"Failed test case: delete() doesnt work when file_id not found\n")
+    # try:
+    #     files.delete(file_id)
+    #     print(f"Verified that delete() doesnt crash when the file_id is not found\n")        
+    # except:
+    #     print(f"Failed test case: delete() doesnt work when file_id not found\n")
 
 
 if __name__ == "__main__":

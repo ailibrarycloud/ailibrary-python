@@ -37,11 +37,8 @@ def test_agent(client, args):
     print(f"agent.update() response:\n{updated_agent}\n")
 
     # #### ERROR: the response is not valid JSON
-    # chat_response = agent.chat(namespace, [{"role": "user", "content": "Hello there! Who are you?"}])  # Chat with the agent
-    # print(f"agent.chat() response:\n{chat_response}\n")
-
-    # print("Testing agent.chat():\n")
-    # test_agent_chat(client, {})
+    print("Testing agent.chat():\n")
+    test_agent_chat(agent, namespace)
 
     deleted_agent = agent.delete(namespace)  # Delete the agent
     print(f"agent.delete() response:\n{deleted_agent}\n")
@@ -54,13 +51,20 @@ def test_agent(client, args):
         print(f"Failed test case: delete() doesnt work when namespace not found\n")
 
 
-async def test_agent_chat(client, args):
-    response = await client.agent.chat(
-        "gricare_demo", [{"role": "user", "content": "Hello there! Who are you?"}])
-    async def text_iterator():
-        async for chunk in response:
-            print(chunk)
-    await text_iterator()
+def test_agent_chat(agent, namespace):
+    messages = [{"role": "user", "content": "Hello there! Who are you?"}]
+    try:
+        print("Starting chat test...")
+        full_response = ""
+        for chunk in agent.chat(namespace, messages):
+            try:
+                print(f"Raw chunk: {chunk}")
+                full_response += chunk
+            except Exception as e:
+                print(f"Error processing chunk: {str(e)}")
+        print(f"\nFull response: {full_response}")
+    except Exception as e:
+        print(f"Chat error: {str(e)}")
                   
 
 
@@ -74,5 +78,5 @@ if __name__ == "__main__":
     # run test
     print("Running test_agent:\n")
     # test_agent(client, args)
-    # test_agent_chat(client, args)
+    test_agent_chat(client.agent, "gricare_demo")
     print("Finished running test_agent\n")

@@ -10,20 +10,20 @@ class _Files:
     def __init__(self, http_client: _HTTPClient):
         self._http_client = http_client
 
-    def upload(self, files: List[str], knowledgeId: Optional[str] = None) -> List[Dict]:
+    def upload(self, file_paths: List[str], knowledgeId: Optional[str] = None) -> List[Dict]:
         """Upload files to AI Library.
         files is a list where each element contains a path to the file.
         """
-
+        files = []
         payload = {}
         if knowledgeId:
             payload['knowledgeId'] = knowledgeId
-        for file in files:
-            file_name = os.path.basename(file)
-            mime_type = mimetypes.guess_type(file)[0]
-            files = [
-                ('files', (file_name, open(file, 'rb'), mime_type))
-            ]
+        for file_path in file_paths:
+            file_name = os.path.basename(file_path)
+            mime_type = mimetypes.guess_type(file_path)[0]
+            files.append(
+                ('files', (file_name, open(file_path, 'rb'), mime_type))
+            )
 
         return self._http_client._request("POST", "/v1/files", data=payload, files=files)
 
