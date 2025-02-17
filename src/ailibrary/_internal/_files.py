@@ -14,6 +14,7 @@ class _Files:
     def __init__(self, http_client: _HTTPClient):
         self._http_client = http_client
 
+
     def upload(self, file_paths: List[str], knowledgeId: Optional[str] = None) -> FileResponse:
         """Upload files to AI Library.
         files is a list where each element contains a path to the file.
@@ -40,6 +41,7 @@ class _Files:
         )
         return FileResponse(**response)
 
+
     def list_files(self, page: Optional[int] = None, limit: Optional[int] = None) -> FileListResponse:
         """List all files."""
         pagination = PaginationParams(page=page, limit=limit)
@@ -50,6 +52,7 @@ class _Files:
         )
         return FileListResponse(**response)
 
+
     def get(self, file_id: int) -> FileResponse:
         """Retrieve a file by ID."""
         response = self._http_client._request(
@@ -58,6 +61,8 @@ class _Files:
         )
         return FileResponse(**response)
 
+
+    ### WORK IN PROGRESS, error in internal implementation ###
     def delete(self, file_id: int) -> FileResponse:
         """Delete a file."""
         response = self._http_client._request(

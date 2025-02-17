@@ -31,7 +31,7 @@ class _HTTPClient:
 
     def _request(
         self, 
-        method: HTTPMethod, 
+        method: str, 
         endpoint: str, 
         params: Optional[Dict] = None,
         data: Optional[Dict] = None,
@@ -41,6 +41,9 @@ class _HTTPClient:
         # response_no_json: bool = False
     ) -> Any:
         """Make an HTTP request to the API."""
+        if method not in HTTPMethod.__members__:
+            raise ValueError(f"Invalid HTTP method: {method}. Must be one of: {[m.value for m in HTTPMethod]}")
+
         request = HTTPRequest(
             method=method,
             endpoint=endpoint,
