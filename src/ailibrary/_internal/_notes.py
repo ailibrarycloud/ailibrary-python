@@ -10,8 +10,8 @@ from ..types.notes.responses import (
     NoteListResponse,
     NoteData
 )
-from ..types.shared.enums import HTTPMethod, ResourceType, RoleType
-
+from ..types.shared.enums import ResourceType, RoleType
+# from ..types.shared.enums import HTTPMethod
 
 class _Notes:
     """Notes resource for managing notes on resources."""
@@ -49,7 +49,7 @@ class _Notes:
             meta=meta
         )
         response = self._http_client._request(
-            HTTPMethod.POST,
+            "POST",
             "/v1/notes",
             json=request.model_dump()
         )
@@ -58,7 +58,7 @@ class _Notes:
     def get_resource_notes(self, resource: ResourceType, resource_id: str) -> NoteListResponse:
         """Get notes for a resource."""
         response = self._http_client._request(
-            HTTPMethod.GET,
+            "GET",
             f"/v1/notes/{resource}/{resource_id}"
         )
         return NoteListResponse(**response)
@@ -66,7 +66,7 @@ class _Notes:
     def get(self, note_id: str) -> NoteResponse:
         """Get a note by ID."""
         response = self._http_client._request(
-            HTTPMethod.GET,
+            "GET",
             f"/v1/notes/{note_id}"
         )
         return NoteResponse(**response)
@@ -85,7 +85,7 @@ class _Notes:
             meta=meta
         )
         response = self._http_client._request(
-            HTTPMethod.PUT,
+            "PUT",
             f"/v1/notes/{note_id}",
             json=request.model_dump()
         )
@@ -106,7 +106,7 @@ class _Notes:
             delete_all=delete_all
         )
         response = self._http_client._request(
-            HTTPMethod.DELETE,
+            "DELETE",
             f"/v1/notes/{resource}/{resource_id}",
             json=request.model_dump()
         )

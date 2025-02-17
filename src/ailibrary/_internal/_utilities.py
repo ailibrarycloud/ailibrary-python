@@ -7,7 +7,7 @@ from ..types.utilities.responses import (
     SearchResultData,
     ParsedContentData
 )
-from ..types.shared.enums import HTTPMethod
+# from ..types.shared.enums import HTTPMethod
 
 
 class _Utilities:
@@ -20,7 +20,7 @@ class _Utilities:
         """Search the web for terms."""
         request = WebSearchRequest(search_terms=search_terms)
         response = self._http_client._request(
-            HTTPMethod.POST,
+            "POST",
             "/v1/utilities/websearch",
             json=request.model_dump()
         )
@@ -30,7 +30,7 @@ class _Utilities:
         """Parse web pages for content."""
         request = WebParserRequest(urls=urls)
         response = self._http_client._request(
-            HTTPMethod.POST,
+            "POST",
             "/v1/utilities/webparser",
             json=request.model_dump()
         )

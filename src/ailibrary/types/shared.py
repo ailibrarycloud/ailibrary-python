@@ -1,6 +1,6 @@
 from enum import Enum
 from typing import Optional, Dict
-from pydantic import 
+from pydantic import BaseModel
 
 class ResourceType(str, Enum):
     AGENT = "agent"
@@ -17,5 +17,5 @@ class AgentType(str, Enum):
     CHAT = "chat"
     VOICE = "voice"
 
-class MetaModel():
+class MetaModel(BaseModel):
     meta: Optional[Dict] = None

@@ -5,7 +5,7 @@ import os
 from ..types.files.requests import FileUploadRequest
 from ..types.files.responses import FileResponse, FileListResponse, FileData
 from ..types.shared.base import PaginationParams
-from ..types.shared.enums import HTTPMethod
+# from ..types.shared.enums import HTTPMethod
 
 
 class _Files:
@@ -33,7 +33,7 @@ class _Files:
             )
 
         response = self._http_client._request(
-            HTTPMethod.POST,
+            "POST",
             "/v1/files",
             data=payload,
             files=files
@@ -44,7 +44,7 @@ class _Files:
         """List all files."""
         pagination = PaginationParams(page=page, limit=limit)
         response = self._http_client._request(
-            HTTPMethod.GET,
+            "GET",
             "/v1/files",
             params=pagination.model_dump()
         )
@@ -53,7 +53,7 @@ class _Files:
     def get(self, file_id: int) -> FileResponse:
         """Retrieve a file by ID."""
         response = self._http_client._request(
-            HTTPMethod.GET,
+            "GET",
             f"/v1/files/{file_id}"
         )
         return FileResponse(**response)
@@ -61,7 +61,7 @@ class _Files:
     def delete(self, file_id: int) -> FileResponse:
         """Delete a file."""
         response = self._http_client._request(
-            HTTPMethod.DELETE,
+            "DELETE",
             f"/v1/files/{file_id}"
         )
         return FileResponse(**response)

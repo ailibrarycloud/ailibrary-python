@@ -1,6 +1,6 @@
 from datetime import datetime
 from typing import Optional
-from pydantic import 
+from pydantic import BaseModel
 from ..shared.responses import APIResponse, ListResponse
 from ..shared.base import MetaModel
 

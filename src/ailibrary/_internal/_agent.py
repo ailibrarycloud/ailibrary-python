@@ -4,7 +4,7 @@ import requests
 from ..types.agent.requests import AgentCreateRequest, AgentUpdateRequest, ChatRequest
 from ..types.agent.responses import AgentResponse, AgentListResponse, AgentData
 from ..types.chat.responses import ChatResponse
-from ..types.shared.enums import HTTPMethod
+# from ..types.shared.enums import HTTPMethod
 
 
 class _Agent:
@@ -16,11 +16,11 @@ class _Agent:
 
     def create(self, **kwargs) -> AgentResponse:
         """Create a new agent with the specified parameters."""
-        request = AgentCreateRequest(**kwargs)
+        payload = AgentCreateRequest(**kwargs).model_dump()
         response = self._http_client._request(
-            HTTPMethod.POST,
+            "POST",
             "/v1/agent/create",
-            json=request.model_dump()
+            json=payload
         )
         return AgentResponse(**response)
 
@@ -28,7 +28,7 @@ class _Agent:
     def get(self, namespace: str) -> AgentResponse:
         """Retrieve information about an agent."""
         response = self._http_client._request(
-            HTTPMethod.GET,
+            "GET",
             f"/v1/agent/{namespace}"
         )
         return AgentResponse(**response)
@@ -36,25 +36,25 @@ class _Agent:
     def list_agents(self) -> AgentListResponse:
         """List all agents."""
         response = self._http_client._request(
-            HTTPMethod.GET,
+            "GET",
             "/v1/agent"
         )
         return AgentListResponse(**response)
 
     def update(self, namespace: str, **kwargs) -> AgentResponse:
         """Update an existing agent."""
-        request = AgentUpdateRequest(namespace=namespace, **kwargs)
+        payload = AgentUpdateRequest(namespace=namespace, **kwargs).model_dump()
         response = self._http_client._request(
-            HTTPMethod.PUT,
+            "PUT",
             f"/v1/agent/{namespace}",
-            json=request.model_dump()
+            json=payload
         )
         return AgentResponse(**response)
 
     def delete(self, namespace: str) -> AgentResponse:
         """Delete an agent."""
         response = self._http_client._request(
-            HTTPMethod.DELETE,
+            "DELETE",
             f"/v1/agent/{namespace}"
         )
         return AgentResponse(**response)
@@ -69,7 +69,7 @@ class _Agent:
             'X-Library-Key': self._http_client.headers["X-Library-Key"]
         }
 
-        with requests.request(HTTPMethod.POST.value, url, headers=headers, data=payload, stream=True) as response:
+        with requests.request("POST", url, headers=headers, data=payload, stream=True) as response:
             response.raise_for_status()
             for chunk in response.iter_content(chunk_size=8192):
                 if chunk:

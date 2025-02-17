@@ -12,7 +12,7 @@ from ..types.knowledge_base.responses import (
     KnowledgeBaseData,
     SourceData
 )
-from ..types.shared.enums import HTTPMethod
+# from ..types.shared.enums import HTTPMethod
 
 
 class _KnowledgeBase:
@@ -25,7 +25,7 @@ class _KnowledgeBase:
         """Create a new knowledge base."""
         request = KnowledgeBaseCreateRequest(name=name, meta=meta)
         response = self._http_client._request(
-            HTTPMethod.POST,
+            "POST",
             "/v1/knowledgebase",
             json=request.model_dump()
         )
@@ -33,14 +33,14 @@ class _KnowledgeBase:
 
     def list_knowledge_bases(self) -> KnowledgeBaseListResponse:
         """List all knowledge bases."""
-        response = self._http_client._request(HTTPMethod.GET, "/v1/knowledgebase")
+        response = self._http_client._request("GET", "/v1/knowledgebase")
         return KnowledgeBaseListResponse(**response)
 
     def get(self, knowledgeId: str) -> KnowledgeBaseResponse:
         """Retrieve a knowledge base by ID."""
         if not knowledgeId:
             raise ValueError("Knowledge ID cannot be empty")
-        response = self._http_client._request(HTTPMethod.GET, f"/v1/knowledgebase/{knowledgeId}")
+        response = self._http_client._request("GET", f"/v1/knowledgebase/{knowledgeId}")
         return KnowledgeBaseResponse(**response)
 
     def add_source(
@@ -57,7 +57,7 @@ class _KnowledgeBase:
             meta=meta
         )
         response = self._http_client._request(
-            HTTPMethod.PUT,
+            "PUT",
             f"/v1/knowledgebase/{knowledgeId}",
             json=request.model_dump()
         )
@@ -65,13 +65,13 @@ class _KnowledgeBase:
 
     def get_status(self, knowledgeId: str) -> KnowledgeBaseResponse:
         """Get knowledge base processing status."""
-        response = self._http_client._request(HTTPMethod.GET, f"/v1/knowledgebase/{knowledgeId}/status")
+        response = self._http_client._request("GET", f"/v1/knowledgebase/{knowledgeId}/status")
         return KnowledgeBaseResponse(**response)
 
     def get_source(self, knowledgeId: str, source_id: str) -> SourceData:
         """Retrieve source details."""
         response = self._http_client._request(
-            HTTPMethod.GET,
+            "GET",
             f"/v1/knowledgebase/{knowledgeId}/{source_id}"
         )
         return SourceData(**response)
@@ -79,7 +79,7 @@ class _KnowledgeBase:
     def list_sources(self, knowledgeId: str) -> SourceListResponse:
         """List all sources in a knowledge base."""
         response = self._http_client._request(
-            HTTPMethod.GET,
+            "GET",
             f"/v1/knowledgebase/{knowledgeId}/sources"
         )
         return SourceListResponse(**response)
@@ -93,7 +93,7 @@ class _KnowledgeBase:
         """Delete sources from a knowledge base."""
         request = DeleteSourcesRequest(values=values, delete_all=delete_all)
         response = self._http_client._request(
-            HTTPMethod.DELETE,
+            "DELETE",
             f"/v1/knowledgebase/{knowledgeId}/source",
             json=request.model_dump()
         )
