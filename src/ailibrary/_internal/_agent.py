@@ -1,10 +1,10 @@
 from typing import Dict, List, Optional, Generator
 from .__http_client import _HTTPClient
 import requests
-from ..types.agent.requests import AgentCreateRequest, AgentUpdateRequest, ChatRequest
+from ..types.agent.requests import AgentCreateRequest, AgentUpdateRequest
+# from ..types.agent.requests import ChatRequest
 from ..types.agent.responses import AgentResponse, AgentListResponse, AgentData
-from ..types.chat.responses import ChatResponse
-# from ..types.shared.enums import HTTPMethod
+# from ..types.chat.responses import ChatResponse
 
 
 class _Agent:
@@ -14,9 +14,9 @@ class _Agent:
         self._http_client = http_client
 
 
-    def create(self, **kwargs) -> AgentResponse:
+    def create(self, title: str, **kwargs) -> AgentResponse:
         """Create a new agent with the specified parameters."""
-        payload = AgentCreateRequest(**kwargs).model_dump()
+        payload = AgentCreateRequest(title=title, **kwargs).model_dump()
         response = self._http_client._request("POST", "/v1/agent/create", json=payload)
         return AgentResponse(**response)
 
@@ -46,20 +46,20 @@ class _Agent:
         return AgentResponse(**response)
 
 
-    ### WORK IN PROGRESS ###
-    def chat(self, namespace: str, messages: List[Dict], stream: bool = False) -> Generator[str, None, None]:
-        """Chat with an agent."""
-        request = ChatRequest(messages=messages)
-        url = f"{self._http_client.base_url}/v1/agent/{namespace}/chat"
-        payload = request.model_dump_json()
-        headers = {
-            'Content-Type': 'application/json',
-            'X-Library-Key': self._http_client.headers["X-Library-Key"]
-        }
+    # ### WORK IN PROGRESS ###
+    # def chat(self, namespace: str, messages: List[Dict], stream: bool = False) -> Generator[str, None, None]:
+    #     """Chat with an agent."""
+    #     request = ChatRequest(messages=messages)
+    #     url = f"{self._http_client.base_url}/v1/agent/{namespace}/chat"
+    #     payload = request.model_dump_json()
+    #     headers = {
+    #         'Content-Type': 'application/json',
+    #         'X-Library-Key': self._http_client.headers["X-Library-Key"]
+    #     }
 
-        with requests.request("POST", url, headers=headers, data=payload, stream=True) as response:
-            response.raise_for_status()
-            for chunk in response.iter_content(chunk_size=8192):
-                if chunk:
-                    yield chunk.decode('utf-8')
+    #     with requests.request("POST", url, headers=headers, data=payload, stream=True) as response:
+    #         response.raise_for_status()
+    #         for chunk in response.iter_content(chunk_size=8192):
+    #             if chunk:
+    #                 yield chunk.decode('utf-8')
         

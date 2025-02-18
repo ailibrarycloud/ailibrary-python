@@ -5,7 +5,6 @@ import os
 from ..types.files.requests import FileUploadRequest
 from ..types.files.responses import FileResponse, FileListResponse, FileData
 from ..types.shared.base import PaginationParams
-# from ..types.shared.enums import HTTPMethod
 
 
 class _Files:

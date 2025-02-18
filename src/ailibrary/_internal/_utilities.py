@@ -4,11 +4,8 @@ from ..types.utilities.requests import WebSearchRequest, WebParserRequest
 from ..types.utilities.responses import (
     WebSearchResponse,
     WebParserResponse,
-    SearchResultData,
-    ParsedContentData
 )
-# from ..types.shared.enums import HTTPMethod
-
+# from ..types.utilities.responses import SearchResultData, ParsedContentData
 
 class _Utilities:
     """Utility functions to support AI agents."""

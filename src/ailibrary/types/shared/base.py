@@ -14,6 +14,7 @@ class CustomBaseModel(BaseModel):
         kwargs['exclude_none'] = True
         return super().model_dump(*args, **kwargs)
 
+
 class MetaModel(CustomBaseModel):
     meta: Optional[Dict] = None
 

@@ -41,10 +41,9 @@ class _HTTPClient:
         # response_no_json: bool = False
     ) -> Any:
         """Make an HTTP request to the API."""
-        if method not in HTTPMethod.__members__:
-            raise ValueError(f"Invalid HTTP method: {method}. Must be one of: {[m.value for m in HTTPMethod]}")
 
-        request = HTTPRequest(
+        # verify the the fields are valid
+        valid_params = HTTPRequest(
             method=method,
             endpoint=endpoint,
             params=params,
@@ -54,17 +53,17 @@ class _HTTPClient:
             stream=stream
         )
 
-        url = f"{self.base_url}{request.endpoint}"
+        url = f"{self.base_url}{valid_params.endpoint}"
         try:
             response = requests.request(
-                method=request.method.value,
+                method=valid_params.method,
                 url=url,
                 headers=self.headers,
-                params=request.params,
-                data=request.data,
-                json=request.json,
-                files=request.files,
-                stream=request.stream
+                params=valid_params.params,
+                data=valid_params.data,
+                json=valid_params.json,
+                files=valid_params.files,
+                stream=valid_params.stream
             )
             # print(response.json())
 

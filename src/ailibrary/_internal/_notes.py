@@ -11,7 +11,6 @@ from ..types.notes.responses import (
     NoteData
 )
 from ..types.shared.enums import ResourceType, RoleType
-# from ..types.shared.enums import HTTPMethod
 
 class _Notes:
     """Notes resource for managing notes on resources."""

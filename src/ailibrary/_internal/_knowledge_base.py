@@ -12,7 +12,6 @@ from ..types.knowledge_base.responses import (
     KnowledgeBaseData,
     SourceData
 )
-# from ..types.shared.enums import HTTPMethod
 
 
 class _KnowledgeBase:
@@ -53,60 +52,60 @@ class _KnowledgeBase:
         return KnowledgeBaseResponse(**response)
 
 
-    ### WORK IN PROGRESS, error in internal implementation ###
-    def add_source(
-        self,
-        knowledgeId: str,
-        type: str,
-        meta: Optional[Dict] = None,
-        urls: Optional[Dict] = None
-    ) -> KnowledgeBaseResponse:
-        """Add sources to a knowledge base."""
-        request = AddSourceRequest(
-            type=type,
-            urls=urls,
-            meta=meta
-        )
-        response = self._http_client._request(
-            "PUT",
-            f"/v1/knowledgebase/{knowledgeId}",
-            json=request.model_dump()
-        )
-        return KnowledgeBaseResponse(**response)
+    # ### WORK IN PROGRESS, error in internal implementation ###
+    # def add_source(
+    #     self,
+    #     knowledgeId: str,
+    #     type: str,
+    #     meta: Optional[Dict] = None,
+    #     urls: Optional[Dict] = None
+    # ) -> KnowledgeBaseResponse:
+    #     """Add sources to a knowledge base."""
+    #     request = AddSourceRequest(
+    #         type=type,
+    #         urls=urls,
+    #         meta=meta
+    #     )
+    #     response = self._http_client._request(
+    #         "PUT",
+    #         f"/v1/knowledgebase/{knowledgeId}",
+    #         json=request.model_dump()
+    #     )
+    #     return KnowledgeBaseResponse(**response)
 
 
-    ### WORK IN PROGRESS, error in internal implementation ###
-    def get_source(self, knowledgeId: str, source_id: str) -> SourceData:
-        """Retrieve source details."""
-        response = self._http_client._request(
-            "GET",
-            f"/v1/knowledgebase/{knowledgeId}/{source_id}"
-        )
-        return SourceData(**response)
+    # ### WORK IN PROGRESS, error in internal implementation ###
+    # def get_source(self, knowledgeId: str, source_id: str) -> SourceData:
+    #     """Retrieve source details."""
+    #     response = self._http_client._request(
+    #         "GET",
+    #         f"/v1/knowledgebase/{knowledgeId}/{source_id}"
+    #     )
+    #     return SourceData(**response)
 
 
-    ### WORK IN PROGRESS, error in internal implementation ###
-    def list_sources(self, knowledgeId: str) -> SourceListResponse:
-        """List all sources in a knowledge base."""
-        response = self._http_client._request(
-            "GET",
-            f"/v1/knowledgebase/{knowledgeId}/sources"
-        )
-        return SourceListResponse(**response)
+    # ### WORK IN PROGRESS, error in internal implementation ###
+    # def list_sources(self, knowledgeId: str) -> SourceListResponse:
+    #     """List all sources in a knowledge base."""
+    #     response = self._http_client._request(
+    #         "GET",
+    #         f"/v1/knowledgebase/{knowledgeId}/sources"
+    #     )
+    #     return SourceListResponse(**response)
 
 
-    ### WORK IN PROGRESS, error in internal implementation ###
-    def delete_sources(
-        self,
-        knowledgeId: str,
-        values: List[str],
-        delete_all: Optional[bool] = False
-    ) -> KnowledgeBaseResponse:
-        """Delete sources from a knowledge base."""
-        request = DeleteSourcesRequest(values=values, delete_all=delete_all)
-        response = self._http_client._request(
-            "DELETE",
-            f"/v1/knowledgebase/{knowledgeId}/source",
-            json=request.model_dump()
-        )
-        return KnowledgeBaseResponse(**response)
+    # ### WORK IN PROGRESS, error in internal implementation ###
+    # def delete_sources(
+    #     self,
+    #     knowledgeId: str,
+    #     values: List[str],
+    #     delete_all: Optional[bool] = False
+    # ) -> KnowledgeBaseResponse:
+    #     """Delete sources from a knowledge base."""
+    #     request = DeleteSourcesRequest(values=values, delete_all=delete_all)
+    #     response = self._http_client._request(
+    #         "DELETE",
+    #         f"/v1/knowledgebase/{knowledgeId}/source",
+    #         json=request.model_dump()
+    #     )
+    #     return KnowledgeBaseResponse(**response)
