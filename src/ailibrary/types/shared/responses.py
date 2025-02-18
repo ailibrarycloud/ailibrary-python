@@ -6,12 +6,17 @@ from .base import CustomBaseModel
 T = TypeVar('T')
 
 class APIResponse(CustomBaseModel, Generic[T]):
-    # status_code: int
-    # message: Optional[str] = None
-    # data: Optional[T] = None
+    data: T
+    
+    def __init__(self, **data):
+        # Move all data into a nested 'data' structure if it's not already there
+        if 'data' not in data:
+            data = {'data': data}
+        super().__init__(**data)
+    
     def __getitem__(self, key):
         try:
-            return getattr(self, key)
+            return getattr(self.data, key)
         except AttributeError:
             raise KeyError(key)
 

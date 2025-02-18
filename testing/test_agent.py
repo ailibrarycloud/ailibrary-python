@@ -23,20 +23,18 @@ def test_agent(client, args):
     update_title = args.get("update_title", "Updated_Agent")
 
     agent_data = agent.create(title, instructions="This is a test agent.")  # test create()
-    print(agent_data)
-    print(type(agent_data))
-    # print(f"agent.create() response:\n{agent_data}\n")
+    print(f"agent.create() response:\n{agent_data}\n")
 
-    # namespace = agent_data["namespace"]
+    namespace = agent_data["namespace"]
+    agent_info = agent.get(namespace)  # Get information about the agent
+    print(f"agent.get() response:\n{agent_info}\n")
 
-    # agent_info = agent.get(namespace)  # Get information about the agent
-    # print(f"agent.get() response:\n{agent_info}\n")
+    agents = agent.list_agents()  # List all agents
+    print(f"agent.list_agents() response:\n{agents}\n")
 
-    # agents = agent.list_agents()  # List all agents
-    # print(f"agent.list_agents() response:\n{agents}\n")
-
-    # updated_agent = agent.update(namespace, update_title)  # Update the agent
-    # print(f"agent.update() response:\n{updated_agent}\n")
+    updated_agent = agent.update(namespace, update_title)  # Update the agent
+    print(f"agent.update() response:\n{updated_agent}\n")
+    print(f"agent.update() response with invalid agent name:\n{agent.update('invalid_agent_name', update_title)}\n")
 
     # # # #### ERROR: the response is not valid JSON
     # # print("Testing agent.chat():\n")

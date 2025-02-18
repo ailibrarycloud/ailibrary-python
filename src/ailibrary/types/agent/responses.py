@@ -1,18 +1,23 @@
 from typing import Optional, List
 from ..shared.responses import APIResponse, ListResponse
 from .requests import AgentCreateRequest
-from datetime import datetime
+from ..shared.base import CustomBaseModel
 
 
-class AgentData(AgentCreateRequest):
+class AgentCreateResponse(AgentCreateRequest):
     namespace: str
-    created_timestamp: datetime
+
+class AgentGetResponse(AgentCreateResponse):
+    created_timestamp: Optional[str] = None 
     status: Optional[str] = None
+    showcase: Optional[str] = None
 
+class AgentListResponse(CustomBaseModel):
+    agents: List[AgentGetResponse]
+    meta: dict
 
-class AgentResponse(APIResponse[AgentData]):
-    pass
+class AgentUpdateResponse(CustomBaseModel):
+    response: str
 
-
-class AgentListResponse(ListResponse[AgentData]):
+class AgentDeleteResponse(CustomBaseModel):
     pass
