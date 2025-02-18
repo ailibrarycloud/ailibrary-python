@@ -31,6 +31,8 @@ class _Agent:
 
     def get(self, namespace: str) -> dict:
         """Retrieve information about an agent."""
+        if not isinstance(namespace, str) or not namespace:
+            raise ValueError("Namespace must be a non-empty string")
         response = self._http_client._request("GET", f"/v1/agent/{namespace}")
         return self._validate_response(response, AgentGetResponse)
 

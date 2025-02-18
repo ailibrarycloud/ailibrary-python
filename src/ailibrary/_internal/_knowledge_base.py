@@ -2,16 +2,18 @@ from typing import List, Optional, Dict
 from .__http_client import _HTTPClient
 from ..types.knowledge_base.requests import (
     KnowledgeBaseCreateRequest,
-    AddSourceRequest,
-    DeleteSourcesRequest
+    # AddSourceRequest,
+    # DeleteSourcesRequest
 )
 from ..types.knowledge_base.responses import (
-    KnowledgeBaseResponse,
     KnowledgeBaseListResponse,
-    SourceListResponse,
-    KnowledgeBaseData,
-    SourceData
+    KnowledgeBaseGetResponse,
+    KnowledgeBaseCreateResponse,
+    # SourceListResponse,
+    # KnowledgeBaseData,
+    # SourceData
 )
+from pydantic import ValidationError
 
 
 class _KnowledgeBase:
@@ -20,37 +22,51 @@ class _KnowledgeBase:
     def __init__(self, http_client: _HTTPClient):
         self._http_client = http_client
 
+    def _validate_non_empty_string(self, value: str, param_name: str) -> None:
+        if not isinstance(value, str) or not value:
+            raise ValueError(f"{param_name} must be a non-empty string")
 
-    def create(self, name: str, meta: Optional[Dict] = None) -> KnowledgeBaseResponse:
+    def _validate_response(self, response: dict, validation_class) -> dict:
+        try:
+            validation_class(**response)
+            return response
+        except ValidationError as e:
+            raise e
+
+
+    def create(self, name: str, meta: Optional[Dict] = None) -> dict:
         """Create a new knowledge base."""
-        request = KnowledgeBaseCreateRequest(name=name, meta=meta)
+        payload = KnowledgeBaseCreateRequest(name=name, meta=meta).model_dump()
         response = self._http_client._request(
             "POST",
             "/v1/knowledgebase",
-            json=request.model_dump()
+            json=payload
         )
-        return KnowledgeBaseResponse(**response)
+        # print(response)
+        return self._validate_response(response, KnowledgeBaseCreateResponse)
 
 
-    def list_knowledge_bases(self) -> KnowledgeBaseListResponse:
+    def list_knowledge_bases(self) -> dict:
         """List all knowledge bases."""
         response = self._http_client._request("GET", "/v1/knowledgebase")
-        return KnowledgeBaseListResponse(**response)
+        print(response["knowledgebases"][0])
+        return self._validate_response(response, KnowledgeBaseListResponse)
 
 
-    def get(self, knowledgeId: str) -> KnowledgeBaseResponse:
+    def get(self, knowledgeId: str) -> dict:
         """Retrieve a knowledge base by ID."""
-        if not knowledgeId:
-            raise ValueError("Knowledge ID cannot be empty")
+        self._validate_non_empty_string(knowledgeId, "knowledgeId")
         response = self._http_client._request("GET", f"/v1/knowledgebase/{knowledgeId}")
-        return KnowledgeBaseResponse(**response)
+        return self._validate_response(response, KnowledgeBaseGetResponse)
 
 
-    def get_status(self, knowledgeId: str) -> KnowledgeBaseResponse:
+    def get_status(self, knowledgeId: str) -> str:
         """Get knowledge base processing status."""
+        self._validate_non_empty_string(knowledgeId, "knowledgeId")
         response = self._http_client._request("GET", f"/v1/knowledgebase/{knowledgeId}/status")
-        return KnowledgeBaseResponse(**response)
-
+        if not isinstance(response, str):
+            raise ValueError("knOWledge_base.get_status() response is not a string")
+        return response
 
     # ### WORK IN PROGRESS, error in internal implementation ###
     # def add_source(
@@ -59,7 +75,7 @@ class _KnowledgeBase:
     #     type: str,
     #     meta: Optional[Dict] = None,
     #     urls: Optional[Dict] = None
-    # ) -> KnowledgeBaseResponse:
+    # ) -> dict:
     #     """Add sources to a knowledge base."""
     #     request = AddSourceRequest(
     #         type=type,
@@ -71,28 +87,25 @@ class _KnowledgeBase:
     #         f"/v1/knowledgebase/{knowledgeId}",
     #         json=request.model_dump()
     #     )
-    #     return KnowledgeBaseResponse(**response)
-
+    #     return self._validate_response(response, KnowledgeBaseResponse)
 
     # ### WORK IN PROGRESS, error in internal implementation ###
-    # def get_source(self, knowledgeId: str, source_id: str) -> SourceData:
+    # def get_source(self, knowledgeId: str, source_id: str) -> dict:
     #     """Retrieve source details."""
     #     response = self._http_client._request(
     #         "GET",
     #         f"/v1/knowledgebase/{knowledgeId}/{source_id}"
     #     )
-    #     return SourceData(**response)
-
+    #     return self._validate_response(response, SourceData)
 
     # ### WORK IN PROGRESS, error in internal implementation ###
-    # def list_sources(self, knowledgeId: str) -> SourceListResponse:
+    # def list_sources(self, knowledgeId: str) -> dict:
     #     """List all sources in a knowledge base."""
     #     response = self._http_client._request(
     #         "GET",
     #         f"/v1/knowledgebase/{knowledgeId}/sources"
     #     )
-    #     return SourceListResponse(**response)
-
+    #     return self._validate_response(response, SourceListResponse)
 
     # ### WORK IN PROGRESS, error in internal implementation ###
     # def delete_sources(
@@ -100,7 +113,7 @@ class _KnowledgeBase:
     #     knowledgeId: str,
     #     values: List[str],
     #     delete_all: Optional[bool] = False
-    # ) -> KnowledgeBaseResponse:
+    # ) -> dict:
     #     """Delete sources from a knowledge base."""
     #     request = DeleteSourcesRequest(values=values, delete_all=delete_all)
     #     response = self._http_client._request(
@@ -108,4 +121,4 @@ class _KnowledgeBase:
     #         f"/v1/knowledgebase/{knowledgeId}/source",
     #         json=request.model_dump()
     #     )
-    #     return KnowledgeBaseResponse(**response)
+    #     return self._validate_response(response, KnowledgeBaseResponse)

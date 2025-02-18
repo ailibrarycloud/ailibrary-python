@@ -1,31 +1,55 @@
 from datetime import datetime
 from typing import Optional, List, Dict
-from pydantic import BaseModel
 from ..shared.responses import APIResponse, ListResponse
-from ..shared.base import MetaModel
+from .requests import KnowledgeBaseCreateRequest
+from ..shared.base import CustomBaseModel
 
-class KnowledgeBaseData(MetaModel):
-    id: str
-    name: str
-    created_timestamp: datetime
+
+class KnowledgeBaseCreateResponse(CustomBaseModel):
+    knowledgeId: str
     status: str
-    source_count: Optional[int] = None
+    meta: Optional[Dict] = None
 
-class SourceData(MetaModel):
-    id: str
-    type: str
-    status: str
-    created_timestamp: datetime
-    options: Optional[Dict] = None
 
-class KnowledgeBaseResponse(APIResponse[KnowledgeBaseData]):
-    pass
+class KnowledgeBaseGetResponse(KnowledgeBaseCreateResponse):
+    title: str
+    sources: int
+    generations: int
+    addhistory: int
+    visibility: str
+    default_prompts: Optional[str] = None
+    default_model: Optional[str] = None
+    default_urls: Optional[Dict] = None
+    userName: str
+    userEmail: str
+    special_event: Optional[str] = None
+    star: Optional[str] = None
+    meta: Optional[Dict] = None
 
-class KnowledgeBaseListResponse(ListResponse[KnowledgeBaseData]):
-    pass
 
-class SourceResponse(APIResponse[SourceData]):
-    pass
+class KnowledgeBaseListData(KnowledgeBaseCreateResponse):
+    created_timestamp: str
+    updated_timestamp: str
+    title: str
+    userName: str
 
-class SourceListResponse(ListResponse[SourceData]):
-    pass
+
+class KnowledgeBaseListResponse(CustomBaseModel):
+    knowledgebases: List[KnowledgeBaseListData]
+    meta: dict
+
+
+
+# class SourceData(CustomBaseModel):
+#     id: str
+#     type: str
+#     status: str
+#     created_timestamp: datetime
+#     options: Optional[Dict] = None
+#     meta: Optional[Dict] = None
+
+# class SourceResponse(APIResponse[SourceData]):
+#     pass
+
+# class SourceListResponse(ListResponse[SourceData]):
+#     pass

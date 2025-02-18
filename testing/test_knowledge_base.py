@@ -27,13 +27,13 @@ def test_knowledge_base(client, args):
     kb_info = knowledge_base.get(knowledgeId)  # Get a knowledge base by ID
     print(f"knowledge_base.get() response:\n{kb_info}\n")
     
+    kb_status = knowledge_base.get_status(knowledgeId)  # Get the status of the knowledge base
+    print(f"knowledge_base.get_status() response:\n{kb_status}\n")
+    
     # # The response is weird
     # data_url = "https://example-files.online-convert.com/document/txt/example.txt"
     # source_data = knowledge_base.add_source(knowledgeId, urls=[data_url], type="docs")  # Add a source to the knowledge base
     # print(f"knowledge_base.add_source() response:\n{source_data}\n")
-
-    kb_status = knowledge_base.get_status(knowledgeId)  # Get the status of the knowledge base
-    print(f"knowledge_base.get_status() response:\n{kb_status}\n")
 
     # # need to figure this out
     # source_info = knowledge_base.get_source(knowledgeId, ????)  # Get a source by ???
