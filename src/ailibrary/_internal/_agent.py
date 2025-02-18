@@ -1,7 +1,6 @@
 from typing import Dict, List, Optional, Generator
 from .__http_client import _HTTPClient
-import requests
-from ..types.agent.requests import AgentCreateRequest, AgentUpdateRequest
+from ..types.agent.requests import AgentCreateRequest, AgentUpdateRequest, AgentDeleteRequest
 # from ..types.agent.requests import ChatRequest
 from ..types.agent.responses import AgentCreateResponse, AgentGetResponse, AgentListResponse, AgentUpdateResponse, AgentDeleteResponse
 # from ..types.chat.responses import ChatResponse
@@ -39,11 +38,6 @@ class _Agent:
     def list_agents(self) -> dict:
         """List all agents."""
         response = self._http_client._request("GET", "/v1/agent")
-        # agent_obj = response["agents"][0]
-        # for item in agent_obj:
-        #     print(f"{item}\n")
-        #     print(f"{response[item]}\n")
-        # return response
         return self._validate_response(response, AgentListResponse)
 
 
@@ -51,17 +45,15 @@ class _Agent:
         """Update an existing agent."""
         payload = AgentUpdateRequest(namespace=namespace, **kwargs).model_dump()
         response = self._http_client._request("PUT", f"/v1/agent/{namespace}", json=payload)
-        print(response)
-        print(type(response))
         return self._validate_response(response, AgentUpdateResponse)
 
 
-    def delete(self, namespace: str) -> dict:
+    def delete(self, namespace: str, delete_connected_resources: bool) -> dict:
         """Delete an agent."""
-        response = self._http_client._request("DELETE", f"/v1/agent/{namespace}")
-        print(response)
-        print(type(response))
+        payload = AgentDeleteRequest(namespace=namespace, delete_connected_resources=delete_connected_resources).model_dump()
+        response = self._http_client._request("DELETE", f"/v1/agent/{namespace}", json=payload)
         return self._validate_response(response, AgentDeleteResponse)
+
 
     # ### WORK IN PROGRESS ###
     # def chat(self, namespace: str, messages: List[Dict], stream: bool = False) -> Generator[str, None, None]:

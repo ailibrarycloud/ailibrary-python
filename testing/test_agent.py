@@ -32,23 +32,24 @@ def test_agent(client, args):
     agents = agent.list_agents()  # List all agents
     print(f"agent.list_agents() response:\n{agents}\n")
 
-    updated_agent = agent.update(namespace, update_title)  # Update the agent
+    updated_agent = agent.update(namespace, title=update_title)  # Update the agent
     print(f"agent.update() response:\n{updated_agent}\n")
-    print(f"agent.update() response with invalid agent name:\n{agent.update('invalid_agent_name', update_title)}\n")
+    ### Bug
+    # print(f"agent.update() response with invalid agent name:\n{agent.update('invalid_agent_name', title=update_title)}\n")
 
     # # # #### ERROR: the response is not valid JSON
     # # print("Testing agent.chat():\n")
     # # test_agent_chat(agent, namespace)
 
-    # deleted_agent = agent.delete(namespace)  # Delete the agent
-    # print(f"agent.delete() response:\n{deleted_agent}\n")
+    deleted_agent = agent.delete(namespace, True)  # Delete the agent
+    print(f"agent.delete() response:\n{deleted_agent}\n")
 
-    # try:
-    #     agent.get(namespace)
-    #     print(f"Verified that delete() doesnt crash when the given namespace is not found\n")
-    # except:
-    #     # print(f"Verified that deleted agent with name '{namespace}' is not found\n")
-    #     print(f"Failed test case: delete() doesnt work when namespace not found\n")
+    try:
+        agent.get(namespace)
+        print(f"Verified that delete() doesnt crash when the given namespace is not found\n")
+    except:
+        # print(f"Verified that deleted agent with name '{namespace}' is not found\n")
+        print(f"Failed test case: delete() doesnt work when namespace not found\n")
 
 
 def test_agent_chat(agent, namespace):

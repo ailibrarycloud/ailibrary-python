@@ -20,4 +20,5 @@ class AgentUpdateResponse(CustomBaseModel):
     response: str
 
 class AgentDeleteResponse(CustomBaseModel):
-    pass
+    statusCode: int
+    message: str
