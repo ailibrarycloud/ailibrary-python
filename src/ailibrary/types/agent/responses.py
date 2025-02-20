@@ -1,4 +1,4 @@
-from typing import Optional, List
+from typing import Optional
 from ..shared.responses import APIResponse, ListResponse
 from .requests import AgentCreateRequest
 from ..shared.base import CustomBaseModel
@@ -13,7 +13,7 @@ class AgentGetResponse(AgentCreateResponse):
     showcase: Optional[str] = None
 
 class AgentListResponse(CustomBaseModel):
-    agents: List[AgentGetResponse]
+    agents: list[AgentGetResponse]
     meta: dict
 
 class AgentUpdateResponse(CustomBaseModel):

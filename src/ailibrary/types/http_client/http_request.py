@@ -1,17 +1,18 @@
-from typing import Optional, Dict, List, Tuple, BinaryIO, Any
+from typing import Optional, Tuple, BinaryIO, Any
 from pydantic import Field, field_validator, ConfigDict
 from ..shared.base import CustomBaseModel
 from ..shared.enums import HTTPMethod
+
 
 class HTTPRequest(CustomBaseModel):
     model_config = ConfigDict(arbitrary_types_allowed=True)
 
     method: str  # Change to str for initial validation
     endpoint: str
-    params: Optional[Dict] = None
-    data: Optional[Dict] = None
-    json_payload: Optional[Dict] = Field(default=None, alias="json")
-    files: Optional[List[Tuple[str, Tuple[str, BinaryIO, str]]]] = None
+    params: Optional[dict] = None
+    data: Optional[dict] = None
+    json_payload: Optional[dict] = Field(default=None, alias="json")
+    files: Optional[list[Tuple[str, Tuple[str, BinaryIO, str]]]] = None
     stream: bool = False
 
     @field_validator('method')
@@ -21,11 +22,11 @@ class HTTPRequest(CustomBaseModel):
         return HTTPMethod[value]  # Convert to HTTPMethod enum member
 
     @property
-    def json(self) -> Optional[Dict]:
+    def json(self) -> Optional[dict]:
         return self.json_payload
 
     @json.setter
-    def json(self, value: Optional[Dict]) -> None:
+    def json(self, value: Optional[dict]) -> None:
         self.json_payload = value
 
     def model_dump_json(self, *args: Any, **kwargs: Any) -> str:

@@ -1,4 +1,4 @@
-from typing import Optional, Dict, Generic, TypeVar
+from typing import Optional, Generic, TypeVar
 from pydantic import BaseModel
 
 T = TypeVar('T')
@@ -16,7 +16,7 @@ class CustomBaseModel(BaseModel):
 
 
 class MetaModel(CustomBaseModel):
-    meta: Optional[Dict] = None
+    meta: Optional[dict] = None
 
 class PaginationParams(CustomBaseModel):
     page: Optional[int] = None

@@ -1,4 +1,3 @@
-from typing import List, Dict
 from pydantic import BaseModel
 from ..shared.responses import APIResponse
 
@@ -10,10 +9,10 @@ class SearchResult(BaseModel):
 class ParseResult(BaseModel):
     url: str
     content: str
-    metadata: Dict
+    metadata: dict
 
-class WebSearchResponse(APIResponse[List[SearchResult]]):
+class WebSearchResponse(APIResponse[list[SearchResult]]):
     pass
 
-class WebParserResponse(APIResponse[List[ParseResult]]):
+class WebParserResponse(APIResponse[list[ParseResult]]):
     pass

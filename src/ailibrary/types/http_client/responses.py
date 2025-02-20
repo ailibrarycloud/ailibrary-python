@@ -1,4 +1,4 @@
-from typing import Optional, Any, Dict
+from typing import Optional, Any
 from pydantic import BaseModel
 
 class HTTPResponse(BaseModel):
@@ -10,7 +10,7 @@ class ErrorResponse(Exception):
         self,
         status_code: int,
         message: str,
-        error: Optional[Dict] = None
+        error: Optional[dict] = None
     ):
         self.status_code = status_code
         self.message = message

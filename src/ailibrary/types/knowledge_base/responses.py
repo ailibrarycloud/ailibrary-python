@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import Optional, List, Dict
+from typing import Optional
 from ..shared.responses import APIResponse, ListResponse
 from .requests import KnowledgeBaseCreateRequest
 from ..shared.base import CustomBaseModel
@@ -8,7 +8,7 @@ from ..shared.base import CustomBaseModel
 class KnowledgeBaseCreateResponse(CustomBaseModel):
     knowledgeId: str
     status: str
-    meta: Optional[Dict] = None
+    meta: Optional[dict] = None
 
 
 class KnowledgeBaseGetResponse(KnowledgeBaseCreateResponse):
@@ -19,12 +19,12 @@ class KnowledgeBaseGetResponse(KnowledgeBaseCreateResponse):
     visibility: str
     default_prompts: Optional[str] = None
     default_model: Optional[str] = None
-    default_urls: Optional[Dict] = None
+    default_urls: Optional[dict] = None
     userName: str
     userEmail: str
     special_event: Optional[str] = None
     star: Optional[str] = None
-    meta: Optional[Dict] = None
+    meta: Optional[dict] = None
 
 
 class KnowledgeBaseListData(KnowledgeBaseCreateResponse):
@@ -35,7 +35,7 @@ class KnowledgeBaseListData(KnowledgeBaseCreateResponse):
 
 
 class KnowledgeBaseListResponse(CustomBaseModel):
-    knowledgebases: List[KnowledgeBaseListData]
+    knowledgebases: list[KnowledgeBaseListData]
     meta: dict
 
 
@@ -45,8 +45,8 @@ class KnowledgeBaseListResponse(CustomBaseModel):
 #     type: str
 #     status: str
 #     created_timestamp: datetime
-#     options: Optional[Dict] = None
-#     meta: Optional[Dict] = None
+#     options: Optional[dict] = None
+#     meta: Optional[dict] = None
 
 # class SourceResponse(APIResponse[SourceData]):
 #     pass

@@ -1,4 +1,4 @@
-from typing import Dict, List, Optional, Generator
+from typing import Optional, Generator
 from .__http_client import _HTTPClient
 from ..types.agent.requests import AgentCreateRequest, AgentUpdateRequest, AgentDeleteRequest
 # from ..types.agent.requests import ChatRequest
@@ -58,7 +58,7 @@ class _Agent:
 
 
     # ### WORK IN PROGRESS ###
-    # def chat(self, namespace: str, messages: List[Dict], stream: bool = False) -> Generator[str, None, None]:
+    # def chat(self, namespace: str, messages: list[dict], stream: bool = False) -> Generator[str, None, None]:
     #     """Chat with an agent."""
     #     request = ChatRequest(messages=messages)
     #     url = f"{self._http_client.base_url}/v1/agent/{namespace}/chat"

@@ -1,6 +1,6 @@
 import requests
-from typing import Dict, List, Tuple, Optional, Any, BinaryIO
-from ..types.http_client.requests import HTTPRequest
+from typing import Tuple, Optional, Any, BinaryIO
+from ..types.http_client.http_request import HTTPRequest
 from ..types.http_client.responses import HTTPResponse, ErrorResponse
 from ..types.shared.enums import HTTPMethod
 
@@ -21,7 +21,7 @@ class _HTTPClient:
     
 
     @staticmethod
-    def _stringify(list_of_strings: List[str]) -> str:
+    def _stringify(list_of_strings: list[str]) -> str:
         """ 
         input example: ["A", "list", "of", "words"]
         return value example: "'A', 'list', 'of', 'words'"
@@ -33,10 +33,10 @@ class _HTTPClient:
         self, 
         method: str, 
         endpoint: str, 
-        params: Optional[Dict] = None,
-        data: Optional[Dict] = None,
-        json: Optional[Dict] = None,
-        files: Optional[List[Tuple[str, Tuple[str, BinaryIO, str]]]] = None,
+        params: Optional[dict] = None,
+        data: Optional[dict] = None,
+        json: Optional[dict] = None,
+        files: Optional[list[Tuple[str, Tuple[str, BinaryIO, str]]]] = None,
         stream: bool = False,
         # response_no_json: bool = False
     ) -> Any:

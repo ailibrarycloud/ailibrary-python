@@ -1,4 +1,4 @@
-from typing import Optional, List
+from typing import Optional
 from pydantic import Field
 from ..shared.base import CustomBaseModel
 from ..shared.enums import AgentType

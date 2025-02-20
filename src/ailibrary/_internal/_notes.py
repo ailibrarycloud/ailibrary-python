@@ -1,4 +1,4 @@
-from typing import List, Optional, Dict
+from typing import Optional
 from .__http_client import _HTTPClient
 from ..types.notes.requests import (
     NoteCreateRequest,
@@ -24,7 +24,7 @@ class _Notes:
         role: RoleType,
         resource: ResourceType,
         resource_id: str,
-        meta: Optional[Dict] = None
+        meta: Optional[dict] = None
     ) -> NoteResponse:
         """Add a note to a resource.
             Args:
@@ -75,7 +75,7 @@ class _Notes:
         note_id: str,
         content: str,
         role: RoleType,
-        meta: Optional[Dict] = None
+        meta: Optional[dict] = None
     ) -> NoteResponse:
         """Update a note."""
         request = NoteUpdateRequest(
@@ -94,7 +94,7 @@ class _Notes:
         self,
         resource: ResourceType,
         resource_id: str,
-        values: Optional[List[str]] = None,
+        values: Optional[list[str]] = None,
         delete_all: Optional[bool] = None
     ) -> NoteResponse:
         """Delete notes for a resource."""

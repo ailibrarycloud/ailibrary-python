@@ -1,4 +1,4 @@
-from typing import List, Optional, Dict
+from typing import Optional
 from .__http_client import _HTTPClient
 from ..types.knowledge_base.requests import (
     KnowledgeBaseCreateRequest,
@@ -34,7 +34,7 @@ class _KnowledgeBase:
             raise e
 
 
-    def create(self, name: str, meta: Optional[Dict] = None) -> dict:
+    def create(self, name: str, meta: Optional[dict] = None) -> dict:
         """Create a new knowledge base."""
         payload = KnowledgeBaseCreateRequest(name=name, meta=meta).model_dump()
         response = self._http_client._request(
@@ -73,8 +73,8 @@ class _KnowledgeBase:
     #     self,
     #     knowledgeId: str,
     #     type: str,
-    #     meta: Optional[Dict] = None,
-    #     urls: Optional[Dict] = None
+    #     meta: Optional[dict] = None,
+    #     urls: Optional[dict] = None
     # ) -> dict:
     #     """Add sources to a knowledge base."""
     #     request = AddSourceRequest(
@@ -111,7 +111,7 @@ class _KnowledgeBase:
     # def delete_sources(
     #     self,
     #     knowledgeId: str,
-    #     values: List[str],
+    #     values: list[str],
     #     delete_all: Optional[bool] = False
     # ) -> dict:
     #     """Delete sources from a knowledge base."""

@@ -1,4 +1,4 @@
-from typing import Optional, Dict, Any, Generic, TypeVar, List
+from typing import Optional, Any, Generic, TypeVar
 from pydantic import BaseModel
 from .base import MetaModel
 from .base import CustomBaseModel
@@ -23,10 +23,10 @@ class APIResponse(CustomBaseModel, Generic[T]):
 class ErrorResponse(CustomBaseModel):
     status_code: int
     message: str
-    error: Optional[Dict[str, Any]] = None
+    error: Optional[dict[str, Any]] = None
 
 class ListResponse(CustomBaseModel, Generic[T]):
-    items: List[T]
+    items: list[T]
     total: int
     page: Optional[int] = None
     limit: Optional[int] = None

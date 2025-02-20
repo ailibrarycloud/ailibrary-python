@@ -1,4 +1,4 @@
-from typing import List, Optional, Dict
+from typing import Optional
 from .__http_client import _HTTPClient
 import mimetypes
 import os
@@ -23,35 +23,30 @@ class _Files:
             raise e
 
 
-    def upload(self, file_paths: List[str], knowledgeId: Optional[str] = None) -> dict:
+    def upload(self, files: list[str], knowledgeId: Optional[str] = None) -> dict:
         """Upload files to AI Library.
         Args:
-            file_paths: List of paths to files to upload
+            files: List of paths to files to upload
             knowledgeId: Optional knowledge base ID to associate files with
         """
-        request = FileUploadRequest(file_paths=file_paths, knowledgeId=knowledgeId)
-        files = []
+        request = FileUploadRequest(files=files, knowledgeId=knowledgeId)
+        file_objs = []
         payload = {}
         
         if request.knowledgeId:
             payload['knowledgeId'] = request.knowledgeId
             
-        for file_path in request.file_paths:
-            if not os.path.exists(file_path):
-                raise ValueError(f"File not found: {file_path}")
+        for file_path in request.files:
+            # if not os.path.exists(file_path):
+            #     raise ValueError(f"File not found: {file_path}")
             file_name = os.path.basename(file_path)
             mime_type = mimetypes.guess_type(file_path)[0]
-            files.append(
+            file_objs.append(
                 ('files', (file_name, open(file_path, 'rb'), mime_type))
             )
-
-        response = self._http_client._request(
-            "POST",
-            "/v1/files",
-            data=payload,
-            files=files
-        )
+        response = self._http_client._request("POST", "/v1/files", data=payload, files=file_objs)
         return self._validate_response(response, FileUploadResponse)
+
 
     def list_files(self, page: Optional[int] = None, limit: Optional[int] = None) -> dict:
         """List all files."""

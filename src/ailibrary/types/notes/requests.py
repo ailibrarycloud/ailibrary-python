@@ -1,4 +1,4 @@
-from typing import Optional, List
+from typing import Optional
 from pydantic import BaseModel, Field
 from ..shared.base import MetaModel
 from ..shared.enums import ResourceType, RoleType
@@ -16,5 +16,5 @@ class NoteUpdateRequest(MetaModel):
 class NoteDeleteRequest(BaseModel):
     resource: ResourceType
     resource_id: str
-    values: Optional[List[str]] = None
+    values: Optional[list[str]] = None
     delete_all: Optional[bool] = None

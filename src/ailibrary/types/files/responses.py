@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import Optional, List
+from typing import Optional
 from ..shared.responses import APIResponse, ListResponse
 from .requests import FileUploadRequest
 from ..shared.base import CustomBaseModel
@@ -13,12 +13,12 @@ class FileData(CustomBaseModel):
     knowledgeId: Optional[str] = None
 
 class FileUploadResponse(CustomBaseModel):
-    files: List[FileData]
+    files: list[FileData]
     meta: dict
 
 class FileGetResponse(FileData):
     pass
 
 class FileListResponse(CustomBaseModel):
-    files: List[FileData]
+    files: list[FileData]
     meta: dict

@@ -1,4 +1,3 @@
-from typing import List
 from .__http_client import _HTTPClient
 from ..types.utilities.requests import WebSearchRequest, WebParserRequest
 from ..types.utilities.responses import (
@@ -13,7 +12,7 @@ class _Utilities:
     def __init__(self, http_client: _HTTPClient):
         self._http_client = http_client
 
-    def web_search(self, search_terms: List[str]) -> WebSearchResponse:
+    def web_search(self, search_terms: list[str]) -> WebSearchResponse:
         """Search the web for terms."""
         request = WebSearchRequest(search_terms=search_terms)
         response = self._http_client._request(
@@ -23,7 +22,7 @@ class _Utilities:
         )
         return WebSearchResponse(**response)
 
-    def web_parser(self, urls: List[str]) -> WebParserResponse:
+    def web_parser(self, urls: list[str]) -> WebParserResponse:
         """Parse web pages for content."""
         request = WebParserRequest(urls=urls)
         response = self._http_client._request(
