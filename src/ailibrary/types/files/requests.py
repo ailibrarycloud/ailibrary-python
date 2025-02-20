@@ -1,10 +1,14 @@
 from typing import Optional, List
-from pydantic import BaseModel, Field
-from ..shared.base import MetaModel, PaginationParams
+from pydantic import Field
+from ..shared.base import CustomBaseModel
 
-class FileUploadRequest(MetaModel):
-    file_paths: List[str] = Field(..., min_items=1)
-    knowledgeId: Optional[str] = None
+class FileUploadRequest(CustomBaseModel):
+    file_paths: List[str] = Field(..., description="List of file paths to upload", min_items=1)
+    knowledgeId: Optional[str] = Field(
+        None,
+        description="Optional knowledge base ID to associate files with"
+    )
 
-class FileListRequest(PaginationParams):
-    pass
+class FileListRequest(CustomBaseModel):
+    page: Optional[int] = Field(None, description="Page number for pagination")
+    limit: Optional[int] = Field(None, description="Number of items per page")

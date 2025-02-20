@@ -1,10 +1,11 @@
-from typing import List, Optional
+from typing import List, Optional, Dict
 from .__http_client import _HTTPClient
 import mimetypes
 import os
-from ..types.files.requests import FileUploadRequest
-from ..types.files.responses import FileResponse, FileListResponse, FileData
+from ..types.files.requests import FileUploadRequest, FileListRequest
+from ..types.files.responses import FileUploadResponse, FileGetResponse, FileListResponse
 from ..types.shared.base import PaginationParams
+from pydantic import ValidationError
 
 
 class _Files:
@@ -14,9 +15,19 @@ class _Files:
         self._http_client = http_client
 
 
-    def upload(self, file_paths: List[str], knowledgeId: Optional[str] = None) -> FileResponse:
+    def _validate_response(self, response: dict, validation_class) -> dict:
+        try:
+            validation_class(**response)
+            return response
+        except ValidationError as e:
+            raise e
+
+
+    def upload(self, file_paths: List[str], knowledgeId: Optional[str] = None) -> dict:
         """Upload files to AI Library.
-        files is a list where each element contains a path to the file.
+        Args:
+            file_paths: List of paths to files to upload
+            knowledgeId: Optional knowledge base ID to associate files with
         """
         request = FileUploadRequest(file_paths=file_paths, knowledgeId=knowledgeId)
         files = []
@@ -26,6 +37,8 @@ class _Files:
             payload['knowledgeId'] = request.knowledgeId
             
         for file_path in request.file_paths:
+            if not os.path.exists(file_path):
+                raise ValueError(f"File not found: {file_path}")
             file_name = os.path.basename(file_path)
             mime_type = mimetypes.guess_type(file_path)[0]
             files.append(
@@ -38,34 +51,33 @@ class _Files:
             data=payload,
             files=files
         )
-        return FileResponse(**response)
+        return self._validate_response(response, FileUploadResponse)
 
-
-    def list_files(self, page: Optional[int] = None, limit: Optional[int] = None) -> FileListResponse:
+    def list_files(self, page: Optional[int] = None, limit: Optional[int] = None) -> dict:
         """List all files."""
-        pagination = PaginationParams(page=page, limit=limit)
+        pagination = FileListRequest(page=page, limit=limit)
         response = self._http_client._request(
             "GET",
             "/v1/files",
             params=pagination.model_dump()
         )
-        return FileListResponse(**response)
+        return self._validate_response(response, FileListResponse)
 
-
-    def get(self, file_id: int) -> FileResponse:
+    def get(self, file_id: int) -> dict:
         """Retrieve a file by ID."""
+        if not isinstance(file_id, int):
+            raise ValueError("file_id must be an integer")
         response = self._http_client._request(
             "GET",
             f"/v1/files/{file_id}"
         )
-        return FileResponse(**response)
-
+        return self._validate_response(response, FileGetResponse)
 
     ### WORK IN PROGRESS, error in internal implementation ###
-    def delete(self, file_id: int) -> FileResponse:
+    def delete(self, file_id: int) -> dict:
         """Delete a file."""
         response = self._http_client._request(
             "DELETE",
             f"/v1/files/{file_id}"
         )
-        return FileResponse(**response)
+        return self._validate_response(response, FileGetResponse)

@@ -1,10 +1,10 @@
 from datetime import datetime
-from typing import Optional
-from pydantic import BaseModel
+from typing import Optional, List
 from ..shared.responses import APIResponse, ListResponse
-from ..shared.base import MetaModel
+from .requests import FileUploadRequest
+from ..shared.base import CustomBaseModel
 
-class FileData(MetaModel):
+class FileData(CustomBaseModel):
     id: int
     name: str
     mime_type: str
@@ -12,8 +12,13 @@ class FileData(MetaModel):
     created_timestamp: datetime
     knowledgeId: Optional[str] = None
 
-class FileResponse(APIResponse[FileData]):
+class FileUploadResponse(CustomBaseModel):
+    files: List[FileData]
+    meta: dict
+
+class FileGetResponse(FileData):
     pass
 
-class FileListResponse(ListResponse[FileData]):
-    pass
+class FileListResponse(CustomBaseModel):
+    files: List[FileData]
+    meta: dict
