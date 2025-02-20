@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Optional, BinaryIO, IO
 from .__http_client import _HTTPClient
 import mimetypes
 import os
