@@ -49,7 +49,6 @@ class _Files:
                 ('files', (file_name, open(file_path, 'rb'), mime_type))
             )
         response = self._http_client._request("POST", "/v1/files", data=payload, files=file_objs)
-        print(response)
         return self._validate_response(response, FileUploadResponse)
 
 
