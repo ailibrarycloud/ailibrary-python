@@ -4,6 +4,8 @@ from ..types.utilities.responses import (
     WebSearchResponse,
     WebParserResponse,
 )
+from pydantic import ValidationError
+from typing import Union
 # from ..types.utilities.responses import SearchResultData, ParsedContentData
 
 class _Utilities:
@@ -12,22 +14,36 @@ class _Utilities:
     def __init__(self, http_client: _HTTPClient):
         self._http_client = http_client
 
-    def web_search(self, search_terms: list[str]) -> WebSearchResponse:
+
+    def _validate_response(self, response: Union[dict, list[dict]], validation_class) -> Union[dict, list[dict]]    :
+        try:
+            if isinstance(response, list):
+                for item in response:
+                    validation_class(**item)
+            else:
+                validation_class(**response)
+            return response
+        except ValidationError as e:
+            raise e
+
+
+    def web_search(self, search_terms: list[str]) -> dict:
         """Search the web for terms."""
-        request = WebSearchRequest(search_terms=search_terms)
+        payload = WebSearchRequest(search_terms=search_terms).model_dump()
         response = self._http_client._request(
             "POST",
             "/v1/utilities/websearch",
-            json=request.model_dump()
+            json=payload
         )
-        return WebSearchResponse(**response)
+        return self._validate_response(response, WebSearchResponse)
 
-    def web_parser(self, urls: list[str]) -> WebParserResponse:
+
+    def web_parser(self, urls: list[str]) -> dict:
         """Parse web pages for content."""
-        request = WebParserRequest(urls=urls)
+        payload = WebParserRequest(urls=urls).model_dump()
         response = self._http_client._request(
             "POST",
             "/v1/utilities/webparser",
-            json=request.model_dump()
+            json=payload
         )
-        return WebParserResponse(**response)
+        return self._validate_response(response, WebParserResponse)

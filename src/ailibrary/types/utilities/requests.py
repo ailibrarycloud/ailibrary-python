@@ -1,7 +1,8 @@
 from pydantic import BaseModel, Field
+from ..shared.base import CustomBaseModel
 
-class WebSearchRequest(BaseModel):
+class WebSearchRequest(CustomBaseModel):
     search_terms: list[str] = Field(..., min_items=1)
 
-class WebParserRequest(BaseModel):
+class WebParserRequest(CustomBaseModel):
     urls: list[str] = Field(..., min_items=1)
