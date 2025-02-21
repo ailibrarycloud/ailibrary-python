@@ -13,7 +13,7 @@ class NoteAddRequest(MetaModel):
     meta: Optional[dict] = None
 
 class NoteUpdateRequest(MetaModel):
-    note_id: str = Field(..., min_length=1)
+    note_id: str = Field(..., min_length=1, exclude=True)
     content: str = Field(..., min_length=1)
     role: RoleType
     meta: Optional[dict] = None
@@ -26,17 +26,18 @@ class NoteDeleteRequest(BaseModel):
     delete_all: Optional[bool] = None
 
 
-    @field_validator("values", "delete_all")
+    @field_validator("delete_all")
     def validate_values_and_delete_all(cls, v, info):
-        # this validator is run once each for values and delete_all
-        # so in one iteration, v == values, and in the other v == delete_all
-        # info.data is dictionary of all fields and 
-        # info.field_name is the name of the current field
-
-        all_fields = info.data
-        values, delete_all = all_fields.get("values"), all_fields.get("delete_all")
-
-        if values is None and (delete_all is None or delete_all is False):
-            raise ValueError("Either values or delete_all=True must be provided")
-        
+        # If delete_all is True, values is ignored so we can return early
+        if v:
+            return v
+        # If we get here, delete_all is either False or None
+        # So we need valid values
+        other_fields = info.data
+        values = other_fields.get("values")
+        if not values:
+            raise ValueError(
+                "Either provide a list of note IDs in 'values' or set delete_all=True. "
+                "At least one must be specified."
+            )
         return v

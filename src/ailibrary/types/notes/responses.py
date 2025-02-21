@@ -33,7 +33,7 @@ class NoteGetResourceNotesResponse(CustomBaseModel):
 class NoteGetResponse(NoteData):
     noteId: str
     resource: ResourceType
-    resourceId: str
+    resourceId: Optional[str] = None
     updated_timestamp: str
     userEmail: str
     userName: str

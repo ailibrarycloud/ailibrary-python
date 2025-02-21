@@ -99,6 +99,7 @@ class _Notes:
             role=role,
             meta=meta
         ).model_dump()
+
         response = self._http_client._request(
             "PUT",
             f"/v1/notes/{note_id}",
@@ -122,8 +123,6 @@ class _Notes:
             delete_all=delete_all
         ).model_dump()
         
-        print(payload)
-
         response = self._http_client._request(
             "DELETE",
             f"/v1/notes/{resource}/{resource_id}",
