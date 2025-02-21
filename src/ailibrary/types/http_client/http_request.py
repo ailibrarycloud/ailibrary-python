@@ -23,6 +23,7 @@ class HTTPRequest(CustomBaseModel):
 
     @field_validator("files")
     def validate_files(cls, file_list):
+        # print(file_list)
         if file_list is not None:
             try:
                 # validate <files> parameter using the FileSchema validator

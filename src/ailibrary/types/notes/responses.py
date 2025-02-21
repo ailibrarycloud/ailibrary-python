@@ -4,18 +4,36 @@ from pydantic import BaseModel
 from ..shared.responses import APIResponse, ListResponse
 from ..shared.base import MetaModel
 from ..shared.enums import ResourceType, RoleType
+from ..shared.base import CustomBaseModel
 
-class NoteData(MetaModel):
-    id: str
+
+class NoteAddResponse(CustomBaseModel):
+    status: str
+    noteId: str
+
+class NoteUpdateResponse(CustomBaseModel):
+    status: str
+    message: str
+    meta: dict
+
+class NoteDeleteResponse(CustomBaseModel):
+    status: str
+    message: str
+
+class NoteData(CustomBaseModel):
     content: str
     role: RoleType
-    resource: ResourceType
-    resource_id: str
+    meta: Optional[dict] = None
     created_timestamp: datetime
-    updated_timestamp: Optional[datetime] = None
 
-class NoteResponse(APIResponse[NoteData]):
-    pass
+class NoteGetResourceNotesResponse(CustomBaseModel):
+    notes: list[NoteData]
+    meta: dict
 
-class NoteListResponse(ListResponse[NoteData]):
-    pass
+class NoteGetResponse(NoteData):
+    noteId: str
+    resource: ResourceType
+    resourceId: str
+    updated_timestamp: str
+    userEmail: str
+    userName: str

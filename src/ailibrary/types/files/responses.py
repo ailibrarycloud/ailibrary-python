@@ -4,21 +4,23 @@ from ..shared.responses import APIResponse, ListResponse
 from .requests import FileUploadRequest
 from ..shared.base import CustomBaseModel
 
-class FileData(CustomBaseModel):
+
+class FileResponseData(CustomBaseModel):
+    url: str
     id: int
+    bytes: int
     name: str
-    mime_type: str
-    size: int
-    created_timestamp: datetime
-    knowledgeId: Optional[str] = None
+    meta: Optional[dict] = None
 
-class FileUploadResponse(CustomBaseModel):
-    files: list[FileData]
-    meta: dict
-
-class FileGetResponse(FileData):
+class FileUploadResponse(FileResponseData):
     pass
 
+class FileGetResponse(FileResponseData):
+    created_timestamp: str
+
 class FileListResponse(CustomBaseModel):
-    files: list[FileData]
+    files: list[FileResponseData]
     meta: dict
+
+class FileDeleteResponse(CustomBaseModel):
+    response: str

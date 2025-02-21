@@ -1,22 +1,33 @@
 from typing import Optional
 from .__http_client import _HTTPClient
 from ..types.notes.requests import (
-    NoteCreateRequest,
+    NoteAddRequest,
     NoteUpdateRequest,
     NoteDeleteRequest
 )
-from ..types.notes.responses import (
-    NoteResponse,
-    NoteListResponse,
-    NoteData
-)
+from ..types.notes.responses import (NoteAddResponse, NoteGetResourceNotesResponse, NoteUpdateResponse, NoteGetResponse, NoteDeleteResponse)
 from ..types.shared.enums import ResourceType, RoleType
+from pydantic import ValidationError
+
 
 class _Notes:
     """Notes resource for managing notes on resources."""
 
     def __init__(self, http_client: _HTTPClient):
         self._http_client = http_client
+
+
+    def _validate_response(self, response: dict, validation_class) -> dict:
+        try:
+            # if isinstance(response, list):
+            #     for item in response:
+            #         validation_class(**item)
+            # else:
+            validation_class(**response)
+            return response
+        except ValidationError as e:
+            raise e
+
 
     def add(
         self,
@@ -25,7 +36,7 @@ class _Notes:
         resource: ResourceType,
         resource_id: str,
         meta: Optional[dict] = None
-    ) -> NoteResponse:
+    ) -> dict:
         """Add a note to a resource.
             Args:
                 content: The content of the note
@@ -40,35 +51,39 @@ class _Notes:
                         resource_id is id
                 meta: Optional metadata
         """
-        request = NoteCreateRequest(
+        payload = NoteAddRequest(
             content=content,
             role=role,
             resource=resource,
             resource_id=resource_id,
             meta=meta
-        )
+        ).model_dump()
+        
         response = self._http_client._request(
             "POST",
             "/v1/notes",
-            json=request.model_dump()
+            json=payload
         )
-        return NoteResponse(**response)
+        return self._validate_response(response, NoteAddResponse)
 
-    def get_resource_notes(self, resource: ResourceType, resource_id: str) -> NoteListResponse:
+
+    def get_resource_notes(self, resource: ResourceType, resource_id: str) -> dict:
         """Get notes for a resource."""
         response = self._http_client._request(
             "GET",
             f"/v1/notes/{resource}/{resource_id}"
         )
-        return NoteListResponse(**response)
+        return self._validate_response(response, NoteGetResourceNotesResponse)
 
-    def get(self, note_id: str) -> NoteResponse:
+
+    def get(self, note_id: str) -> dict:
         """Get a note by ID."""
         response = self._http_client._request(
             "GET",
             f"/v1/notes/{note_id}"
         )
-        return NoteResponse(**response)
+        return self._validate_response(response, NoteGetResponse)
+
 
     def update(
         self,
@@ -76,19 +91,21 @@ class _Notes:
         content: str,
         role: RoleType,
         meta: Optional[dict] = None
-    ) -> NoteResponse:
+    ) -> dict:
         """Update a note."""
-        request = NoteUpdateRequest(
+        payload = NoteUpdateRequest(
+            note_id=note_id,
             content=content,
             role=role,
             meta=meta
-        )
+        ).model_dump()
         response = self._http_client._request(
             "PUT",
             f"/v1/notes/{note_id}",
-            json=request.model_dump()
+            json=payload
         )
-        return NoteResponse(**response)
+        return self._validate_response(response, NoteUpdateResponse)
+
 
     def delete_notes(
         self,
@@ -96,17 +113,20 @@ class _Notes:
         resource_id: str,
         values: Optional[list[str]] = None,
         delete_all: Optional[bool] = None
-    ) -> NoteResponse:
+    ) -> dict:
         """Delete notes for a resource."""
-        request = NoteDeleteRequest(
+        payload = NoteDeleteRequest(
             resource=resource,
             resource_id=resource_id,
             values=values,
             delete_all=delete_all
-        )
+        ).model_dump()
+        
+        print(payload)
+
         response = self._http_client._request(
             "DELETE",
             f"/v1/notes/{resource}/{resource_id}",
-            json=request.model_dump()
+            json=payload
         )
-        return NoteResponse(**response)
+        return self._validate_response(response, NoteDeleteResponse)

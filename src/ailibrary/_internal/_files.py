@@ -1,9 +1,9 @@
-from typing import Optional, BinaryIO, IO
+from typing import Optional, BinaryIO, IO, Union
 from .__http_client import _HTTPClient
 import mimetypes
 import os
 from ..types.files.requests import FileUploadRequest, FileListRequest
-from ..types.files.responses import FileUploadResponse, FileGetResponse, FileListResponse
+from ..types.files.responses import FileUploadResponse, FileGetResponse, FileListResponse, FileDeleteResponse
 from ..types.shared.base import PaginationParams
 from pydantic import ValidationError
 
@@ -15,9 +15,13 @@ class _Files:
         self._http_client = http_client
 
 
-    def _validate_response(self, response: dict, validation_class) -> dict:
+    def _validate_response(self, response: Union[list[dict], dict], validation_class) -> Union[list[dict], dict]:
         try:
-            validation_class(**response)
+            if isinstance(response, list):
+                for item in response:
+                    validation_class(**item)
+            else:
+                validation_class(**response)
             return response
         except ValidationError as e:
             raise e
@@ -45,34 +49,26 @@ class _Files:
                 ('files', (file_name, open(file_path, 'rb'), mime_type))
             )
         response = self._http_client._request("POST", "/v1/files", data=payload, files=file_objs)
+        print(response)
         return self._validate_response(response, FileUploadResponse)
 
 
     def list_files(self, page: Optional[int] = None, limit: Optional[int] = None) -> dict:
         """List all files."""
         pagination = FileListRequest(page=page, limit=limit)
-        response = self._http_client._request(
-            "GET",
-            "/v1/files",
-            params=pagination.model_dump()
-        )
+        response = self._http_client._request("GET", "/v1/files", params=pagination.model_dump())
         return self._validate_response(response, FileListResponse)
+
 
     def get(self, file_id: int) -> dict:
         """Retrieve a file by ID."""
         if not isinstance(file_id, int):
             raise ValueError("file_id must be an integer")
-        response = self._http_client._request(
-            "GET",
-            f"/v1/files/{file_id}"
-        )
+        response = self._http_client._request("GET", f"/v1/files/{file_id}")
         return self._validate_response(response, FileGetResponse)
 
-    ### WORK IN PROGRESS, error in internal implementation ###
+
     def delete(self, file_id: int) -> dict:
         """Delete a file."""
-        response = self._http_client._request(
-            "DELETE",
-            f"/v1/files/{file_id}"
-        )
-        return self._validate_response(response, FileGetResponse)
+        response = self._http_client._request("DELETE", f"/v1/files/{file_id}")
+        return self._validate_response(response, FileDeleteResponse)

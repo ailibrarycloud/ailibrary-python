@@ -16,7 +16,7 @@ class _HTTPClient:
 
         self.headers = {
             "X-Library-Key": api_key,
-            "Content-Type": "application/json"
+            # "Content-Type": "application/json"
         }
     
 
@@ -36,7 +36,7 @@ class _HTTPClient:
         params: Optional[dict] = None,
         data: Optional[dict] = None,
         json: Optional[dict] = None,
-        files: Optional[list[Tuple[str, Tuple[str, BinaryIO, str]]]] = None,
+        files: Optional[list] = None,
         stream: bool = False,
         # response_no_json: bool = False
     ) -> Any:
@@ -52,7 +52,6 @@ class _HTTPClient:
             files=files,
             stream=stream
         )
-
         url = f"{self.base_url}{valid_params.endpoint}"
         try:
             response = requests.request(
@@ -66,7 +65,6 @@ class _HTTPClient:
                 stream=valid_params.stream
             )
             # print(response.json())
-
             # if response_no_json:
             #     return response
             response.raise_for_status()
