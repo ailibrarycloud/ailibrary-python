@@ -27,7 +27,7 @@ class AgentCreateRequest(CustomBaseModel):
     form_filling: Optional[bool] = None
     form_id: Optional[str] = None
     form_schema: Optional[str] = None
-
+    
 
 class AgentUpdateRequest(AgentCreateRequest):
     namespace: str = Field(..., 

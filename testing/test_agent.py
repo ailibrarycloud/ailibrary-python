@@ -46,9 +46,14 @@ def test_agent(client, args):
 
     try:
         agent.get(namespace)
+        print(f"Verified that get() does not crash when the given namespace is not found\n")
+    except:
+        print(f"Failed test case: get() crashes when namespace not found\n")
+    
+    try:
+        agent.delete(namespace, True)
         print(f"Verified that delete() doesnt crash when the given namespace is not found\n")
     except:
-        # print(f"Verified that deleted agent with name '{namespace}' is not found\n")
         print(f"Failed test case: delete() doesnt work when namespace not found\n")
 
 

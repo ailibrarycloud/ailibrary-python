@@ -6,17 +6,13 @@ T = TypeVar('T')
 class CustomBaseModel(BaseModel):
     model_config = ConfigDict(
         loc_by_alias=False,  # Shows full path in validation errors
-        exclude_none=True,  # Moves this from model_dump to config
-        # validate_assignment=True,  # Ensures validation on attribute assignment
-        extra='ignore'  # Provides backward compatibility with older Pydantic behavior
+        validate_assignment=True,  # Ensures re-validation everytime the a model attribute is reassigned
+        extra='ignore'  # extra arguments to models are ignored...for now
     )
-    
-    # def dict(self, *args, **kwargs):
-    #     # Set exclude_none to True by default
-    #     kwargs['exclude_none'] = True
-    #     return super().dict(*args, **kwargs)
+
 
     def model_dump(self, *args, **kwargs):
+        kwargs['exclude_none'] = True
         return super().model_dump(*args, **kwargs)
 
 

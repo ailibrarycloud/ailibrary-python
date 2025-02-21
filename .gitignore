@@ -13,3 +13,4 @@ recreate_package.sh
 /dist/
 build/
 recreate_package.sh
+.python-version

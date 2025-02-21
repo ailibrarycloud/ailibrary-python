@@ -5,8 +5,8 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "ailibrary"
 version = "0.1.2"
-description = "AI Library REST API for any Python 3.8+ application."
-requires-python = ">=3.8"
+description = "AI Library REST API for any Python 3.9+ application."
+requires-python = ">=3.9"
 readme = "README.md"
 authors = [
     {name = "Arani Chaudhuri", email = "arani@ailibrary.ai"}

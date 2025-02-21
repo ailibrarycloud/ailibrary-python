@@ -16,7 +16,7 @@ class _HTTPClient:
 
         self.headers = {
             "X-Library-Key": api_key,
-            # "Content-Type": "application/json"
+            "Content-Type": "application/json"
         }
     
 
