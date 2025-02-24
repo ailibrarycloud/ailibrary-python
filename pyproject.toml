@@ -18,6 +18,19 @@ classifiers = [
 license = {text = ""} #?
 dynamic = ["dependencies"]
 
+[project.optional-dependencies]
+test = [
+    "pytest>=8.3.4",
+    "pytest-cov",
+    "pytest-mock",
+    "pytest-asyncio"  # if you need async testing
+]
+dev = [
+    "black",
+    "flake8",
+    "mypy"
+]
+
 [tool.setuptools.dynamic]
 dependencies = {file = ["requirements.txt"]}
 
