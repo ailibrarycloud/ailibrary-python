@@ -1,11 +1,15 @@
 from enum import Enum
 import pytest
 import os
+from dotenv import load_dotenv
 from ailibrary import AILibrary
 
+# Load test environment variables
+load_dotenv('.env.test')
+
 class TestConstants:
-    TEST_API_KEY = "test-key"
-    TEST_DOMAIN = "https://test-api.ailibrary.ai/"
+    TEST_API_KEY = os.getenv('TEST_API_KEY')
+    TEST_DOMAIN = os.getenv('TEST_DOMAIN')
     
     # Test data constants
     AGENT_NAMESPACE = "test-agent"
@@ -14,7 +18,7 @@ class TestConstants:
     NOTE_ID = "test-note"
     
     # Test file paths
-    TEST_FILE_PATH = "tests/data/test.pdf"
+    TEST_FILE_PATH = os.getenv('TEST_FILE_PATH')
 
 class TestData:
     AGENT_CREATE_PAYLOAD = {
@@ -33,9 +37,9 @@ class TestData:
 def e2e_config():
     """E2E test configuration"""
     return {
-        "api_key": os.getenv("E2E_API_KEY", "test-key"),
-        "domain": os.getenv("E2E_DOMAIN", "https://staging-api.ailibrary.ai/"),
-        "timeout": int(os.getenv("E2E_TIMEOUT", "300"))
+        "api_key": os.getenv("E2E_API_KEY"),
+        "domain": os.getenv("E2E_DOMAIN"),
+        # "timeout": int(os.getenv("E2E_TIMEOUT", "300"))
     }
 
 @pytest.fixture(scope="session")

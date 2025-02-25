@@ -1,14 +1,27 @@
 import pytest
 import os
+from dotenv import load_dotenv
 from ailibrary import AILibrary
+
+# Load test environment variables
+load_dotenv('.env.test')
 
 @pytest.fixture(scope="session")
 def e2e_client():
     """E2E test client with extended timeout"""
     return AILibrary(
-        api_key=os.getenv("E2E_API_KEY", "test-key"),
-        domain=os.getenv("E2E_DOMAIN", "https://staging-api.ailibrary.ai/")
+        api_key=os.getenv("E2E_API_KEY"),
+        domain=os.getenv("E2E_DOMAIN")
     )
+
+@pytest.fixture(scope="session")
+def e2e_config():
+    """E2E test configuration"""
+    return {
+        "api_key": os.getenv("E2E_API_KEY"),
+        "domain": os.getenv("E2E_DOMAIN"),
+        "timeout": int(os.getenv("E2E_TIMEOUT", "300"))
+    }
 
 @pytest.fixture(scope="session")
 def cleanup_registry():

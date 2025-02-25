@@ -1,7 +1,12 @@
 import pytest
 from unittest.mock import Mock
+from dotenv import load_dotenv
+import os
 from ailibrary import AILibrary
 from ailibrary._internal.__http_client import _HTTPClient
+
+# Load test environment variables
+load_dotenv('.env.test')
 
 @pytest.fixture
 def mock_http_client():
@@ -19,8 +24,8 @@ def mock_response():
 def api_client():
     """Fixture for real API client (for integration tests)"""
     return AILibrary(
-        api_key="test-key",
-        domain="https://test-api.ailibrary.ai/"
+        api_key=os.getenv('TEST_API_KEY'),
+        domain=os.getenv('TEST_DOMAIN')
     )
 
 @pytest.fixture
