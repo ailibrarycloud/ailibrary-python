@@ -9,6 +9,7 @@ from ..types.knowledge_base.responses import (
     KnowledgeBaseListResponse,
     KnowledgeBaseGetResponse,
     KnowledgeBaseCreateResponse,
+    KnowledgeBaseDeleteResponse,
     # SourceListResponse,
     # KnowledgeBaseData,
     # SourceData
@@ -64,6 +65,13 @@ class _KnowledgeBase:
         if not isinstance(response, str):
             raise ValueError("knowledge_base.get_status() response is not a string")
         return response
+
+    def delete(self, knowledgeId: str) -> str:
+        """Delete knowledge base."""
+        self._validate_non_empty_string(knowledgeId, "knowledgeId")
+        response = self._http_client._request("DELETE", f"{self._RESOURCE_PATH}/{knowledgeId}")
+        return self._validate_response(response, KnowledgeBaseDeleteResponse)
+
 
     # ### WORK IN PROGRESS, error in internal implementation ###
     # def add_source(

@@ -39,6 +39,9 @@ class KnowledgeBaseListResponse(CustomBaseModel):
     meta: dict
 
 
+class KnowledgeBaseDeleteResponse(CustomBaseModel):
+    response: str
+
 
 # class SourceData(CustomBaseModel):
 #     id: str

@@ -1,11 +1,22 @@
 from .__http_client import _HTTPClient
-from ..types.utilities.requests import WebSearchRequest, WebParserRequest
+from ..types.utilities.requests import (
+    WebSearchRequest, 
+    WebParserRequest,
+    NewsSearchRequest,
+    DocumentParserRequest,
+    DocumentThumbnailRequest,
+    JSONSchemaGeneratorRequest
+)
 from ..types.utilities.responses import (
     WebSearchResponse,
     WebParserResponse,
+    NewsSearchResponse,
+    DocumentParserResponse,
+    DocumentThumbnailResponse,
+    JSONSchemaGeneratorResponse
 )
 from pydantic import ValidationError
-from typing import Union
+from typing import Union, Optional
 from ..types.shared.enums import ResourcePath
 # from ..types.utilities.responses import SearchResultData, ParsedContentData
 
@@ -50,3 +61,43 @@ class _Utilities:
             json=payload
         )
         return self._validate_response(response, WebParserResponse)
+
+    def news_search(self, search_terms: list[str]) -> dict:
+        """Search news articles for terms."""
+        payload = NewsSearchRequest(search_terms=search_terms).model_dump()
+        response = self._http_client._request(
+            "POST",
+            f"{self._RESOURCE_PATH}/news",
+            json=payload
+        )
+        return self._validate_response(response, NewsSearchResponse)
+
+    def document_parser(self, urls: str) -> dict:
+        """Parse document content and metadata."""
+        payload = DocumentParserRequest(urls=urls).model_dump()
+        response = self._http_client._request(
+            "POST",
+            f"{self._RESOURCE_PATH}/docparser",
+            json=payload
+        )
+        return self._validate_response(response, DocumentParserResponse)
+
+    def document_thumbnail(self, urls: str) -> dict:
+        """Generate document page thumbnail."""
+        payload = DocumentThumbnailRequest(urls=urls).model_dump()
+        response = self._http_client._request(
+            "POST",
+            f"{self._RESOURCE_PATH}/thumbnail",
+            json=payload
+        )
+        return self._validate_response(response, DocumentThumbnailResponse)
+
+    def json_schema_generator(self, content: str) -> dict:
+        """Generate JSON schema from text description."""
+        payload = JSONSchemaGeneratorRequest(content=content).model_dump()
+        response = self._http_client._request(
+            "POST",
+            f"{self._RESOURCE_PATH}/schema_generator",
+            json=payload
+        )
+        return self._validate_response(response, JSONSchemaGeneratorResponse)
