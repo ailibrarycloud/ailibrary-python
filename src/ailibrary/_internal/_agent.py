@@ -10,6 +10,8 @@ from pydantic import ValidationError
 class _Agent:
     """Client for interacting with the AI Library Agent API."""
 
+    _RESOURCE_PATH = "/agent"
+
     def __init__(self, http_client: _HTTPClient):
         self._http_client = http_client
 
@@ -25,7 +27,7 @@ class _Agent:
     def create(self, title: str, **kwargs) -> dict:
         """Create a new agent with the specified parameters."""
         payload = AgentCreateRequest(title=title, **kwargs).model_dump()
-        response = self._http_client._request("POST", "/v1/agent/create", json=payload)
+        response = self._http_client._request("POST", f"{self._RESOURCE_PATH}/create", json=payload)
         return self._validate_response(response, AgentCreateResponse)
 
 
@@ -33,7 +35,7 @@ class _Agent:
         """Retrieve information about an agent."""
         if not isinstance(namespace, str) or not namespace:
             raise ValueError("Namespace must be a non-empty string")
-        response = self._http_client._request("GET", f"/v1/agent/{namespace}")
+        response = self._http_client._request("GET", f"{self._RESOURCE_PATH}{namespace}")
         if "status" in response and response["status"] == "failure":
             return response
         return self._validate_response(response, AgentGetResponse)
@@ -41,21 +43,21 @@ class _Agent:
 
     def list_agents(self) -> dict:
         """List all agents."""
-        response = self._http_client._request("GET", "/v1/agent")
+        response = self._http_client._request("GET", self._RESOURCE_PATH)
         return self._validate_response(response, AgentListResponse)
 
 
     def update(self, namespace: str, **kwargs) -> dict:
         """Update an existing agent."""
         payload = AgentUpdateRequest(namespace=namespace, **kwargs).model_dump()
-        response = self._http_client._request("PUT", f"/v1/agent/{namespace}", json=payload)
+        response = self._http_client._request("PUT", f"{self._RESOURCE_PATH}/{namespace}", json=payload)
         return self._validate_response(response, AgentUpdateResponse)
 
 
     def delete(self, namespace: str, delete_connected_resources: bool) -> dict:
         """Delete an agent."""
         payload = AgentDeleteRequest(namespace=namespace, delete_connected_resources=delete_connected_resources).model_dump()
-        response = self._http_client._request("DELETE", f"/v1/agent/{namespace}", json=payload)
+        response = self._http_client._request("DELETE", f"{self._RESOURCE_PATH}/{namespace}", json=payload)
         return self._validate_response(response, AgentDeleteResponse)
 
 

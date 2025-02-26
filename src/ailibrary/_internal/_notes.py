@@ -13,9 +13,10 @@ from pydantic import ValidationError
 class _Notes:
     """Notes resource for managing notes on resources."""
 
+    _RESOURCE_PATH = "/notes"
+
     def __init__(self, http_client: _HTTPClient):
         self._http_client = http_client
-
 
     def _validate_response(self, response: dict, validation_class) -> dict:
         try:
@@ -61,7 +62,7 @@ class _Notes:
         
         response = self._http_client._request(
             "POST",
-            "/v1/notes",
+            self._RESOURCE_PATH,
             json=payload
         )
         return self._validate_response(response, NoteAddResponse)
@@ -71,7 +72,7 @@ class _Notes:
         """Get notes for a resource."""
         response = self._http_client._request(
             "GET",
-            f"/v1/notes/{resource}/{resource_id}"
+            f"{self._RESOURCE_PATH}/{resource}/{resource_id}"
         )
         return self._validate_response(response, NoteGetResourceNotesResponse)
 
@@ -80,7 +81,7 @@ class _Notes:
         """Get a note by ID."""
         response = self._http_client._request(
             "GET",
-            f"/v1/notes/{note_id}"
+            f"{self._RESOURCE_PATH}/{note_id}"
         )
         return self._validate_response(response, NoteGetResponse)
 
@@ -102,7 +103,7 @@ class _Notes:
 
         response = self._http_client._request(
             "PUT",
-            f"/v1/notes/{note_id}",
+            f"{self._RESOURCE_PATH}/{note_id}",
             json=payload
         )
         return self._validate_response(response, NoteUpdateResponse)
@@ -125,7 +126,7 @@ class _Notes:
         
         response = self._http_client._request(
             "DELETE",
-            f"/v1/notes/{resource}/{resource_id}",
+            f"{self._RESOURCE_PATH}/{resource}/{resource_id}",
             json=payload
         )
         return self._validate_response(response, NoteDeleteResponse)

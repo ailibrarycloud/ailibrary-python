@@ -8,15 +8,15 @@ from ..types.shared.enums import HTTPMethod
 class _HTTPClient:
     """Handles HTTP requests to the AI Library API."""
     
-    def __init__(self, api_key: str, base_url: str):
+    def __init__(self, api_key: str, base_url: str, version: str):
         if base_url[-1] == "/":
-            self.base_url = base_url[:-1]
-        else:
-            self.base_url = base_url
-
+            base_url = base_url[:-1]
+        if version[-1] == "/":
+            version = version[:-1]
+            
+        self.base_url = f"{base_url}/{version}"
         self.headers = {
             "X-Library-Key": api_key,
-            # "Content-Type": "application/json"
         }
     
 

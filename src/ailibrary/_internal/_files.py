@@ -11,6 +11,8 @@ from pydantic import ValidationError
 class _Files:
     """Files resource for managing file uploads and operations."""
 
+    _RESOURCE_PATH = "/files"
+
     def __init__(self, http_client: _HTTPClient):
         self._http_client = http_client
 
@@ -48,14 +50,14 @@ class _Files:
             file_objs.append(
                 ('files', (file_name, open(file_path, 'rb'), mime_type))
             )
-        response = self._http_client._request("POST", "/v1/files", data=payload, files=file_objs)
+        response = self._http_client._request("POST", self._RESOURCE_PATH, data=payload, files=file_objs)
         return self._validate_response(response, FileUploadResponse)
 
 
     def list_files(self, page: Optional[int] = None, limit: Optional[int] = None) -> dict:
         """List all files."""
         pagination = FileListRequest(page=page, limit=limit)
-        response = self._http_client._request("GET", "/v1/files", params=pagination.model_dump())
+        response = self._http_client._request("GET", self._RESOURCE_PATH, params=pagination.model_dump())
         return self._validate_response(response, FileListResponse)
 
 
@@ -63,11 +65,11 @@ class _Files:
         """Retrieve a file by ID."""
         if not isinstance(file_id, int):
             raise ValueError("file_id must be an integer")
-        response = self._http_client._request("GET", f"/v1/files/{file_id}")
+        response = self._http_client._request("GET", f"{self._RESOURCE_PATH}/{file_id}")
         return self._validate_response(response, FileGetResponse)
 
 
     def delete(self, file_id: int) -> dict:
         """Delete a file."""
-        response = self._http_client._request("DELETE", f"/v1/files/{file_id}")
+        response = self._http_client._request("DELETE", f"{self._RESOURCE_PATH}/{file_id}")
         return self._validate_response(response, FileDeleteResponse)

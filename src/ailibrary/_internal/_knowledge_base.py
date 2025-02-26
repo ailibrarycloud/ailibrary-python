@@ -19,6 +19,8 @@ from pydantic import ValidationError
 class _KnowledgeBase:
     """Knowledge Base resource for managing vector databases."""
 
+    _RESOURCE_PATH = "/knowledgebase"
+
     def __init__(self, http_client: _HTTPClient):
         self._http_client = http_client
 
@@ -33,39 +35,33 @@ class _KnowledgeBase:
         except ValidationError as e:
             raise e
 
-
     def create(self, name: str, meta: Optional[dict] = None) -> dict:
         """Create a new knowledge base."""
         payload = KnowledgeBaseCreateRequest(name=name, meta=meta).model_dump()
         response = self._http_client._request(
             "POST",
-            "/v1/knowledgebase",
+            self._RESOURCE_PATH,
             json=payload
         )
-        # print(response)
         return self._validate_response(response, KnowledgeBaseCreateResponse)
-
 
     def list_knowledge_bases(self) -> dict:
         """List all knowledge bases."""
-        response = self._http_client._request("GET", "/v1/knowledgebase")
-        print(response["knowledgebases"][0])
+        response = self._http_client._request("GET", self._RESOURCE_PATH)
         return self._validate_response(response, KnowledgeBaseListResponse)
-
 
     def get(self, knowledgeId: str) -> dict:
         """Retrieve a knowledge base by ID."""
         self._validate_non_empty_string(knowledgeId, "knowledgeId")
-        response = self._http_client._request("GET", f"/v1/knowledgebase/{knowledgeId}")
+        response = self._http_client._request("GET", f"{self._RESOURCE_PATH}/{knowledgeId}")
         return self._validate_response(response, KnowledgeBaseGetResponse)
-
 
     def get_status(self, knowledgeId: str) -> str:
         """Get knowledge base processing status."""
         self._validate_non_empty_string(knowledgeId, "knowledgeId")
-        response = self._http_client._request("GET", f"/v1/knowledgebase/{knowledgeId}/status")
+        response = self._http_client._request("GET", f"{self._RESOURCE_PATH}/{knowledgeId}/status")
         if not isinstance(response, str):
-            raise ValueError("knOWledge_base.get_status() response is not a string")
+            raise ValueError("knowledge_base.get_status() response is not a string")
         return response
 
     # ### WORK IN PROGRESS, error in internal implementation ###

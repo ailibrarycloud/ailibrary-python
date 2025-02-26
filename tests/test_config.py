@@ -20,17 +20,17 @@ class TestConstants:
     # Test file paths
     TEST_FILE_PATH = os.getenv('TEST_FILE_PATH')
 
-class TestData:
-    AGENT_CREATE_PAYLOAD = {
-        "title": "Test Agent",
-        "instructions": "Test instructions",
-        "description": "Test description"
-    }
+# class TestData:
+#     AGENT_CREATE_PAYLOAD = {
+#         "title": "Test Agent",
+#         "instructions": "Test instructions",
+#         "description": "Test description"
+#     }
     
-    KNOWLEDGE_BASE_CREATE_PAYLOAD = {
-        "name": "Test Knowledge Base",
-        "meta": {"type": "test"}
-    }
+#     KNOWLEDGE_BASE_CREATE_PAYLOAD = {
+#         "name": "Test Knowledge Base",
+#         "meta": {"type": "test"}
+#     }
 
 # Add E2E specific fixtures
 @pytest.fixture(scope="session")

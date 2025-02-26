@@ -11,6 +11,8 @@ from typing import Union
 class _Utilities:
     """Utility functions to support AI agents."""
 
+    _RESOURCE_PATH = "/utilities"
+
     def __init__(self, http_client: _HTTPClient):
         self._http_client = http_client
 
@@ -32,7 +34,7 @@ class _Utilities:
         payload = WebSearchRequest(search_terms=search_terms).model_dump()
         response = self._http_client._request(
             "POST",
-            "/v1/utilities/websearch",
+            f"{self._RESOURCE_PATH}/websearch",
             json=payload
         )
         return self._validate_response(response, WebSearchResponse)
@@ -43,7 +45,7 @@ class _Utilities:
         payload = WebParserRequest(urls=urls).model_dump()
         response = self._http_client._request(
             "POST",
-            "/v1/utilities/webparser",
+            f"{self._RESOURCE_PATH}/webparser",
             json=payload
         )
         return self._validate_response(response, WebParserResponse)
