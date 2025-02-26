@@ -1,5 +1,6 @@
 # namespace that exists
 # namespace that doesnt exist
+# query namespace thats too big for table?
 # different kinds of characters in the query string for namespace that exists
 # different kinds of characters in actual namespace
 import pytest

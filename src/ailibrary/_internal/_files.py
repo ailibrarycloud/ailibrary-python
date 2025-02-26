@@ -72,5 +72,7 @@ class _Files:
 
     def delete(self, file_id: int) -> dict:
         """Delete a file."""
+        if not isinstance(file_id, int):
+            raise ValueError("file_id must be an integer")
         response = self._http_client._request("DELETE", f"{self._RESOURCE_PATH}/{file_id}")
         return self._validate_response(response, FileDeleteResponse)

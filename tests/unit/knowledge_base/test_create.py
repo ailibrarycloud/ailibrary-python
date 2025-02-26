@@ -1,5 +1,6 @@
 # general test (no meta)
 # with meta
+# test all things in meta
 # empty name
 # way too large name that wont fit in database
 # different kinds of characters in the name

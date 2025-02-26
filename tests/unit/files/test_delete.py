@@ -1,3 +1,8 @@
+# file_id that exists
+# file_id that doesnt exist
+# string file_id
+# negative file_id ??
+
 import pytest
 from ailibrary._internal._files import _Files
 from ailibrary.types.files.responses import FileDeleteResponse

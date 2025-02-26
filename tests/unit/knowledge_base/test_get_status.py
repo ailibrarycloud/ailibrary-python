@@ -1,3 +1,9 @@
+# knowledgeId that exists
+# knowledgeId that doesnt exist
+# query knowledgeId thats too big for table?
+# different kinds of characters in the query string for knowledgeId that exists
+# different kinds of characters in actual knowledgeId
+
 import pytest
 from ailibrary._internal._knowledge_base import _KnowledgeBase
 

@@ -1,3 +1,7 @@
+# general test
+# table with 0 items
+# table with exactly one item
+
 import pytest
 from ailibrary._internal._knowledge_base import _KnowledgeBase
 from ailibrary.types.knowledge_base.responses import KnowledgeBaseListResponse
