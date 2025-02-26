@@ -1,5 +1,6 @@
 # general valid params
 # general invalid params
+# empty title
 # way too large title that wont fit in database
 # different kinds of characters in the title
 # different kinds of characters in the other string parameters

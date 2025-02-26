@@ -1,3 +1,9 @@
+# general test (no meta)
+# with meta
+# empty name
+# way too large name that wont fit in database
+# different kinds of characters in the name
+
 import pytest
 from ailibrary._internal._knowledge_base import _KnowledgeBase
 from ailibrary.types.knowledge_base.responses import KnowledgeBaseCreateResponse
