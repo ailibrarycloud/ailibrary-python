@@ -36,7 +36,7 @@ class _Agent:
         """Retrieve information about an agent."""
         if not isinstance(namespace, str) or not namespace:
             raise ValueError("Namespace must be a non-empty string")
-        response = self._http_client._request("GET", f"{self._RESOURCE_PATH}{namespace}")
+        response = self._http_client._request("GET", f"{self._RESOURCE_PATH}/{namespace}")
         if "status" in response and response["status"] == "failure":
             return response
         return self._validate_response(response, AgentGetResponse)

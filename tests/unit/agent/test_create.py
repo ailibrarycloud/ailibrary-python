@@ -10,30 +10,8 @@ from ailibrary._internal._agent import _Agent
 from ailibrary.types.shared.enums import AgentType
 from ailibrary.types.agent.responses import AgentCreateResponse
 
-@pytest.fixture
-def validated_agent_response():
-    def _create_validated_response(create_payload: dict, namespace: str = "test-namespace") -> dict:
-        """Helper to create and validate agent response data
-        
-        Args:
-            create_payload: The payload used to create the agent
-            namespace: The namespace to use in response (defaults to "test-namespace")
-            
-        Returns:
-            dict: Validated response data
-        """
-        response_data = {
-            **create_payload,
-            "namespace": namespace
-        }
-        # Validate using Pydantic model
-        validated_response = AgentCreateResponse(**response_data)
-        return validated_response.model_dump()
-    
-    return _create_validated_response
 
 class TestAgentCreate:
-    
     @pytest.mark.parametrize("create_payload",
         [{
             "title": "Test Agent",
@@ -41,7 +19,6 @@ class TestAgentCreate:
             "description": "Test description"
         }]
     )
-    
     def test_general(self, res_path, mock_http_client, create_payload, validated_agent_response):
         """Test successful agent creation with various valid payloads"""
         agent = _Agent(mock_http_client)

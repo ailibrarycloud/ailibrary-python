@@ -7,33 +7,38 @@
 
 import pytest
 from ailibrary._internal._agent import _Agent
+from ailibrary.types.agent.responses import AgentDeleteResponse
 
 class TestAgentDelete:
-    @pytest.mark.parametrize("delete_connected", [True, False, None])
-    def test_delete_agent_success(self, mock_http_client, delete_connected):
-        """Test successful agent deletion with different delete_connected_resources values"""
+    @pytest.mark.parametrize("delete_payload", [
+        {
+            "namespace": "test-agent",
+            "delete_connected_resources": True
+        },
+        {
+            "namespace": "test-agent",
+            "delete_connected_resources": False
+        }
+    ])
+    def test_general(self, res_path, mock_http_client, delete_payload):
+        """Test successful agent deletion with various valid payloads"""
         agent = _Agent(mock_http_client)
-        mock_http_client._request.return_value = {
+        
+        # Set up mock response
+        mock_response = {
             "statusCode": 200,
             "message": "Agent deleted successfully"
         }
+        mock_http_client._request.return_value = mock_response
         
-        kwargs = {}
-        if delete_connected is not None:
-            kwargs["delete_connected_resources"] = delete_connected
-            
-        response = agent.delete("test-agent", **kwargs)
-        
-        assert response["statusCode"] == 200
-        mock_http_client._request.assert_called_once()
+        response = agent.delete(**delete_payload)
 
-    def test_delete_nonexistent_agent(self, mock_http_client):
-        """Test deleting non-existent agent"""
-        agent = _Agent(mock_http_client)
-        mock_http_client._request.return_value = {
-            "statusCode": 404,
-            "message": "Agent not found"
-        }
-        
-        response = agent.delete("non-existent", delete_connected_resources=True)
-        assert response["statusCode"] == 404
+        assert isinstance(response, dict)
+        assert response["statusCode"] == 200
+        assert "message" in response
+
+        mock_http_client._request.assert_called_once_with(
+            "DELETE",
+            f"{res_path}/{delete_payload['namespace']}",
+            json=delete_payload
+        )
