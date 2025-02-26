@@ -20,3 +20,10 @@ class HTTPMethod(str, Enum):
     POST = "POST"
     PUT = "PUT"
     DELETE = "DELETE"
+
+class ResourcePath(str, Enum):
+    AGENT = "/agent"
+    KNOWLEDGE_BASE = "/knowledgebase"
+    FILES = "/files"
+    NOTES = "/notes"
+    UTILITIES = "/utilities"

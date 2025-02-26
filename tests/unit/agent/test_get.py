@@ -17,7 +17,7 @@ class TestAgentGet:
         assert response["namespace"] == "test-agent"
         mock_http_client._request.assert_called_once_with(
             "GET",
-            "/v1/agent/test-agent"
+            "/agent/test-agent"
         )
 
     def test_get_agent_not_found(self, mock_http_client):

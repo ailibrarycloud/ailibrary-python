@@ -12,19 +12,19 @@ from ailibrary.types.shared.enums import AgentType
 
 class TestAgentCreate:
     
-    def test_create_agent_success(self, mock_http_client, agent_create_payload, agent_response_payload):
+    def test_create_agent_success(self, mock_http_client, create_request, agent_response_payload):
         """Test successful agent creation with valid data"""
         agent = _Agent(mock_http_client)
         mock_http_client._request.return_value = agent_response_payload
         
-        response = agent.create(**agent_create_payload)
+        response = agent.create(**create_request)
         
         assert response["namespace"] == "test-agent"
-        assert response["title"] == agent_create_payload["title"]
+        assert response["title"] == create_request["title"]
         mock_http_client._request.assert_called_once_with(
             "POST",
-            "/v1/agent/create",
-            json=agent_create_payload
+            "/agent/create",
+            json=create_request
         )
 
     @pytest.mark.parametrize("invalid_payload", [

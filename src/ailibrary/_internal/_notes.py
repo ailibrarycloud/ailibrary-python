@@ -6,14 +6,14 @@ from ..types.notes.requests import (
     NoteDeleteRequest
 )
 from ..types.notes.responses import (NoteAddResponse, NoteGetResourceNotesResponse, NoteUpdateResponse, NoteGetResponse, NoteDeleteResponse)
-from ..types.shared.enums import ResourceType, RoleType
+from ..types.shared.enums import ResourceType, RoleType, ResourcePath
 from pydantic import ValidationError
 
 
 class _Notes:
     """Notes resource for managing notes on resources."""
 
-    _RESOURCE_PATH = "/notes"
+    _RESOURCE_PATH = ResourcePath.NOTES
 
     def __init__(self, http_client: _HTTPClient):
         self._http_client = http_client

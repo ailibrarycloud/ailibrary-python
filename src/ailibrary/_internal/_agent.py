@@ -5,12 +5,13 @@ from ..types.agent.requests import AgentCreateRequest, AgentUpdateRequest, Agent
 from ..types.agent.responses import AgentCreateResponse, AgentGetResponse, AgentListResponse, AgentUpdateResponse, AgentDeleteResponse
 # from ..types.chat.responses import ChatResponse
 from pydantic import ValidationError
+from ..types.shared.enums import ResourcePath
 
 
 class _Agent:
     """Client for interacting with the AI Library Agent API."""
 
-    _RESOURCE_PATH = "/agent"
+    _RESOURCE_PATH = ResourcePath.AGENT
 
     def __init__(self, http_client: _HTTPClient):
         self._http_client = http_client

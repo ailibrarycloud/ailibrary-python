@@ -14,12 +14,13 @@ from ..types.knowledge_base.responses import (
     # SourceData
 )
 from pydantic import ValidationError
+from ..types.shared.enums import ResourcePath
 
 
 class _KnowledgeBase:
     """Knowledge Base resource for managing vector databases."""
 
-    _RESOURCE_PATH = "/knowledgebase"
+    _RESOURCE_PATH = ResourcePath.KNOWLEDGE_BASE
 
     def __init__(self, http_client: _HTTPClient):
         self._http_client = http_client

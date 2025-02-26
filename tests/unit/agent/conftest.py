@@ -2,9 +2,12 @@ import pytest
 from ailibrary.types.shared.enums import AgentType
 from ailibrary.types.agent.requests import AgentCreateRequest, AgentUpdateRequest, AgentDeleteRequest
 
+@pytest.fixture
+def resource_path():
+    return "/agent"
 
 @pytest.fixture
-def agent_create_payload():
+def create_request():
     """Default agent creation payload"""
     return AgentCreateRequest(
         title="Test Agent",
