@@ -39,7 +39,6 @@ def e2e_config():
     return {
         "api_key": os.getenv("E2E_API_KEY"),
         "domain": os.getenv("E2E_DOMAIN"),
-        # "timeout": int(os.getenv("E2E_TIMEOUT", "300"))
     }
 
 @pytest.fixture(scope="session")
