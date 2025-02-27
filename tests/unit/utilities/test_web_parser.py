@@ -1,3 +1,23 @@
+# general test, urls list with one item
+# empty urls list
+# urls list with multiple items
+# none of the urls can be opened
+# only some of the urls can be opened
+# invalid url formats altogether
+# urls that don't exist
+# restricted urls hidden behind a paywall?
+# restricted urls hidden behind a login site?
+# some urls with http, some with https, some with just the domain
+# websites from anywhere in the world?
+# some urls are files, others are webpages 
+# urls that are too long for the database
+# urls with special characters
+# localhost:3000/ when im hosting something on localhost
+# url to a local file on computer ?
+# restricted websites / inappropriate websites?
+# domain safety? what if someone adds a url to a malicious website ???
+
+
 import pytest
 from ailibrary._internal._utilities import _Utilities
 from ailibrary.types.utilities.responses import WebParserResponse

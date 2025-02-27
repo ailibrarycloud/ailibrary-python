@@ -1,3 +1,6 @@
+# general test
+# all resource and resource_id tests (should be common across file)
+
 import pytest
 from ailibrary._internal._notes import _Notes
 from ailibrary.types.shared.enums import ResourceType, RoleType

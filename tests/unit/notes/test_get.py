@@ -1,3 +1,9 @@
+# general test
+# note_id that exists
+# note_id that doesn't exist
+# negative note_id?
+# note_id is a string?
+
 import pytest
 from ailibrary._internal._notes import _Notes
 from ailibrary.types.shared.enums import ResourceType, RoleType

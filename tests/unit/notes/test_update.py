@@ -1,3 +1,14 @@
+# general test (without meta)
+# note_id that exists
+# note_id that doesn't exist
+# negative note_id?
+# note_id is a string?
+# empty content
+# invalid role
+# each type of valid role
+
+# with meta (json-friendly string)
+# with meta (non-json-friendly string)
 import pytest
 from ailibrary._internal._notes import _Notes
 from ailibrary.types.shared.enums import RoleType

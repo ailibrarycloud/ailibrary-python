@@ -1,3 +1,15 @@
+# general test (without meta)
+# empty content
+# all string tests for content
+# invalid role
+# each type of valid role
+# invalid resource
+# each type of valid resource, with valid and invalid resource_id
+# All the resource_id tests done for each individual class
+# with meta (json-friendly string)
+# with meta (non-json-friendly string)
+
+
 import pytest
 from ailibrary._internal._notes import _Notes
 from ailibrary.types.shared.enums import ResourceType, RoleType

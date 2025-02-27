@@ -1,3 +1,5 @@
+# same tests as document parser
+
 import pytest
 from ailibrary._internal._utilities import _Utilities
 from ailibrary.types.utilities.responses import DocumentThumbnailResponse

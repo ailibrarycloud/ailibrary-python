@@ -1,3 +1,20 @@
+# general test
+# all resource and resource_id tests (should be common across file)
+# values list with one item
+# values list with multiple items
+# values list with multiple items, one of which doesn't exist
+# values list with multiple items, all of which don't exist
+# value list with remaining note_ids tests
+# values list and delete_all=true
+# values list and delete_all=false
+# empty values list and delete_all=true
+# empty values list and delete_all=false
+# No values list and delete_all=true
+# No values list and delete_all=false
+# No values list and no delete_all
+
+
+
 import pytest
 from ailibrary._internal._notes import _Notes
 from ailibrary.types.shared.enums import ResourceType

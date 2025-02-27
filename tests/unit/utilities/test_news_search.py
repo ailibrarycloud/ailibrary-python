@@ -1,3 +1,15 @@
+# general case
+# empty search terms
+# search terms with one empty string
+# search terms where all strings are empty
+# search terms where only some strings are empty
+# search terms where string has length 1 (what is the minimum allowed length of the search string?)
+# search terms where string is way too large and wont fit in database
+# search terms where string has different kinds of characters
+# search terms with inappropriate strings / banned topics?
+# search terms where the strings are website urls
+
+
 import pytest
 from ailibrary._internal._utilities import _Utilities
 from ailibrary.types.utilities.responses import NewsSearchResponse
