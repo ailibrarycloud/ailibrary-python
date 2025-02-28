@@ -40,7 +40,7 @@ class KnowledgeBaseListResponse(CustomBaseModel):
 
 
 class KnowledgeBaseDeleteResponse(CustomBaseModel):
-    response: str
+    message: str
 
 
 # class SourceData(CustomBaseModel):

@@ -4,15 +4,15 @@ from ..shared.base import CustomBaseModel
 from typing import Optional, Any
 
 
-class WebSearchSource(CustomBaseModel):
+class WebSearchSources(CustomBaseModel):
     title: str
-    description: str
     url: str
-    isFamilyFriendly: bool
-    language: str
-    full_text: str
+    # description: str
+    # isFamilyFriendly: bool
+    # language: str
+    # full_text: str
 
-class NewsSearchSource(CustomBaseModel):
+class NewsSearchSources(CustomBaseModel):
     title: str
     description: str
     url: str
@@ -35,10 +35,11 @@ class NewsArticle(CustomBaseModel):
     content: str
 
 
+
 class WebSearchResponse(CustomBaseModel):
     term: str
     prompt_context: str
-    sources: list[WebSearchSource]
+    sources: list[WebSearchSources]
 
 
 class WebParserResponse(CustomBaseModel):
@@ -50,8 +51,9 @@ class WebParserResponse(CustomBaseModel):
 
 
 class NewsSearchResponse(CustomBaseModel):
-    articles: list[NewsArticle]
-    total_results: int
+    search_term: str
+    prompt_context: str
+    sources: list[NewsSearchSources]
 
 
 class DocumentParserResponse(CustomBaseModel):

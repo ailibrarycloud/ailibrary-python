@@ -21,26 +21,33 @@
 
 
 import pytest
+import mimetypes
+import os
 from ailibrary._internal._files import _Files
 from ailibrary.types.files.responses import FileUploadResponse
+from unittest.mock import ANY
 
 
 class TestFilesUpload:
     @pytest.mark.parametrize("upload_payload", [
         {
-            "files": ["test.txt"],
+            "files": ["tests/_sample_files/test.txt"],
             "knowledgeId": "test-knowledge"
         }
     ])
     def test_general(self, res_path, mock_http_client, upload_payload):
         """Test successful file upload with various valid payloads"""
+        file_path = upload_payload["files"][0]
+        file_name = os.path.basename(file_path)
+        mime_type = mimetypes.guess_type(file_path)[0]
+        
         files = _Files(mock_http_client)
         
         mock_response = {
             "url": "https://example.com/test.txt",
             "id": 1,
             "bytes": 1024,
-            "name": "test.txt",
+            "name": file_name,
             "meta": {"type": "text"}
         }
         mock_http_client._request.return_value = mock_response
@@ -57,5 +64,5 @@ class TestFilesUpload:
             "POST",
             res_path,
             data={"knowledgeId": upload_payload["knowledgeId"]},
-            files=[('files', ('test.txt', mock.ANY, mock.ANY))]
+            files=[('files', (file_name, ANY, mime_type))]
         )

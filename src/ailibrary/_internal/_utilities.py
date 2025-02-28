@@ -49,6 +49,7 @@ class _Utilities:
             f"{self._RESOURCE_PATH}/websearch",
             json=payload
         )
+        # print(response)
         return self._validate_response(response, WebSearchResponse)
 
 
@@ -70,6 +71,7 @@ class _Utilities:
             f"{self._RESOURCE_PATH}/news",
             json=payload
         )
+        # print(response)
         return self._validate_response(response, NewsSearchResponse)
 
     def document_parser(self, urls: str) -> dict:

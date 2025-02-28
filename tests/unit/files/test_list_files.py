@@ -55,5 +55,5 @@ class TestFilesList:
         mock_http_client._request.assert_called_once_with(
             "GET",
             res_path,
-            params={"page": None, "limit": None}
+            params={}
         )

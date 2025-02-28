@@ -15,7 +15,6 @@ class TestKnowledgeBaseDelete:
         kb = _KnowledgeBase(mock_http_client)
         
         mock_response = {
-            "status": "success",
             "message": "Knowledge base deleted successfully"
         }
         mock_http_client._request.return_value = mock_response
@@ -23,7 +22,6 @@ class TestKnowledgeBaseDelete:
         response = kb.delete(knowledge_id)
 
         assert isinstance(response, dict)
-        assert response["status"] == "success"
         assert "message" in response
 
         mock_http_client._request.assert_called_once_with(
