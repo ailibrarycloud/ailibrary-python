@@ -23,6 +23,7 @@ test = [
     "pytest>=8.3.4",
     "pytest-cov",
     "pytest-mock",
+    "pytest-order",
     # "pytest-asyncio",  # if you need async testing
     "python-dotenv>=1.0.1"
 ]

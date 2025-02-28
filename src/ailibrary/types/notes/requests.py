@@ -21,7 +21,7 @@ class NoteUpdateRequest(MetaModel):
 
 class NoteDeleteRequest(BaseModel):
     resource: ResourceType
-    resource_id: str
+    resource_id: str = Field(..., min_length=1)
     values: Optional[list[str]] = None
     delete_all: Optional[bool] = None
 

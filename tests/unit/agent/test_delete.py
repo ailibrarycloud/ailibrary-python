@@ -10,7 +10,7 @@ from ailibrary._internal._agent import _Agent
 from ailibrary.types.agent.responses import AgentDeleteResponse
 
 class TestAgentDelete:
-    @pytest.mark.parametrize("delete_payload", [
+    @pytest.mark.parametrize("delete_params", [
         {
             "namespace": "test-agent",
             "delete_connected_resources": True
@@ -20,7 +20,7 @@ class TestAgentDelete:
             "delete_connected_resources": False
         }
     ])
-    def test_general(self, res_path, mock_http_client, delete_payload):
+    def test_general(self, res_path, mock_http_client, delete_params):
         """Test successful agent deletion with various valid payloads"""
         agent = _Agent(mock_http_client)
         
@@ -31,14 +31,16 @@ class TestAgentDelete:
         }
         mock_http_client._request.return_value = mock_response
         
-        response = agent.delete(**delete_payload)
+        response = agent.delete(**delete_params)
 
         assert isinstance(response, dict)
         assert response["statusCode"] == 200
         assert "message" in response
 
+        delete_payload = delete_params.copy()
+        delete_payload.pop("namespace")
         mock_http_client._request.assert_called_once_with(
             "DELETE",
-            f"{res_path}/{delete_payload['namespace']}",
+            f"{res_path}/{delete_params['namespace']}",
             json=delete_payload
         )

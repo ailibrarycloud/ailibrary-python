@@ -4,7 +4,7 @@ from ..shared.base import CustomBaseModel
 
 
 class KnowledgeBaseCreateRequest(CustomBaseModel):
-    name: str = Field(..., description="The name of the knowledge base")
+    name: str = Field(..., description="The name of the knowledge base", min_length=1)
     meta: Optional[dict] = None
 
 # class SourceOptions(BaseModel):

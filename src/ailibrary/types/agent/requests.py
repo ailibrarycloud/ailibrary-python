@@ -7,13 +7,14 @@ from ..shared.enums import AgentType
 class AgentDeleteRequest(CustomBaseModel):
     namespace: str = Field(..., 
         description="The unique identifier for the agent",
-        exclude=True
+        exclude=True,
+        min_length=1
     )
     delete_connected_resources: bool
 
 
 class AgentCreateRequest(CustomBaseModel):
-    title: str = Field(..., description="The name of your agent")
+    title: str = Field(..., description="The name of your agent", min_length=1)
     instructions: str = Field(
         default="You are a helpful assistant.",
         description="System instructions for the agent"
@@ -32,5 +33,6 @@ class AgentCreateRequest(CustomBaseModel):
 class AgentUpdateRequest(AgentCreateRequest):
     namespace: str = Field(..., 
         description="The unique identifier for the agent",
-        exclude=True
+        exclude=True,
+        min_length=1
     )
