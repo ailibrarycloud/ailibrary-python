@@ -4,10 +4,13 @@
 # content only comprised of whitespace characters
 # content max length (for database)?
 # special characters? Unicode characters only?
+# what if I don't even ask to generate a schema? what if i just 
+#        ask to manually edit database with erroneous values? 
 # what if the content string is completely nonsensical?
 #      - content string is fully made of digits
 #      - real worlds in a completely jibberish order
 #      - literal jibberish
+
 
 
 import pytest
