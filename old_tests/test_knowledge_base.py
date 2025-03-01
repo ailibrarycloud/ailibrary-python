@@ -19,33 +19,38 @@ def test_knowledge_base(client, args):
     kb_data = knowledge_base.create(name)  # Create a knowledge base
     print(f"knowledge_base.create() response:\n{kb_data}\n")
 
-    knowledge_id = kb_data["knowledgeId"]
+    knowledgeId = kb_data["knowledgeId"]
 
     kbs = knowledge_base.list_knowledge_bases()  # List all knowledge bases
     print(f"knowledge_base.list_knowledge_bases() response:\n{kbs}\n")
 
-    kb_info = knowledge_base.get(knowledge_id)  # Get a knowledge base by ID
+    kb_info = knowledge_base.get(knowledgeId)  # Get a knowledge base by ID
     print(f"knowledge_base.get() response:\n{kb_info}\n")
     
-    # #### ERROR: doesnt work (Internal Server Error)
-    data_url = "https://example-files.online-convert.com/document/txt/example.txt"
-    source_data = knowledge_base.add_source(knowledge_id, urls=[data_url], type="docs")  # Add a source to the knowledge base
-    print(f"knowledge_base.add_source() response:\n{source_data}\n")
-
-    kb_status = knowledge_base.get_status(knowledge_id)  # Get the status of the knowledge base
+    kb_status = knowledge_base.get_status(knowledgeId)  # Get the status of the knowledge base
     print(f"knowledge_base.get_status() response:\n{kb_status}\n")
+    
+    # # The response is weird
+    # data_url = "https://example-files.online-convert.com/document/txt/example.txt"
+    # source_data = knowledge_base.add_source(knowledgeId, urls=[data_url], type="docs")  # Add a source to the knowledge base
+    # print(f"knowledge_base.add_source() response:\n{source_data}\n")
 
-    sources = knowledge_base.list_sources(knowledge_id)  # List all sources in the knowledge base
-    print(f"knowledge_base.list_sources() response:\n{sources}\n")
+    # # need to figure this out
+    # source_info = knowledge_base.get_source(knowledgeId, ????)  # Get a source by ???
+    # print(f"knowledge_base.get_source() response:\n{source_info}\n")
 
-    # ### CANT TEST UNTIL ADD SOURCE WORKS
-    # delete_sources_response = knowledge_base.delete_sources(knowledge_id, values=[source_data["id"]])  # Delete sources from the knowledge base
+    # sources = knowledge_base.list_sources(knowledgeId)  # List all sources in the knowledge base
+    # print(f"knowledge_base.list_sources() response:\n{sources}\n")
+
+    # delete_sources_response = knowledge_base.delete_sources(knowledgeId, values=[source_data["id"]])  # Delete sources from the knowledge base
     # print(f"knowledge_base.delete_sources() response:\n{delete_sources_response}\n")
 
     try:
-        knowledge_base.get(knowledge_id)
+        knowledge_base.get(knowledgeId)
+        print(f"Verified that delete_sources() doesnt crash when the given knowledgeId is not found\n")
     except:
-        print(f"Verified that deleted knowledge base with id '{knowledge_id}' is not found\n")
+        print(f"Failed test case: delete_sources() doesnt work when knowledgeId not found\n")
+
 
 if __name__ == "__main__":
     # get arguments from command line

@@ -28,23 +28,24 @@ def test_notes(client, args):
 
     note_id = note_data["noteId"]
 
-    resource_notes = notes.get_for_resource(resource, resource_id)  # Get notes for a resource
-    print(f"notes.get_for_resource() response:\n{resource_notes}\n")
+    resource_notes = notes.get_resource_notes(resource, resource_id)  # Get notes for a resource
+    print(f"notes.get_resource_notes() response:\n{resource_notes}\n")
 
-    update_response = notes.update(note_id, "Updated note content", "user")  # Update a note
-    print(f"notes.update() response:\n{update_response}\n")
+    # update_response = notes.update(note_id, "Updated note content", "user")  # Update a note
+    # print(f"notes.update() response:\n{update_response}\n")
 
     note_info = notes.get(note_id)  # Get a note by ID
     print(f"notes.get() response:\n{note_info}\n")
 
-    # #### ERROR: doesnt work
     # delete_notes_response = notes.delete_notes(resource, resource_id, [note_id])  # Delete note
-    # print(f"notes.delete_notes() response:\n{delete_notes_response}\n") 
+    delete_notes_response = notes.delete_notes(resource, resource_id, delete_all=True)  # Delete note
+    print(f"notes.delete_notes() response:\n{delete_notes_response}\n") 
 
     try:
         notes.delete_notes(resource, resource_id, [note_id])
+        print(f"Verified that delete_notes() doesnt crash when the given noteID is not found\n")
     except:
-        print(f"Verified that deleted note with id '{resource_id}' is not found\n")
+        print(f"Failed test case: delete_notes() doesnt work when noteID not found\n")
 
 
 

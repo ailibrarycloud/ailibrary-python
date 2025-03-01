@@ -5,8 +5,8 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "ailibrary"
 version = "0.1.2"
-description = "AI Library REST API for any Python 3.8+ application."
-requires-python = ">=3.8"
+description = "AI Library REST API for any Python 3.9+ application."
+requires-python = ">=3.9"
 readme = "README.md"
 authors = [
     {name = "Arani Chaudhuri", email = "arani@ailibrary.ai"}
@@ -17,6 +17,21 @@ classifiers = [
 ]
 license = {text = ""} #?
 dynamic = ["dependencies"]
+
+[project.optional-dependencies]
+test = [
+    "pytest>=8.3.4",
+    "pytest-cov",
+    "pytest-mock",
+    "pytest-order",
+    # "pytest-asyncio",  # if you need async testing
+    "python-dotenv>=1.0.1"
+]
+dev = [
+    "black",
+    "flake8",
+    "mypy"
+]
 
 [tool.setuptools.dynamic]
 dependencies = {file = ["requirements.txt"]}

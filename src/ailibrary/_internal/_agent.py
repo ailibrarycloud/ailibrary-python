@@ -1,127 +1,81 @@
-from typing import Dict, List, Optional, Literal
+from typing import Optional, Generator
 from .__http_client import _HTTPClient
-import json
-import requests
+from ..types.agent.requests import AgentCreateRequest, AgentUpdateRequest, AgentDeleteRequest
+# from ..types.agent.requests import ChatRequest
+from ..types.agent.responses import AgentCreateResponse, AgentGetResponse, AgentListResponse, AgentUpdateResponse, AgentDeleteResponse
+# from ..types.chat.responses import ChatResponse
+from pydantic import ValidationError
+from ..types.shared.enums import ResourcePath
 
 
 class _Agent:
     """Client for interacting with the AI Library Agent API."""
 
+    _RESOURCE_PATH = ResourcePath.AGENT
+
     def __init__(self, http_client: _HTTPClient):
         self._http_client = http_client
 
-    def create(
-        self,
-        title: str,
-        instructions: Optional[str] = "You are a helpful assistant.",
-        description: Optional[str] = None,
-        coverimage: Optional[str] = None,
-        intromessage: Optional[str] = None,
-        knowledge_search: Optional[bool] = None,
-        knowledge_id: Optional[str] = None
-    ) -> Dict:
+
+    def _validate_response(self, response: dict, validation_class) -> dict:
+        try:
+            validation_class(**response)
+            return response
+        except ValidationError as e:
+            raise e
+
+
+    def create(self, title: str, **kwargs) -> dict:
         """Create a new agent with the specified parameters."""
+        payload = AgentCreateRequest(title=title, **kwargs).model_dump()
+        response = self._http_client._request("POST", f"{self._RESOURCE_PATH}/create", json=payload)
+        return self._validate_response(response, AgentCreateResponse)
 
-        if not title:
-            raise ValueError("Title cannot be empty")
-        payload = {"title": title}
-        optional_params = {"instructions": instructions, "description": description,
-                           "coverimage": coverimage, "intromessage": intromessage,
-                           "knowledge_search": knowledge_search, "knowledge_id": knowledge_id}
-        for param in optional_params:
-            param_value = optional_params[param]
-            if param_value is not None:
-                payload[param] = param_value
-        return self._http_client._request("POST", "/v1/agent/create", json=payload)
 
-    def get(self, namespace: str) -> Dict:
+    def get(self, namespace: str) -> dict:
         """Retrieve information about an agent."""
-        return self._http_client._request("GET", f"/v1/agent/{namespace}")
+        if not isinstance(namespace, str) or not namespace:
+            raise ValueError("Namespace must be a non-empty string")
+        response = self._http_client._request("GET", f"{self._RESOURCE_PATH}/{namespace}")
+        if "status" in response and response["status"] == "failure":
+            return response
+        return self._validate_response(response, AgentGetResponse)
 
-    def list_agents(self) -> Dict:
+
+    def list_agents(self) -> dict:
         """List all agents."""
-        return self._http_client._request("GET", "/v1/agent")
+        response = self._http_client._request("GET", self._RESOURCE_PATH)
+        return self._validate_response(response, AgentListResponse)
 
-    def update(
-        self,
-        namespace: str,
-        title: Optional[str] = None,
-        type: Optional[Literal["notebook", "chat", "voice"]] = None,
-        instructions: Optional[str] = "You are a helpful assistant.",
-        description: Optional[str] = None,
-        coverimage: Optional[str] = None,
-        intromessage: Optional[str] = None,
-        knowledge_search: Optional[bool] = None,
-        knowledge_id: Optional[str] = None
-    ) -> Dict:
+
+    def update(self, namespace: str, **kwargs) -> dict:
         """Update an existing agent."""
+        payload = AgentUpdateRequest(namespace=namespace, **kwargs).model_dump()
+        response = self._http_client._request("PUT", f"{self._RESOURCE_PATH}/{namespace}", json=payload)
+        return self._validate_response(response, AgentUpdateResponse)
 
-        payload = {"namespace": namespace}
-        valid_types = ["notebook", "chat", "voice"]
 
-        optional_params = {"title": title, "type": type, "instructions": instructions,
-                           "description": description, "coverimage": coverimage,
-                           "intromessage": intromessage, "knowledge_search": knowledge_search,
-                           "knowledge_id": knowledge_id}
-        for param in optional_params:
-            param_value = optional_params[param]
-            if param == "type" and param_value and param_value not in valid_types:
-                raise ValueError(f"Invalid agent type. If specified, must be one of: {
-                                 self._http_client._stringify(valid_types)} .")
-            elif param_value is not None:
-                payload[param] = param_value
-        return self._http_client._request("PUT", f"/v1/agent/{namespace}", json=payload)
-
-    def delete(self, namespace: str) -> Dict:
+    def delete(self, namespace: str, delete_connected_resources: bool) -> dict:
         """Delete an agent."""
-        return self._http_client._request("DELETE", f"/v1/agent/{namespace}")
+        payload = AgentDeleteRequest(namespace=namespace, delete_connected_resources=delete_connected_resources).model_dump()
+        response = self._http_client._request("DELETE", f"{self._RESOURCE_PATH}/{namespace}", json=payload)
+        return self._validate_response(response, AgentDeleteResponse)
 
-    def chat(self, namespace: str, messages: List[Dict[str, str]], session_id: Optional[str] = None) -> Dict:
-        """Chat with an agent.
 
-        Args:
-            namespace: The agent namespace
-            messages: List of message dictionaries (at least one).
-                Requirements:
-                    - At least one message
-                    - Required key: 'role' 
-                        - Possible values: 'assistant', 'user', 'system'
-                    - Required key: 'content'
-                        - Possible values: any string
-            session_id: Optional session identifier
-        """
-        if not namespace:
-            raise ValueError("Namespace cannot be empty")
-        if not messages:
-            raise ValueError("Messages list cannot be empty")
+    # ### WORK IN PROGRESS ###
+    # def chat(self, namespace: str, messages: list[dict], stream: bool = False) -> Generator[str, None, None]:
+    #     """Chat with an agent."""
+    #     request = ChatRequest(messages=messages)
+    #     url = f"{self._http_client.base_url}/v1/agent/{namespace}/chat"
+    #     payload = request.model_dump_json()
+    #     headers = {
+    #         'Content-Type': 'application/json',
+    #         'X-Library-Key': self._http_client.headers["X-Library-Key"]
+    #     }
 
-        valid_roles = {"assistant", "user", "system"}
-        for msg in messages:
-            if not isinstance(msg, dict):
-                raise ValueError("Each message must be a dictionary")
-            if "role" not in msg or "content" not in msg:
-                raise ValueError(
-                    "Each message must contain 'role' and 'content' keys")
-            if msg["role"] not in valid_roles:
-                raise ValueError(f"Message role must be one of {valid_roles}")
-            if not isinstance(msg["content"], str):
-                raise ValueError("Message content must be a string")
-
-        domain = self._http_client.base_url
-        url = f"{domain}/v1/agent/{namespace}/chat"
-        payload = json.dumps({
-            "messages": messages,
-            "session_id": session_id if session_id else "test-session",
-        })
-        headers = {
-            'Content-Type': 'application/json',
-            'X-Library-Key': self._http_client.headers["X-Library-Key"]
-        }
-        # response = requests.request("POST", url, headers=headers, data=payload)
-        with requests.request("POST", url, headers=headers, data=payload, stream=True) as response:
-            response.raise_for_status()
-            for chunk in response.iter_content(chunk_size=8192):
-                if chunk:
-                    decoded_chunk = chunk.decode('utf-8')
-                    yield decoded_chunk
+    #     with requests.request("POST", url, headers=headers, data=payload, stream=True) as response:
+    #         response.raise_for_status()
+    #         for chunk in response.iter_content(chunk_size=8192):
+    #             if chunk:
+    #                 yield chunk.decode('utf-8')
         

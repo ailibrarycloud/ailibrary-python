@@ -1,7 +1,7 @@
 import _setup_tests
 import sys
 from typing import List, Tuple, BinaryIO
-
+import ast
 
 def get_args():
     """ Get arguments from command line """
@@ -22,23 +22,28 @@ def test_files(client, args):
     files = client.files
     file_paths = args.get("files", ["testing/test_file.txt"])
 
-    # #### ERROR: 
-    # #### requests.exceptions.HTTPError: 422 Client Error: unknown for url: https://api.ailibrary.ai/v1/files
-    # upload_response = files.upload(file_paths)  # Upload a file
-    # print(f"files.upload() response:\n{upload_response}\n")
+    upload_response = files.upload(file_paths)  # Upload a file
+    print(f"files.upload() response:\n{upload_response}\n")
 
-    # file_id = upload_response[0]["id"]
+    file_id = upload_response[0]["id"]
+
+    # print(f"{upload_response[0]}\n")
+    # print(f"{file_id}\n")
 
     all_files = files.list_files()  # List all files
     print(f"files.list_files() response:\n{all_files}\n")
 
-    # ### CANT TEST UNTIL UPLOAD FILE WORKS
-    # file_info = files.get(file_id)  # Get a file by ID
-    # print(f"files.get() response:\n{file_info}\n")
+    file_info = files.get(file_id)  # Get a file by ID
+    print(f"files.get() response:\n{file_info}\n")
 
-    # ### CANT TEST UNTIL UPLOAD FILE WORKS
-    # delete_response = files.delete(file_id)  # Delete a file
-    # print(f"files.delete() response:\n{delete_response}\n")
+    delete_response = files.delete(file_id)  # Delete a file
+    print(f"files.delete() response:\n{delete_response}\n")
+
+    # try:
+    #     files.delete(file_id)
+    #     print(f"Verified that delete() doesnt crash when the file_id is not found\n")        
+    # except:
+    #     print(f"Failed test case: delete() doesnt work when file_id not found\n")
 
 
 if __name__ == "__main__":

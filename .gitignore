@@ -2,7 +2,7 @@
 /.vscode/
 /.pytest_cache/
 .env
-.env.sample
+.env.*
 build.log
 requirements.in
 recreate_package.sh
@@ -13,3 +13,4 @@ recreate_package.sh
 /dist/
 build/
 recreate_package.sh
+.python-version
