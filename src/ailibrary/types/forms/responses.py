@@ -1,6 +1,8 @@
 from typing import Optional
 from datetime import datetime
 from ..shared.base import CustomBaseModel
+from .forms_base_class import FormsBaseClass
+from pydantic import Field
 
 class FormListItems(CustomBaseModel):
     form_id: str
@@ -17,16 +19,16 @@ class FormMeta(CustomBaseModel):
     next_page: str
     previous_page: str
 
-class FormCreateResponse(CustomBaseModel):
+class FormCreateResponse(FormsBaseClass):
     form_id: str
     title: str
-    schema: str
+    schema_data: dict = Field(default=..., alias="schema")
 
 
-class FormGetResponse(CustomBaseModel):
+class FormGetResponse(FormsBaseClass):
     form_id: str
     title: str
-    schema: dict
+    schema_data: dict = Field(default=..., alias="schema")
 
 
 class FormListResponse(CustomBaseModel):
@@ -34,10 +36,10 @@ class FormListResponse(CustomBaseModel):
     meta: FormMeta
 
 
-class FormUpdateResponse(CustomBaseModel):
+class FormUpdateResponse(FormsBaseClass):
     form_id: str
     title: str
-    schema: dict
+    schema_data: dict = Field(default=..., alias="schema")
 
 
 class FormDeleteResponse(CustomBaseModel):

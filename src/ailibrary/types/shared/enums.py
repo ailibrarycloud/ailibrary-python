@@ -27,4 +27,4 @@ class ResourcePath(str, Enum):
     FILES = "/files"
     NOTES = "/notes"
     UTILITIES = "/utilities"
-    FORMS = "/forms"
+    FORMS = "/form"

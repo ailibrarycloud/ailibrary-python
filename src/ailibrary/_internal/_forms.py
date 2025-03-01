@@ -42,7 +42,8 @@ class _Forms:
         payload = FormCreateRequest(title=title, schema=schema).model_dump()
         response = self._http_client._request(
             "POST",
-            f"{self._RESOURCE_PATH}/create",
+            # f"{self._RESOURCE_PATH}/create",
+            f"{self._RESOURCE_PATH}",
             json=payload
         )
         return self._validate_response(response, FormCreateResponse)
@@ -65,10 +66,8 @@ class _Forms:
         return self._validate_response(response, FormListResponse)
 
 
-    def update(self, form_id: str, **kwargs) -> dict:
+    def update(self, form_id: str, title: Optional[str] = None, schema: Optional[dict] = None) -> dict:
         """Update an existing form template."""
-        if not isinstance(form_id, str) or not form_id:
-            raise ValueError("form_id must be a non-empty string")
         payload = FormUpdateRequest(form_id=form_id, **kwargs).model_dump()
         response = self._http_client._request(
             "PUT",
@@ -82,10 +81,8 @@ class _Forms:
         """Delete a form template."""
         if not isinstance(form_id, str) or not form_id:
             raise ValueError("form_id must be a non-empty string")
-        payload = FormDeleteRequest(form_id=form_id).model_dump()
         response = self._http_client._request(
             "DELETE",
             f"{self._RESOURCE_PATH}/{form_id}",
-            json=payload
         )
         return self._validate_response(response, FormDeleteResponse)

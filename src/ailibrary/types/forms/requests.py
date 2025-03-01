@@ -1,33 +1,18 @@
-from typing import Optional, Any
+from typing import Optional
 from pydantic import Field
 from ..shared.base import CustomBaseModel
+from .forms_base_class import FormsBaseClass
 
-
-class FormField(CustomBaseModel):
-    name: str = Field(..., min_length=1)
-    type: str = Field(..., min_length=1)
-    required: bool = False
-    options: Optional[list[str]] = None
-    description: Optional[str] = None
-
-
-class FormCreateRequest(CustomBaseModel):
+class FormCreateRequest(FormsBaseClass):
     title: str = Field(..., min_length=1)
-    schema: dict
+    schema_data: dict = Field(..., alias="schema")
 
 
-class FormUpdateRequest(CustomBaseModel):
-    form_id: str = Field(..., min_length=1)
+class FormUpdateRequest(FormsBaseClass):
+    form_id: str = Field(..., exclude=True, min_length=1)
     title: Optional[str] = None
-    fields: Optional[list[FormField]] = None
-    description: Optional[str] = None
-    meta: Optional[dict] = None
+    schema_data: Optional[dict] = Field(default=None, alias="schema")
 
 
 class FormDeleteRequest(CustomBaseModel):
     form_id: str = Field(..., min_length=1)
-
-
-class FormSubmitRequest(CustomBaseModel):
-    form_id: str = Field(..., min_length=1)
-    values: dict[str, Any]
