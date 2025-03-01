@@ -1,7 +1,7 @@
 from typing import Optional
 from pydantic import Field
 from ..shared.base import CustomBaseModel
-from ..shared.enums import AgentType
+# from ..shared.enums import AgentType
 
 
 class AgentDeleteRequest(CustomBaseModel):
@@ -19,7 +19,7 @@ class AgentCreateRequest(CustomBaseModel):
         default="You are a helpful assistant.",
         description="System instructions for the agent"
     )
-    type: Optional[AgentType] = None
+    # type: Optional[AgentType] = None
     description: Optional[str] = None
     coverimage: Optional[str] = None
     intromessage: Optional[str] = None

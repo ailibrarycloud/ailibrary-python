@@ -13,13 +13,12 @@ from ..types.forms.responses import (
     FormDeleteResponse
 )
 from pydantic import ValidationError
-from ..types.shared.enums import ResourcePath
 
 
 class _Forms:
     """Forms resource for managing form templates and submissions."""
 
-    _RESOURCE_PATH = ResourcePath.FORMS
+    _RESOURCE_PATH = "/form"
 
     def __init__(self, http_client: _HTTPClient):
         self._http_client = http_client

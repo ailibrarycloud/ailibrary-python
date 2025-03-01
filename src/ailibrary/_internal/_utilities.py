@@ -17,13 +17,12 @@ from ..types.utilities.responses import (
 )
 from pydantic import ValidationError
 from typing import Union, Optional
-from ..types.shared.enums import ResourcePath
 # from ..types.utilities.responses import SearchResultData, ParsedContentData
 
 class _Utilities:
     """Utility functions to support AI agents."""
 
-    _RESOURCE_PATH = ResourcePath.UTILITIES
+    _RESOURCE_PATH = "/utilities"
 
     def __init__(self, http_client: _HTTPClient):
         self._http_client = http_client

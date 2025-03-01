@@ -10,10 +10,10 @@ class RoleType(str, Enum):
     USER = "user"
     ASSISTANT = "assistant"
 
-class AgentType(str, Enum):
-    NOTEBOOK = "notebook"
-    CHAT = "chat"
-    VOICE = "voice"
+# class AgentType(str, Enum):
+#     NOTEBOOK = "notebook"
+#     CHAT = "chat"
+#     VOICE = "voice"
 
 class HTTPMethod(str, Enum):
     GET = "GET"

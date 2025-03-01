@@ -8,4 +8,3 @@ from ..files.file_schema import FileSchema
 class HTTPInit(CustomBaseModel):
     api_key: str = Field(..., description="The API key for the AI Library", min_length=1)
     base_url: str = Field(..., description="The base URL for the AI Library", min_length=1)
-    version: str = Field(..., description="The version of the AI Library", min_length=1)

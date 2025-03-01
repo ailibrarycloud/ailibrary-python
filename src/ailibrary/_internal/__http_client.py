@@ -9,15 +9,14 @@ from ..types.shared.enums import HTTPMethod
 class _HTTPClient:
     """Handles HTTP requests to the AI Library API."""
     
-    def __init__(self, api_key: str, base_url: str, version: str):
-        init_params = HTTPInit(api_key=api_key, base_url=base_url, version=version)
-        api_key, base_url, version = init_params.api_key, init_params.base_url, init_params.version
+    def __init__(self, api_key: str, base_url: str):
+        init_params = HTTPInit(api_key=api_key, base_url=base_url)
+        api_key, base_url = init_params.api_key, init_params.base_url
         if base_url[-1] == "/":
             base_url = base_url[:-1]
-        if version[-1] == "/":
-            version = version[:-1]
+
             
-        self.base_url = f"{base_url}/{version}"
+        self.base_url = f"{base_url}/v1"
         self.headers = {
             "X-Library-Key": api_key,
         }
