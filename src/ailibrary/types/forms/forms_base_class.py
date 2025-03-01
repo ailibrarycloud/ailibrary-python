@@ -1,20 +1,25 @@
-from typing import Any
-from ..shared.base import CustomBaseModel
+# from typing import Any
+from ..shared.models import CustomBaseModel
 from pydantic import Field, ConfigDict
 
 class FormsBaseClass(CustomBaseModel):
-    model_config = ConfigDict(populate_by_name=True, by_alias=True)
-    schema_data: Any = Field(default=None, alias="schema")
+    model_config = ConfigDict(validate_by_alias=True, 
+                              validate_by_name=True, 
+                              serialize_by_alias=True, 
+                              use_enum_values=True,
+                              extra="allow") # for now
 
-    @property
-    def schema(self) -> Any:
-        return self.schema_data
+    schema_data: dict = Field(default=None, alias="schema")
 
-    @schema.setter
-    def schema(self, value: Any) -> None:
-        self.schema_data = value
+    # @property
+    # def schema(self) -> Any:
+    #     return self.schema_data
 
-    def model_dump(self, *args, **kwargs):
-        kwargs['exclude_none'] = True
-        kwargs["by_alias"] = True
-        return super().model_dump(*args, **kwargs)
+    # @schema.setter
+    # def schema(self, value: Any) -> None:
+    #     self.schema_data = value
+
+    # def model_dump(self, *args, **kwargs):
+    #     kwargs['exclude_none'] = True
+    #     kwargs["by_alias"] = True
+    #     return super().model_dump(*args, **kwargs)

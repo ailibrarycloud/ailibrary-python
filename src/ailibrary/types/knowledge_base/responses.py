@@ -1,8 +1,7 @@
-from datetime import datetime
 from typing import Optional
-from ..shared.responses import APIResponse, ListResponse
-from .requests import KnowledgeBaseCreateRequest
-from ..shared.base import CustomBaseModel
+# from ..shared.responses import APIResponse, ListResponse
+# from .requests import KnowledgeBaseCreateRequest
+from ..shared.models import CustomBaseModel
 
 
 class KnowledgeBaseCreateResponse(CustomBaseModel):
@@ -43,16 +42,7 @@ class KnowledgeBaseDeleteResponse(CustomBaseModel):
     message: str
 
 
-# class SourceData(CustomBaseModel):
-#     id: str
-#     type: str
-#     status: str
-#     created_timestamp: datetime
-#     options: Optional[dict] = None
-#     meta: Optional[dict] = None
+class SourceAddResponse(CustomBaseModel):
+    status: str
+    id: int
 
-# class SourceResponse(APIResponse[SourceData]):
-#     pass
-
-# class SourceListResponse(ListResponse[SourceData]):
-#     pass

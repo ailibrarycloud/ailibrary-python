@@ -14,6 +14,15 @@ def get_args():
     return args
 
 
+def test_invalid_form_id(forms_function, form_id, **kwargs):
+    function_name = forms_function.__name__
+    try:
+        forms_function(form_id, **kwargs)
+        print(f"Verified that {function_name}() does not crash when the given form_id is not found\n")
+    except:
+        print(f"Failed test case: {function_name}() crashes when form_id not found\n")
+
+
 def test_forms(client, args):
     """ Test basic functionality of form.py 
     Args: title, update_title
@@ -30,20 +39,24 @@ def test_forms(client, args):
     }
 
     create_response = forms.create(title, schema)  # test create()
-    print(f"form.create() response:\n{create_response}\n")
+    print(f"forms.create() response:\n{create_response}\n")
 
     form_id = create_response["form_id"]
     form_info = forms.get(form_id)  # Get information about the form
-    print(f"form.get() response:\n{form_info}\n")
+    print(f"forms.get() response:\n{form_info}\n")
 
-    forms_list = forms.list_forms()  # List all forms
-    print(f"form.list_forms() response:\n{forms_list}\n")
+    forms_list_response = forms.list_forms()  # List all forms
+    print(f"forms.list_forms() response:\n{forms_list_response}\n")
 
     updated_form = forms.update(form_id, title=update_title)  # Update the form
-    print(f"form.update() response:\n{updated_form}\n")
+    print(f"forms.update() response:\n{updated_form}\n")
 
     deleted_form = forms.delete(form_id)  # Delete the form
-    print(f"form.delete() response:\n{deleted_form}\n")
+    print(f"forms.delete() response:\n{deleted_form}\n")
+
+    test_invalid_form_id(forms.update, form_id, title=update_title)
+    test_invalid_form_id(forms.get, form_id)
+    test_invalid_form_id(forms.delete, form_id)
 
 
 if __name__ == "__main__":

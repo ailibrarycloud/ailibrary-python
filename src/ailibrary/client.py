@@ -10,8 +10,8 @@ from ._internal._forms import _Forms
 class AILibrary:
     """Main client for interacting with the AI Library API."""
 
-    def __init__(self, api_key: str, domain: str = "https://api.ailibrary.ai/", version: str = "v1/"):
-        self._http_client = _HTTPClient(api_key, domain, version)
+    def __init__(self, api_key: str, domain: str = "https://api.ailibrary.ai/"):
+        self._http_client = _HTTPClient(api_key, domain)
 
         # Initialize resources
         self.agent = _Agent(self._http_client)

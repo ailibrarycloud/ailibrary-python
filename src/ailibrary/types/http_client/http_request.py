@@ -1,24 +1,17 @@
-from typing import Optional, Tuple, BinaryIO, Any
-from pydantic import Field, field_validator, ConfigDict, ValidationError
-from ..shared.base import CustomBaseModel
+from typing import Optional, Any
+from pydantic import Field, field_validator, ValidationError
+from ..shared.models import CustomBaseModel
 from ..shared.enums import HTTPMethod
 from ..files.file_schema import FileSchema
 
 class HTTPRequest(CustomBaseModel):
-    method: str  # Change to str for initial validation
+    method: HTTPMethod
     endpoint: str
     params: Optional[dict] = None
     data: Optional[dict] = None
     json_payload: Optional[dict] = Field(default=None, alias="json")
     files: Optional[list] = None
     stream: bool = False
-
-
-    @field_validator('method')
-    def validate_method(cls, value):
-        if value not in HTTPMethod.__members__:
-            raise ValueError(f"Invalid HTTP method: {value}. Must be one of: {[m.value for m in HTTPMethod]}")
-        return HTTPMethod[value]  # Convert to HTTPMethod enum member
 
 
     @field_validator("files")

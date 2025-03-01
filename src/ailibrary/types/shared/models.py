@@ -7,7 +7,8 @@ class CustomBaseModel(BaseModel):
     model_config = ConfigDict(
         loc_by_alias=False,  # Shows full path in validation errors
         validate_assignment=True,  # Ensures re-validation everytime the a model attribute is reassigned
-        extra='ignore'  # extra arguments to models are ignored...for now
+        use_enum_values=True, # Ensures Enums are actually converted to the strings they represent
+        extra='allow'  # extra arguments to models are allowed...for now
     )
 
 

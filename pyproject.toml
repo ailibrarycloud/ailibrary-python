@@ -15,7 +15,7 @@ classifiers = [
     "Programming Language :: Python :: 3",
     "Operating System :: OS Independent"
 ]
-license = {text = ""} #?
+# license = {text = ""} #?
 dynamic = ["dependencies"]
 
 [project.optional-dependencies]
@@ -32,6 +32,26 @@ dev = [
     "flake8",
     "mypy"
 ]
+
+
+[tool.pytest.ini_options]
+testpaths = ["tests/unit", "tests/integration"]
+markers = [
+    "http_client: tests for _HTTPClient class",
+    "unit: unit tests using mock",
+    "integration: integration tests using mock",
+    "e2e: end-to-end tests with real API calls"
+]
+
+addopts = "-v"
+# options from deleted pytest.ini file:
+# addopts = 
+#     --verbose
+#     --tb=short
+#     --strict-markers
+
+# list of options found at: https://docs.pytest.org/en/stable/reference/reference.html#command-line-flags
+# under the "[pytest] ini-options" section
 
 [tool.setuptools.dynamic]
 dependencies = {file = ["requirements.txt"]}

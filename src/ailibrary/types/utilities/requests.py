@@ -1,5 +1,5 @@
 from pydantic import BaseModel, Field
-from ..shared.base import CustomBaseModel
+from ..shared.models import CustomBaseModel
 from typing import Optional
 
 class WebSearchRequest(CustomBaseModel):

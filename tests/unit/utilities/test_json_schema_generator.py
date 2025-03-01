@@ -12,10 +12,9 @@
 #      - literal jibberish
 
 
-
 import pytest
 from ailibrary._internal._utilities import _Utilities
-from ailibrary.types.utilities.responses import JSONSchemaGeneratorResponse
+
 
 class TestUtilitiesJSONSchemaGenerator:
     @pytest.mark.parametrize("schema_payload", [

@@ -1,6 +1,6 @@
 from pydantic import ConfigDict, field_validator, ValidationError
 from typing import Tuple, BinaryIO, Any
-from ..shared.base import CustomBaseModel
+from ..shared.models import CustomBaseModel
 from .binary_file_validator import BinaryFileValidator
 
 

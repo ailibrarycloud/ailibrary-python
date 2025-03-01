@@ -9,6 +9,14 @@
 
 # with meta (json-friendly string)
 # with meta (non-json-friendly string)
+
+# for each of [content, role, meta]
+# update with non-empty value when original value is empty
+# update with empty value when original value is non-empty
+# update with different non-empty value when original value is non-empty
+# update with exactly same value as original value
+
+
 import pytest
 from ailibrary._internal._notes import _Notes
 from ailibrary.types.shared.enums import RoleType

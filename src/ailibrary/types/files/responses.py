@@ -1,8 +1,8 @@
 from datetime import datetime
 from typing import Optional
-from ..shared.responses import APIResponse, ListResponse
-from .requests import FileUploadRequest
-from ..shared.base import CustomBaseModel
+# from ..shared.responses import APIResponse, ListResponse
+# from .requests import FileUploadRequest
+from ..shared.models import CustomBaseModel
 
 
 class FileResponseData(CustomBaseModel):

@@ -1,7 +1,9 @@
 from typing import Optional, Any
-from pydantic import BaseModel
+# from pydantic import BaseModel
+from ..shared.models import CustomBaseModel
 
-class HTTPResponse(BaseModel):
+# class HTTPResponse(BaseModel):
+class HTTPResponse(CustomBaseModel):
     status_code: int
     data: Any
 

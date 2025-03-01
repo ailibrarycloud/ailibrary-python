@@ -1,16 +1,16 @@
 from pydantic import BaseModel
-from ..shared.responses import APIResponse
-from ..shared.base import CustomBaseModel
+# from ..shared.responses import APIResponse
+from ..shared.models import CustomBaseModel
 from typing import Optional, Any
 
 
 class WebSearchSources(CustomBaseModel):
     title: str
     url: str
-    # description: str
-    # isFamilyFriendly: bool
-    # language: str
-    # full_text: str
+    description: str
+    isFamilyFriendly: bool
+    language: str
+    full_text: str
 
 class NewsSearchSources(CustomBaseModel):
     title: str
@@ -47,7 +47,7 @@ class WebParserResponse(CustomBaseModel):
     title: str
     domain: str
     body: str
-    related_urls: list[RelatedUrl]
+    related_urls: Optional[list[RelatedUrl]] = None
 
 
 class NewsSearchResponse(CustomBaseModel):
@@ -65,10 +65,3 @@ class DocumentThumbnailResponse(CustomBaseModel):
     url: str
     thumbnail: str
 
-class JSONSchemaGeneratorResponse(CustomBaseModel):
-    name: dict
-    email: dict
-    phone: dict
-    experience_in_years: dict
-    ai_experience_in_years: dict
-    highest_educational_qualification: dict

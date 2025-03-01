@@ -1,10 +1,8 @@
 from datetime import datetime
 from typing import Optional
-from pydantic import BaseModel
-from ..shared.responses import APIResponse, ListResponse
-from ..shared.base import MetaModel
+# from ..shared.responses import APIResponse, ListResponse
 from ..shared.enums import ResourceType, RoleType
-from ..shared.base import CustomBaseModel
+from ..shared.models import CustomBaseModel
 
 
 class NoteAddResponse(CustomBaseModel):
@@ -14,7 +12,7 @@ class NoteAddResponse(CustomBaseModel):
 class NoteUpdateResponse(CustomBaseModel):
     status: str
     message: str
-    meta: dict
+    meta: Optional[dict] = None
 
 class NoteDeleteResponse(CustomBaseModel):
     status: str

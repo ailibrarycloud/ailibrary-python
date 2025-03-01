@@ -1,25 +1,25 @@
 from typing import Optional
 from .__http_client import _HTTPClient
 from ..types.forms.requests import (
-    FormCreateRequest,
-    FormUpdateRequest,
-    FormDeleteRequest
+    FormsCreateRequest,
+    FormsUpdateRequest,
+    FormsDeleteRequest
 )
 from ..types.forms.responses import (
-    FormCreateResponse,
-    FormGetResponse,
-    FormListResponse,
-    FormUpdateResponse,
-    FormDeleteResponse
+    FormsCreateResponse,
+    FormsGetResponse,
+    FormsListResponse,
+    FormsUpdateResponse,
+    FormsDeleteResponse
 )
-from pydantic import ValidationError
 from ..types.shared.enums import ResourcePath
+from pydantic import ValidationError
 
 
 class _Forms:
     """Forms resource for managing form templates and submissions."""
 
-    _RESOURCE_PATH = ResourcePath.FORMS
+    _RESOURCE_PATH = ResourcePath.FORMS.value
 
     def __init__(self, http_client: _HTTPClient):
         self._http_client = http_client
@@ -39,14 +39,14 @@ class _Forms:
             title: The title of the form
             schema: List of field definitions
         """
-        payload = FormCreateRequest(title=title, schema=schema).model_dump()
+        payload = FormsCreateRequest(title=title, schema=schema).model_dump()
         response = self._http_client._request(
             "POST",
             # f"{self._RESOURCE_PATH}/create",
             f"{self._RESOURCE_PATH}",
             json=payload
         )
-        return self._validate_response(response, FormCreateResponse)
+        return self._validate_response(response, FormsCreateResponse)
 
 
     def get(self, form_id: str) -> dict:
@@ -57,24 +57,24 @@ class _Forms:
             "GET",
             f"{self._RESOURCE_PATH}/{form_id}"
         )
-        return self._validate_response(response, FormGetResponse)
+        return self._validate_response(response, FormsGetResponse)
 
 
     def list_forms(self) -> dict:
         """List all form templates."""
         response = self._http_client._request("GET", self._RESOURCE_PATH)
-        return self._validate_response(response, FormListResponse)
+        return self._validate_response(response, FormsListResponse)
 
 
     def update(self, form_id: str, **kwargs) -> dict:
         """Update an existing form template."""
-        payload = FormUpdateRequest(form_id=form_id, **kwargs).model_dump()
+        payload = FormsUpdateRequest(form_id=form_id, **kwargs).model_dump()
         response = self._http_client._request(
             "PUT",
             f"{self._RESOURCE_PATH}/{form_id}",
             json=payload
         )
-        return self._validate_response(response, FormUpdateResponse)
+        return self._validate_response(response, FormsUpdateResponse)
 
 
     def delete(self, form_id: str) -> dict:
@@ -85,5 +85,4 @@ class _Forms:
             "DELETE",
             f"{self._RESOURCE_PATH}/{form_id}",
         )
-        print(response)
-        return self._validate_response(response, FormDeleteResponse)
+        return self._validate_response(response, FormsDeleteResponse)
