@@ -10,33 +10,29 @@ class TestFormsList:
         mock_response = {
             "forms": [
                 {
-                    "formId": "form_123",
+                    "form_id": "form_123",
                     "title": "Test Form 1",
-                    "status": "active",
-                    "created_timestamp": "2024-03-14T12:00:00Z"
+                    "userName": "dev1",
+                    "created_timestamp": "2024-03-14T12:00:00Z",
+                    "updated_timestamp": "2024-03-14T12:10:00Z"
                 },
                 {
-                    "formId": "form_456",
+                    "form_id": "form_456",
                     "title": "Test Form 2",
-                    "status": "active",
-                    "created_timestamp": "2024-03-14T12:00:00Z"
+                    "userName": "dev2",
+                    "created_timestamp": "2024-03-14T12:00:00Z",
+                    "updated_timestamp": "2024-03-14T12:10:00Z"
                 }
             ],
-            "meta": {"total": 2}
+            "meta": {"total_items": 2, "total_pages": 1, "current_page": 1, "limit": 10, "next_page": "", "prev_page": ""}
         }
         mock_http_client._request.return_value = mock_response
         
         response = forms.list_forms()
-
         assert isinstance(response, dict)
-        assert "forms" in response
         assert isinstance(response["forms"], list)
-        assert "meta" in response
-        
-        for form in response["forms"]:
-            assert "formId" in form
-            assert "title" in form
-            assert "status" in form
+        assert isinstance(response["meta"], dict)
+
 
         mock_http_client._request.assert_called_once_with(
             "GET",

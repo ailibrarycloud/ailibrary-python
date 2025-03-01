@@ -17,7 +17,7 @@ class FormMeta(CustomBaseModel):
     current_page: int
     limit: int
     next_page: str
-    previous_page: str
+    prev_page: str
 
 class FormCreateResponse(FormsBaseClass):
     form_id: str
@@ -43,5 +43,6 @@ class FormUpdateResponse(FormsBaseClass):
 
 
 class FormDeleteResponse(CustomBaseModel):
-    status: str
-    message: str
+    # status: str
+    # message: str
+    response: str

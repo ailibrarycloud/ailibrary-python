@@ -9,7 +9,7 @@ class TestFormsCreate:
             "title": "Test Form",
             "schema": {
                 "name": {"type": "string"},
-                "email": {"type": "email"},
+                "email": {"type": "string"},
                 "years_of_experience": {"type": "number"},
                 "years_experience_with_nextjs": {"type": "number"},
                 "AI_experience": {"type": "boolean"}
@@ -34,7 +34,6 @@ class TestFormsCreate:
         assert "form_id" in response
         assert "schema" in response
         assert response["title"] == create_payload["title"]
-        # assert response["fields"] == create_payload["fields"]
 
         mock_http_client._request.assert_called_once_with(
             "POST",

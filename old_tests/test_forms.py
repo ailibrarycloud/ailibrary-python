@@ -32,19 +32,18 @@ def test_forms(client, args):
     create_response = forms.create(title, schema)  # test create()
     print(f"form.create() response:\n{create_response}\n")
 
-    # namespace = form_data["namespace"]
-    # form_info = form.get(namespace)  # Get information about the form
-    # print(f"form.get() response:\n{form_info}\n")
+    form_id = create_response["form_id"]
+    form_info = forms.get(form_id)  # Get information about the form
+    print(f"form.get() response:\n{form_info}\n")
 
-    # forms = form.list_forms()  # List all forms
-    # print(f"form.list_forms() response:\n{forms}\n")
+    forms_list = forms.list_forms()  # List all forms
+    print(f"form.list_forms() response:\n{forms_list}\n")
 
-    # updated_form = form.update(namespace, title=update_title)  # Update the form
-    # print(f"form.update() response:\n{updated_form}\n")
+    updated_form = forms.update(form_id, title=update_title)  # Update the form
+    print(f"form.update() response:\n{updated_form}\n")
 
-
-    # deleted_form = form.delete(namespace, True)  # Delete the form
-    # print(f"form.delete() response:\n{deleted_form}\n")
+    deleted_form = forms.delete(form_id)  # Delete the form
+    print(f"form.delete() response:\n{deleted_form}\n")
 
 
 if __name__ == "__main__":

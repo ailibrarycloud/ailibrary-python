@@ -66,7 +66,7 @@ class _Forms:
         return self._validate_response(response, FormListResponse)
 
 
-    def update(self, form_id: str, title: Optional[str] = None, schema: Optional[dict] = None) -> dict:
+    def update(self, form_id: str, **kwargs) -> dict:
         """Update an existing form template."""
         payload = FormUpdateRequest(form_id=form_id, **kwargs).model_dump()
         response = self._http_client._request(
@@ -85,4 +85,5 @@ class _Forms:
             "DELETE",
             f"{self._RESOURCE_PATH}/{form_id}",
         )
+        print(response)
         return self._validate_response(response, FormDeleteResponse)

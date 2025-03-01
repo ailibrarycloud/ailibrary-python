@@ -9,16 +9,14 @@ class TestFormsDelete:
         forms = _Forms(mock_http_client)
         
         mock_response = {
-            "status": "success",
-            "message": "Form deleted successfully"
+            "response": "success",
         }
         mock_http_client._request.return_value = mock_response
         
         response = forms.delete(form_id)
 
         assert isinstance(response, dict)
-        assert "status" in response
-        assert "message" in response
+        assert response["response"] == "success"
 
         mock_http_client._request.assert_called_once_with(
             "DELETE",
