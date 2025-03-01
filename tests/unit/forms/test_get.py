@@ -1,3 +1,8 @@
+# general case
+# form_id is empty
+# form_id is too long
+# form_id does not exist
+
 import pytest
 from ailibrary._internal._forms import _Forms
 from ailibrary.types.forms.responses import FormGetResponse

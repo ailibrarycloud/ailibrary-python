@@ -1,5 +1,7 @@
 # general case
-
+# title is empty
+# title is too long
+# schema is empty
 
 
 import pytest
