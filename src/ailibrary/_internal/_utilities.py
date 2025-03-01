@@ -28,7 +28,7 @@ class _Utilities:
         self._http_client = http_client
 
 
-    def _validate_response(self, response: Union[dict, list[dict]], validation_class) -> Union[dict, list[dict]]    :
+    def _validate_response(self, response: Union[dict, list[dict]], validation_class) -> Union[dict, list[dict]]:
         try:
             if isinstance(response, list):
                 for item in response:
@@ -48,7 +48,7 @@ class _Utilities:
             f"{self._RESOURCE_PATH}/websearch",
             json=payload
         )
-        # print(response)
+        print(response)
         return self._validate_response(response, WebSearchResponse)
 
 

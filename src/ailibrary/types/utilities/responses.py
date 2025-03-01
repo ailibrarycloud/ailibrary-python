@@ -7,10 +7,10 @@ from typing import Optional, Any
 class WebSearchSources(CustomBaseModel):
     title: str
     url: str
-    # description: str
-    # isFamilyFriendly: bool
-    # language: str
-    # full_text: str
+    description: str
+    isFamilyFriendly: bool
+    language: str
+    full_text: str
 
 class NewsSearchSources(CustomBaseModel):
     title: str
