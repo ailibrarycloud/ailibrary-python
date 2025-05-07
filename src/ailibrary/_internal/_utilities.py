@@ -62,6 +62,7 @@ class _Utilities:
         )
         return self._validate_response(response, WebParserResponse)
 
+
     def news_search(self, search_terms: list[str]) -> dict:
         """Search news articles for terms."""
         payload = NewsSearchRequest(search_terms=search_terms).model_dump()

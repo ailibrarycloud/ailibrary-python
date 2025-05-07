@@ -1,5 +1,8 @@
 from enum import Enum
 
+class SourceType(str, Enum):
+    DOCS = "docs"
+
 class ResourceType(str, Enum):
     AGENT = "agent"
     KNOWLEDGE_BASE = "knowledgebase"

@@ -84,5 +84,4 @@ class _Forms:
             "DELETE",
             f"{self._RESOURCE_PATH}/{form_id}",
         )
-        print(response)
         return self._validate_response(response, FormDeleteResponse)

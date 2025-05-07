@@ -32,7 +32,7 @@ def test_knowledge_base(client, args):
     
     # # The response is weird
     # data_url = "https://example-files.online-convert.com/document/txt/example.txt"
-    # source_data = knowledge_base.add_source(knowledgeId, urls=[data_url], type="docs")  # Add a source to the knowledge base
+    # source_data = knowledge_base.add_source(knowledgeId, type="docs", urls=[data_url])  # Add a source to the knowledge base
     # print(f"knowledge_base.add_source() response:\n{source_data}\n")
 
     # # need to figure this out

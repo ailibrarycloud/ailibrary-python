@@ -43,6 +43,5 @@ class FormUpdateResponse(FormsBaseClass):
 
 
 class FormDeleteResponse(CustomBaseModel):
-    # status: str
-    # message: str
-    response: str
+    status: str
+    message: str

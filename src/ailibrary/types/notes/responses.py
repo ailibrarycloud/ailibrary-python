@@ -14,7 +14,7 @@ class NoteAddResponse(CustomBaseModel):
 class NoteUpdateResponse(CustomBaseModel):
     status: str
     message: str
-    meta: dict
+    meta: Optional[dict] = None
 
 class NoteDeleteResponse(CustomBaseModel):
     status: str

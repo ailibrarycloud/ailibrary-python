@@ -47,7 +47,7 @@ class WebParserResponse(CustomBaseModel):
     title: str
     domain: str
     body: str
-    related_urls: list[RelatedUrl]
+    related_urls: Optional[list[RelatedUrl]] = None
 
 
 class NewsSearchResponse(CustomBaseModel):

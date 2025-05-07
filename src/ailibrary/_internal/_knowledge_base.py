@@ -88,17 +88,18 @@ class _KnowledgeBase:
     #     )
     #     response = self._http_client._request(
     #         "PUT",
-    #         f"/v1/knowledgebase/{knowledgeId}",
+    #         f"{self._RESOURCE_PATH}/{knowledgeId}",
     #         json=request.model_dump()
     #     )
-    #     return self._validate_response(response, KnowledgeBaseResponse)
+    #     return response
+    #     # return self._validate_response(response, KnowledgeBaseResponse)
 
     # ### WORK IN PROGRESS, error in internal implementation ###
     # def get_source(self, knowledgeId: str, source_id: str) -> dict:
     #     """Retrieve source details."""
     #     response = self._http_client._request(
     #         "GET",
-    #         f"/v1/knowledgebase/{knowledgeId}/{source_id}"
+    #         f"{self._RESOURCE_PATH}/{knowledgeId}/{source_id}"
     #     )
     #     return self._validate_response(response, SourceData)
 
@@ -107,7 +108,7 @@ class _KnowledgeBase:
     #     """List all sources in a knowledge base."""
     #     response = self._http_client._request(
     #         "GET",
-    #         f"/v1/knowledgebase/{knowledgeId}/sources"
+    #         f"{self._RESOURCE_PATH}/{knowledgeId}/sources"
     #     )
     #     return self._validate_response(response, SourceListResponse)
 
@@ -122,7 +123,7 @@ class _KnowledgeBase:
     #     request = DeleteSourcesRequest(values=values, delete_all=delete_all)
     #     response = self._http_client._request(
     #         "DELETE",
-    #         f"/v1/knowledgebase/{knowledgeId}/source",
+    #         f"{self._RESOURCE_PATH}/{knowledgeId}/source",
     #         json=request.model_dump()
     #     )
     #     return self._validate_response(response, KnowledgeBaseResponse)

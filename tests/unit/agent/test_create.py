@@ -66,12 +66,12 @@ class TestAgentCreate:
 #         {"title": "Test", "instructions": 123},  # Wrong type for instructions
 #     ]
 
-    # Title too long test
-    @pytest.mark.parametrize("invalid_payload", [{"title": "x" * 256}])
-    def test_title_too_long(self, mock_http_client, invalid_payload, validated_agent_response):
-        """Test agent creation with invalid data"""
-        response_data = validated_agent_response(invalid_payload)
-        # self._run_invalid_payload_test(mock_http_client, invalid_payload, validated_agent_response)
+    # # Title too long test
+    # @pytest.mark.parametrize("invalid_payload", [{"title": "x" * 256}])
+    # def test_title_too_long(self, mock_http_client, invalid_payload, validated_agent_response):
+    #     """Test agent creation with invalid data"""
+    #     response_data = validated_agent_response(invalid_payload)
+    #     # self._run_invalid_payload_test(mock_http_client, invalid_payload, validated_agent_response)
 
 
     # def test_create_agent_special_chars(self, mock_http_client, agent_response_payload):

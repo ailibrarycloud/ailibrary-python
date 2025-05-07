@@ -71,7 +71,7 @@ def test_agent_chat(agent, namespace):
         print(f"\nFull response: {full_response}")
     except Exception as e:
         print(f"Chat error: {str(e)}")
-                  
+
 
 
 if __name__ == "__main__":
