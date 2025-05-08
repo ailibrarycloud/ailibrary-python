@@ -30,6 +30,9 @@ def test_knowledge_base(client, args):
     kb_status = knowledge_base.get_status(knowledgeId)  # Get the status of the knowledge base
     print(f"knowledge_base.get_status() response:\n{kb_status}\n")
     
+    kb_delete_response = knowledge_base.delete(knowledgeId)  # delete knowledge base
+    print(f"knowledge_base.delete() response:\n{kb_delete_response}\n")
+
     # # The response is weird
     # data_url = "https://example-files.online-convert.com/document/txt/example.txt"
     # source_data = knowledge_base.add_source(knowledgeId, type="docs", urls=[data_url])  # Add a source to the knowledge base
@@ -47,9 +50,15 @@ def test_knowledge_base(client, args):
 
     try:
         knowledge_base.get(knowledgeId)
-        print(f"Verified that delete_sources() doesnt crash when the given knowledgeId is not found\n")
+        print(f"Verified that get() doesnt crash when the given knowledgeId is not found\n")
     except:
-        print(f"Failed test case: delete_sources() doesnt work when knowledgeId not found\n")
+        print(f"Failed test case: get() doesnt work when knowledgeId not found\n")
+
+    try:
+        knowledge_base.delete(knowledgeId)
+        print(f"Verified that delete() doesnt crash when the given knowledgeId is not found\n")
+    except:
+        print(f"Failed test case: delete() doesnt work when knowledgeId not found\n")
 
 
 if __name__ == "__main__":
