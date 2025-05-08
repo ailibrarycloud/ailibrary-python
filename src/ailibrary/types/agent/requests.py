@@ -1,8 +1,25 @@
 from typing import Optional
+from enum import Enum
 from pydantic import Field
+from .chat_message_model import ChatMessageModel
 from ..shared.base import CustomBaseModel
 # from ..shared.enums import AgentType
 
+
+class ResponseFormatEnum(str, Enum):
+    TEXT = "text"
+    JSON = "json"
+
+class AgentChatRequest(CustomBaseModel):
+    namespace: str = Field(..., 
+        description="The unique identifier for the agent",
+        exclude=True,
+        min_length=1
+    )
+    messages: list[ChatMessageModel]
+    response_format: Optional[ResponseFormatEnum] = "text"
+    session_id: Optional[str] = None
+    
 
 class AgentDeleteRequest(CustomBaseModel):
     namespace: str = Field(..., 

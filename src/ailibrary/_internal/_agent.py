@@ -1,6 +1,6 @@
 from typing import Optional, Generator
 from .__http_client import _HTTPClient
-from ..types.agent.requests import AgentCreateRequest, AgentUpdateRequest, AgentDeleteRequest
+from ..types.agent.requests import AgentCreateRequest, AgentUpdateRequest, AgentDeleteRequest, AgentChatRequest
 # from ..types.agent.requests import ChatRequest
 from ..types.agent.responses import AgentCreateResponse, AgentGetResponse, AgentListResponse, AgentUpdateResponse, AgentDeleteResponse
 # from ..types.chat.responses import ChatResponse
@@ -56,25 +56,34 @@ class _Agent:
 
     def delete(self, namespace: str, delete_connected_resources: bool) -> dict:
         """Delete an agent."""
-        payload = AgentDeleteRequest(namespace=namespace, delete_connected_resources=delete_connected_resources).model_dump()
+        payload = AgentDeleteRequest(namespace=namespace, 
+                                     delete_connected_resources=delete_connected_resources).model_dump()
         response = self._http_client._request("DELETE", f"{self._RESOURCE_PATH}/{namespace}", json=payload)
         return self._validate_response(response, AgentDeleteResponse)
 
 
-    # ### WORK IN PROGRESS ###
-    # def chat(self, namespace: str, messages: list[dict], stream: bool = False) -> Generator[str, None, None]:
-    #     """Chat with an agent."""
-    #     request = ChatRequest(messages=messages)
-    #     url = f"{self._http_client.base_url}/v1/agent/{namespace}/chat"
-    #     payload = request.model_dump_json()
-    #     headers = {
-    #         'Content-Type': 'application/json',
-    #         'X-Library-Key': self._http_client.headers["X-Library-Key"]
-    #     }
+    ### WORK IN PROGRESS ###
+    def chat(self, namespace: str, messages: list[dict], **kwargs):
+        """Chat with an agent."""
+        payload = AgentChatRequest(namespace=namespace, messages=messages, **kwargs).model_dump()
+        response = self._http_client._request("POST", 
+                                              f"{self._RESOURCE_PATH}/{namespace}/chat", 
+                                              content_type="application/json",
+                                              json=payload)
+        return response
 
-    #     with requests.request("POST", url, headers=headers, data=payload, stream=True) as response:
-    #         response.raise_for_status()
-    #         for chunk in response.iter_content(chunk_size=8192):
-    #             if chunk:
-    #                 yield chunk.decode('utf-8')
+        # # OLD CODE
+        # request = ChatRequest(messages=messages)
+        # url = f"{self._http_client.base_url}/v1/agent/{namespace}/chat"
+        # payload = request.model_dump_json()
+        # headers = {
+        #     'Content-Type': 'application/json',
+        #     'X-Library-Key': self._http_client.headers["X-Library-Key"]
+        # }
+
+        # with requests.request("POST", url, headers=headers, data=payload, stream=True) as response:
+        #     response.raise_for_status()
+        #     for chunk in response.iter_content(chunk_size=8192):
+        #         if chunk:
+        #             yield chunk.decode('utf-8')
         

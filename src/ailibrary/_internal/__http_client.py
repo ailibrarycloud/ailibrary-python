@@ -40,9 +40,15 @@ class _HTTPClient:
         json: Optional[dict] = None,
         files: Optional[list] = None,
         stream: bool = False,
+        content_type: Optional[str] = None,
         # response_no_json: bool = False
     ) -> Any:
         """Make an HTTP request to the API."""
+
+        headers = self.headers.copy()
+        # 'Content-Type' is not specified unless provided for this request (and only for this request)
+        if content_type is not None:
+            headers["Content-Type"] = content_type
 
         # verify the the fields are valid
         valid_params = HTTPRequest(
@@ -59,7 +65,7 @@ class _HTTPClient:
             response = requests.request(
                 method=valid_params.method,
                 url=url,
-                headers=self.headers,
+                headers=headers,
                 params=valid_params.params,
                 data=valid_params.data,
                 json=valid_params.json,
