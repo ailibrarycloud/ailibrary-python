@@ -50,7 +50,7 @@ class _Files:
             file_objs.append(
                 ('files', (file_name, open(file_path, 'rb'), mime_type))
             )
-        response = self._http_client._request("POST", self._RESOURCE_PATH, data=payload, files=file_objs)
+        response = self._http_client._request("POST", self._RESOURCE_PATH, data=payload, files=file_objs, content_type="")
         return self._validate_response(response, FileUploadResponse)
 
 

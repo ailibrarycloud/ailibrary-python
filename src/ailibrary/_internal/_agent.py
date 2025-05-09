@@ -1,7 +1,7 @@
 from typing import Optional, Generator
 from .__http_client import _HTTPClient
 from ..types.agent.requests import AgentCreateRequest, AgentUpdateRequest, AgentDeleteRequest, AgentChatRequest
-from ..types.agent.responses import AgentCreateResponse, AgentGetResponse, AgentListResponse, AgentUpdateResponse, AgentDeleteResponse, AgentChatResponse
+from ..types.agent.responses import AgentCreateResponse, AgentGetResponse, AgentListResponse, AgentUpdateResponse, AgentDeleteResponse
 from pydantic import ValidationError
 
 

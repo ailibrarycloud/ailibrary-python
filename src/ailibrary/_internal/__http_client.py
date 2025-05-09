@@ -15,9 +15,10 @@ class _HTTPClient:
         if base_url[-1] == "/":
             base_url = base_url[:-1]
 
-            
+
         self.base_url = f"{base_url}/v1"
         self.headers = {
+            "Content-Type": "application/json",
             "X-Library-Key": api_key,
         }
 
@@ -45,10 +46,13 @@ class _HTTPClient:
     ) -> Any:
         """Make an HTTP request to the API."""
 
-        headers = self.headers.copy()
-        # 'Content-Type' is not specified unless provided for this request (and only for this request)
+        request_headers = self.headers.copy()
+        # 'Content-Type' is application/json unless specified otherwise
         if content_type is not None:
-            headers["Content-Type"] = content_type
+            if content_type == "":
+                request_headers.pop("Content-Type") # do not specify content-type at all
+            else:
+                request_headers["Content-Type"] = content_type
 
         # verify the the fields are valid
         valid_params = HTTPRequest(
@@ -65,7 +69,7 @@ class _HTTPClient:
             response = requests.request(
                 method=valid_params.method,
                 url=url,
-                headers=headers,
+                headers=request_headers,
                 params=valid_params.params,
                 data=valid_params.data,
                 json=valid_params.json,
