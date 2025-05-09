@@ -18,9 +18,18 @@ def get_args():
     return args
 
 
+def test_invalid_file_id(files_function, file_id, **kwargs):
+    function_name = files_function.__name__
+    try:
+        files_function(file_id, **kwargs)
+        print(f"Verified that {function_name}() does not crash when the given file_id is not found\n")
+    except:
+        print(f"Failed test case: {function_name}() crashes when file_id not found\n")
+
+
 def test_files(client, args):
     files = client.files
-    file_paths = args.get("files", ["testing/test_file.txt"])
+    file_paths = args.get("files", ["old_tests/file_for_testing.txt"])
 
     upload_response = files.upload(file_paths)  # Upload a file
     print(f"files.upload() response:\n{upload_response}\n")
@@ -39,11 +48,8 @@ def test_files(client, args):
     delete_response = files.delete(file_id)  # Delete a file
     print(f"files.delete() response:\n{delete_response}\n")
 
-    # try:
-    #     files.delete(file_id)
-    #     print(f"Verified that delete() doesnt crash when the file_id is not found\n")        
-    # except:
-    #     print(f"Failed test case: delete() doesnt work when file_id not found\n")
+    test_invalid_file_id(files.get, file_id)
+    test_invalid_file_id(files.delete, file_id)
 
 
 if __name__ == "__main__":

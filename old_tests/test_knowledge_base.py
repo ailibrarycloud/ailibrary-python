@@ -12,6 +12,15 @@ def get_args():
     return args
 
 
+def test_invalid_knowledgeId(kb_function, knowledgeId, **kwargs):
+    function_name = kb_function.__name__
+    try:
+        kb_function(knowledgeId, **kwargs)
+        print(f"Verified that {function_name}() does not crash when the given knowledgeId is not found\n")
+    except:
+        print(f"Failed test case: {function_name}() crashes when knowledgeId not found\n")
+
+
 def test_knowledge_base(client, args):
     knowledge_base = client.knowledge_base
     name = args.get("name", "Test_Knowledge_Base")
@@ -33,7 +42,10 @@ def test_knowledge_base(client, args):
     kb_delete_response = knowledge_base.delete(knowledgeId)  # delete knowledge base
     print(f"knowledge_base.delete() response:\n{kb_delete_response}\n")
 
-    # # The response is weird
+    test_invalid_knowledgeId(knowledge_base.get, knowledgeId)
+    test_invalid_knowledgeId(knowledge_base.delete, knowledgeId)
+
+    # # MAJOR BUGS / UNFINISHED
     # data_url = "https://example-files.online-convert.com/document/txt/example.txt"
     # source_data = knowledge_base.add_source(knowledgeId, type="docs", urls=[data_url])  # Add a source to the knowledge base
     # print(f"knowledge_base.add_source() response:\n{source_data}\n")
@@ -48,17 +60,8 @@ def test_knowledge_base(client, args):
     # delete_sources_response = knowledge_base.delete_sources(knowledgeId, values=[source_data["id"]])  # Delete sources from the knowledge base
     # print(f"knowledge_base.delete_sources() response:\n{delete_sources_response}\n")
 
-    try:
-        knowledge_base.get(knowledgeId)
-        print(f"Verified that get() doesnt crash when the given knowledgeId is not found\n")
-    except:
-        print(f"Failed test case: get() doesnt work when knowledgeId not found\n")
 
-    try:
-        knowledge_base.delete(knowledgeId)
-        print(f"Verified that delete() doesnt crash when the given knowledgeId is not found\n")
-    except:
-        print(f"Failed test case: delete() doesnt work when knowledgeId not found\n")
+
 
 
 if __name__ == "__main__":

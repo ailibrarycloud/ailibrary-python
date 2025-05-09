@@ -14,6 +14,15 @@ def get_args():
     return args
 
 
+def test_invalid_form_id(forms_function, form_id, **kwargs):
+    function_name = forms_function.__name__
+    try:
+        forms_function(form_id, **kwargs)
+        print(f"Verified that {function_name}() does not crash when the given form_id is not found\n")
+    except:
+        print(f"Failed test case: {function_name}() crashes when form_id not found\n")
+
+
 def test_forms(client, args):
     """ Test basic functionality of form.py 
     Args: title, update_title
@@ -44,6 +53,10 @@ def test_forms(client, args):
 
     deleted_form = forms.delete(form_id)  # Delete the form
     print(f"form.delete() response:\n{deleted_form}\n")
+
+    test_invalid_form_id(forms.update, form_id, title=update_title)
+    test_invalid_form_id(forms.get, form_id)
+    test_invalid_form_id(forms.delete, form_id)
 
 
 if __name__ == "__main__":

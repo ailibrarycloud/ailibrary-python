@@ -3,7 +3,7 @@ from enum import Enum
 from pydantic import Field
 from .chat_message_model import ChatMessageModel
 from ..shared.base import CustomBaseModel
-# from ..shared.enums import AgentType
+from ..shared.enums import AgentType
 
 
 class ResponseFormatEnum(str, Enum):
@@ -36,7 +36,6 @@ class AgentCreateRequest(CustomBaseModel):
         default="You are a helpful assistant.",
         description="System instructions for the agent"
     )
-    # type: Optional[AgentType] = None
     description: Optional[str] = None
     coverimage: Optional[str] = None
     intromessage: Optional[str] = None
@@ -53,3 +52,5 @@ class AgentUpdateRequest(AgentCreateRequest):
         exclude=True,
         min_length=1
     )
+    title: Optional[str] = None
+    type: Optional[AgentType] = None

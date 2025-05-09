@@ -16,7 +16,9 @@ class AgentListResponse(CustomBaseModel):
     meta: dict
 
 class AgentUpdateResponse(CustomBaseModel):
-    response: str
+    response: Optional[str] = None
+    status: Optional[str] = None
+    message: Optional[str] = None
 
 class AgentDeleteResponse(CustomBaseModel):
     statusCode: int

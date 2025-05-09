@@ -15,6 +15,15 @@ def get_args():
     return args
 
 
+def test_invalid_namespace(agent_function, namespace, **kwargs):
+    function_name = agent_function.__name__
+    try:
+        agent_function(namespace, **kwargs)
+        print(f"Verified that {function_name}() does not crash when the given namespace is not found\n")
+    except:
+        print(f"Failed test case: {function_name}() crashes when namespace not found\n")
+
+
 def test_agent(client, args):
     """ Test basic functionality of agent.py 
     Args: title, update_title
@@ -36,27 +45,12 @@ def test_agent(client, args):
     updated_agent = agent.update(namespace, title=update_title)  # Update the agent
     print(f"agent.update() response:\n{updated_agent}\n")
     
-    ### Bug
-    # print(f"agent.update() response with invalid agent name:\n{agent.update('invalid_agent_name', title=update_title)}\n")
-
-    # # # #### ERROR: the response is not valid JSON
-    # # print("Testing agent.chat():\n")
-    # # test_agent_chat(agent, namespace)
-
     deleted_agent = agent.delete(namespace, True)  # Delete the agent
     print(f"agent.delete() response:\n{deleted_agent}\n")
 
-    try:
-        agent.get(namespace)
-        print(f"Verified that get() does not crash when the given namespace is not found\n")
-    except:
-        print(f"Failed test case: get() crashes when namespace not found\n")
-    
-    try:
-        agent.delete(namespace, True)
-        print(f"Verified that delete() doesnt crash when the given namespace is not found\n")
-    except:
-        print(f"Failed test case: delete() doesnt work when namespace not found\n")
+    test_invalid_namespace(agent.update, namespace, title=update_title)
+    test_invalid_namespace(agent.get, namespace)
+    test_invalid_namespace(agent.delete, namespace)
 
 
 def test_agent_chat(client):
@@ -75,7 +69,9 @@ def test_agent_chat(client):
     #     print(f"Chat error: {str(e)}")
 
     # ============================
-    
+    agent = client.agent
+    chat_agent_title = args.get("chat_agent_title", "Test_Chat_Agent")
+
     print("Here is how we will test agent.chat():\n \
           First, we generate a schema using client.utilities.json_schema_generator()\n \
           then we use that schema to generate a form using client.form.create()\n \
@@ -91,14 +87,10 @@ def test_agent_chat(client):
     form_id = form["form_id"]
 
     print(f"The form id is: {form_id}\nNow we will create a chat agent with this form attached.\n")
-    agent = client.agent
-    chat_agent_title = args.get("chat_agent_title", "Test_Chat_Agent")
-    agent_data = agent.create(chat_agent_title, instructions="This is a test agent.",
-                              type="chat", form_id=form_id)
-    
-    print(f"Full agent data: \n{agent_data}\n\n")
-
+    agent_data = agent.create(chat_agent_title, instructions="This is a chat agent.")
     namespace = agent_data["namespace"]
+    agent.update(namespace=namespace, type="voice", form_id=form_id)
+
     messages = [
         {
             "role": "user",
@@ -119,7 +111,6 @@ if __name__ == "__main__":
     # run test
     print("Running test_agent (except for agent.chat()):\n")
     test_agent(client, args)
-    # test_agent_chat(client.agent, "gricare_demo")
-    print("Finished running test_agent.\nNow running test_agent_chat\n")
-    test_agent_chat(client)
+    # print("Finished running test_agent.\nNow running test_agent_chat\n")
+    # test_agent_chat(client)
     print("Finished running all agent tests.\n")

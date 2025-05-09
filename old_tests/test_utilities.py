@@ -1,6 +1,15 @@
 import _setup_tests
 
 
+def test_invalid_tokens(utilities_function, tokens, error_msg, **kwargs):
+    function_name = utilities_function.__name__
+    try:
+        utilities_function(tokens, **kwargs)
+        print(f"Verified that {function_name}() does not crash when {error_msg}\n")
+    except:
+        print(f"Failed test case: {function_name}() crashes when {error_msg}\n")
+
+
 def test_utilities(client):
     utilities = client.utilities
 
@@ -24,6 +33,17 @@ def test_utilities(client):
     instruction = "Please generate a form with the following fields: \n name (string), email(string), phone(number), experience in years (number), ai experience in years (number), highest educational qualification (phd, bachelor's degree, high school, not mentioned)"
     schema_gen_response = utilities.json_schema_generator(instruction)
     print(f"utilities.json_schema_generator() response \n{schema_gen_response}\n\n")
+
+
+    for url_function in [utilities.web_parser, utilities.document_parser, utilities.document_thumbnail]:
+        test_invalid_tokens(url_function, ["doesnotexist.com"], "a given url does not exist")
+        test_invalid_tokens(url_function, ["not_even_a_url .com"], "a given url is an invalid link")
+
+    test_invalid_tokens(utilities.web_search, ["https://ailibrary.ai", "https://doesnotexist.com"], 
+                        "given search terms are actually urls")
+
+    test_invalid_tokens(utilities.news_search, ["https://ailibrary.ai", "https://doesnotexist.com"], 
+                        "given search terms are actually urls")
 
 
 if __name__ == "__main__":
