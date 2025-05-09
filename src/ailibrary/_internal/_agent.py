@@ -1,9 +1,7 @@
 from typing import Optional, Generator
 from .__http_client import _HTTPClient
 from ..types.agent.requests import AgentCreateRequest, AgentUpdateRequest, AgentDeleteRequest, AgentChatRequest
-# from ..types.agent.requests import ChatRequest
-from ..types.agent.responses import AgentCreateResponse, AgentGetResponse, AgentListResponse, AgentUpdateResponse, AgentDeleteResponse
-# from ..types.chat.responses import ChatResponse
+from ..types.agent.responses import AgentCreateResponse, AgentGetResponse, AgentListResponse, AgentUpdateResponse, AgentDeleteResponse, AgentChatResponse
 from pydantic import ValidationError
 
 
@@ -62,7 +60,7 @@ class _Agent:
         return self._validate_response(response, AgentDeleteResponse)
 
 
-    ### WORK IN PROGRESS ###
+    ### CURRENTLY ONLY WORKS FOR RESPONSE FORMAT JSON ###
     def chat(self, namespace: str, messages: list[dict], **kwargs):
         """Chat with an agent."""
         payload = AgentChatRequest(namespace=namespace, messages=messages, **kwargs).model_dump()
@@ -70,6 +68,9 @@ class _Agent:
                                               f"{self._RESOURCE_PATH}/{namespace}/chat", 
                                               content_type="application/json",
                                               json=payload)
+        # response_format = payload["response_format"]
+        # if response_format == "json" and not isinstance(response, dict):
+        #     raise ValueError("Something has gone wrong. Please try again.\n")
         return response
 
         # # OLD CODE

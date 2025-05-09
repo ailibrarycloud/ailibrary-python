@@ -7,7 +7,7 @@ from ..shared.enums import AgentType
 
 
 class ResponseFormatEnum(str, Enum):
-    TEXT = "text"
+    # TEXT = "text"
     JSON = "json"
 
 class AgentChatRequest(CustomBaseModel):
@@ -17,7 +17,7 @@ class AgentChatRequest(CustomBaseModel):
         min_length=1
     )
     messages: list[ChatMessageModel]
-    response_format: Optional[ResponseFormatEnum] = "text"
+    response_format: Optional[ResponseFormatEnum] = "json"
     session_id: Optional[str] = None
     
 
@@ -32,10 +32,7 @@ class AgentDeleteRequest(CustomBaseModel):
 
 class AgentCreateRequest(CustomBaseModel):
     title: str = Field(..., description="The name of your agent", min_length=1)
-    instructions: str = Field(
-        default="You are a helpful assistant.",
-        description="System instructions for the agent"
-    )
+    instructions: Optional[str] = "You are a helpful assistant."
     description: Optional[str] = None
     coverimage: Optional[str] = None
     intromessage: Optional[str] = None

@@ -54,21 +54,7 @@ def test_agent(client, args):
 
 
 def test_agent_chat(client):
-    # messages = [{"role": "user", "content": "Hello there! Who are you?"}]
-    # try:
-    #     print("Starting chat test...")
-    #     full_response = ""
-    #     for chunk in agent.chat(namespace, messages):
-    #         try:
-    #             print(f"Raw chunk: {chunk}")
-    #             full_response += chunk
-    #         except Exception as e:
-    #             print(f"Error processing chunk: {str(e)}")
-    #     print(f"\nFull response: {full_response}")
-    # except Exception as e:
-    #     print(f"Chat error: {str(e)}")
 
-    # ============================
     agent = client.agent
     chat_agent_title = args.get("chat_agent_title", "Test_Chat_Agent")
 
@@ -103,6 +89,22 @@ def test_agent_chat(client):
     print(f"Calling client.agent.chat() using agent {namespace} (arguments passed are the messages above and response_format '{format}'):\n")
     response = agent.chat(namespace=namespace, messages=messages, response_format=format)
     print(f"client.agent.chat() response:\n\n{response}\n\n")
+    # print(f"client.agent.chat() response type:\n\n{type(response)}\n\n")
+
+    # ============================ OLD TEST CODE =================================
+    # messages = [{"role": "user", "content": "Hello there! Who are you?"}]
+    # try:
+    #     print("Starting chat test...")
+    #     full_response = ""
+    #     for chunk in agent.chat(namespace, messages):
+    #         try:
+    #             print(f"Raw chunk: {chunk}")
+    #             full_response += chunk
+    #         except Exception as e:
+    #             print(f"Error processing chunk: {str(e)}")
+    #     print(f"\nFull response: {full_response}")
+    # except Exception as e:
+    #     print(f"Chat error: {str(e)}")
 
 
 if __name__ == "__main__":
@@ -111,6 +113,6 @@ if __name__ == "__main__":
     # run test
     print("Running test_agent (except for agent.chat()):\n")
     test_agent(client, args)
-    # print("Finished running test_agent.\nNow running test_agent_chat\n")
-    # test_agent_chat(client)
+    print("Finished running test_agent.\nNow running test_agent_chat\n")
+    test_agent_chat(client)
     print("Finished running all agent tests.\n")
