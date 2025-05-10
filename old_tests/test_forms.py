@@ -39,20 +39,20 @@ def test_forms(client, args):
     }
 
     create_response = forms.create(title, schema)  # test create()
-    print(f"form.create() response:\n{create_response}\n")
+    print(f"forms.create() response:\n{create_response}\n")
 
     form_id = create_response["form_id"]
     form_info = forms.get(form_id)  # Get information about the form
-    print(f"form.get() response:\n{form_info}\n")
+    print(f"forms.get() response:\n{form_info}\n")
 
     forms_list = forms.list_forms()  # List all forms
-    print(f"form.list_forms() response:\n{forms_list}\n")
+    print(f"forms.list_forms() response:\n{forms_list}\n")
 
     updated_form = forms.update(form_id, title=update_title)  # Update the form
-    print(f"form.update() response:\n{updated_form}\n")
+    print(f"forms.update() response:\n{updated_form}\n")
 
     deleted_form = forms.delete(form_id)  # Delete the form
-    print(f"form.delete() response:\n{deleted_form}\n")
+    print(f"forms.delete() response:\n{deleted_form}\n")
 
     test_invalid_form_id(forms.update, form_id, title=update_title)
     test_invalid_form_id(forms.get, form_id)

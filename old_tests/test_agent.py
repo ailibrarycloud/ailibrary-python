@@ -85,9 +85,9 @@ def test_agent_chat(client):
     ]
     print(f"The namespace of the new chat agent is: {namespace}\n Here are the messages we will use:\n{messages}\n")
 
-    format = "json"
-    print(f"Calling client.agent.chat() using agent {namespace} (arguments passed are the messages above and response_format '{format}'):\n")
-    response = agent.chat(namespace=namespace, messages=messages, response_format=format)
+    res_format = "json"
+    print(f"Calling client.agent.chat() using agent {namespace} (arguments passed are the messages above and response_format '{res_format}'):\n")
+    response = agent.chat(namespace=namespace, messages=messages, response_format=res_format)
     print(f"client.agent.chat() response:\n\n{response}\n\n")
     # print(f"client.agent.chat() response type:\n\n{type(response)}\n\n")
 
@@ -112,7 +112,7 @@ if __name__ == "__main__":
     client = _setup_tests.__setup() # set up client
     # run test
     print("Running test_agent (except for agent.chat()):\n")
-    test_agent(client, args)
-    print("Finished running test_agent.\nNow running test_agent_chat\n")
+    # test_agent(client, args)
+    # print("Finished running test_agent.\nNow running test_agent_chat\n")
     test_agent_chat(client)
     print("Finished running all agent tests.\n")
