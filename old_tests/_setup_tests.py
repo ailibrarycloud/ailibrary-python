@@ -2,14 +2,10 @@ import ailibrary as ai
 from dotenv import load_dotenv
 import os
 
-def __setup(personal_key=False):
+def __setup():
     """ Setup function for tests """
     load_dotenv()
-    if personal_key:
-        api_key = os.environ["PERSONAL_KEY"]
-    else:
-        api_key = os.environ["DEV_KEY"]
-    # domain = "https://5b18-2600-1700-5430-cd70-fd23-dbc3-3caa-fa33.ngrok-free.app"
+    api_key = os.environ["DEV_KEY"]
     # client = ai.AILibrary(api_key, domain)
     client = ai.AILibrary(api_key)
 

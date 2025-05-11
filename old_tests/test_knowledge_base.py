@@ -1,6 +1,6 @@
 import _setup_tests
 import sys
-
+import time
 
 def get_args():
     """ Get arguments from command line """
@@ -39,29 +39,30 @@ def test_knowledge_base(client, args):
     kb_status = knowledge_base.get_status(knowledgeId)  # Get the status of the knowledge base
     print(f"knowledge_base.get_status() response:\n{kb_status}\n")
     
+
+    # MAJOR BUGS / UNFINISHED
+    urls = ["https://example-files.online-convert.com/document/txt/example.txt"]
+    options = {"urls": urls}
+    source_data = knowledge_base.add_source(knowledgeId, type="docs", options=options)  # Add a source to the knowledge base
+    print(f"knowledge_base.add_source() response:\n{source_data}\n")
+
+    sources = knowledge_base.list_sources(knowledgeId)  # List all sources in the knowledge base
+    print(f"knowledge_base.list_sources() response:\n{sources}\n")
+
+    source_name = sources[0]["source"]
+    time.sleep(5)
+    source_info = knowledge_base.get_source(knowledgeId, source_name)
+    print(f"knowledge_base.get_source() response:\n{source_info}\n")
+
+    delete_sources_response = knowledge_base.delete_sources(knowledgeId, values=[source_name])  # Delete sources from the knowledge base
+    print(f"knowledge_base.delete_sources() response:\n{delete_sources_response}\n")
+
+
     kb_delete_response = knowledge_base.delete(knowledgeId)  # delete knowledge base
     print(f"knowledge_base.delete() response:\n{kb_delete_response}\n")
 
     test_invalid_knowledgeId(knowledge_base.get, knowledgeId)
     test_invalid_knowledgeId(knowledge_base.delete, knowledgeId)
-
-    # # MAJOR BUGS / UNFINISHED
-    # data_url = "https://example-files.online-convert.com/document/txt/example.txt"
-    # source_data = knowledge_base.add_source(knowledgeId, type="docs", urls=[data_url])  # Add a source to the knowledge base
-    # print(f"knowledge_base.add_source() response:\n{source_data}\n")
-
-    # # need to figure this out
-    # source_info = knowledge_base.get_source(knowledgeId, ????)  # Get a source by ???
-    # print(f"knowledge_base.get_source() response:\n{source_info}\n")
-
-    # sources = knowledge_base.list_sources(knowledgeId)  # List all sources in the knowledge base
-    # print(f"knowledge_base.list_sources() response:\n{sources}\n")
-
-    # delete_sources_response = knowledge_base.delete_sources(knowledgeId, values=[source_data["id"]])  # Delete sources from the knowledge base
-    # print(f"knowledge_base.delete_sources() response:\n{delete_sources_response}\n")
-
-
-
 
 
 if __name__ == "__main__":

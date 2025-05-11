@@ -1,8 +1,8 @@
 from typing import Optional
-from pydantic import BaseModel, Field, field_validator
+from pydantic import Field, field_validator
 from ..shared.models import MetaModel, CustomBaseModel
 from ..shared.enums import ResourceType, RoleType
-from ..files.file_schema import FileSchema
+# from ..files.file_schema import FileSchema
 from pydantic import ValidationError
 
 

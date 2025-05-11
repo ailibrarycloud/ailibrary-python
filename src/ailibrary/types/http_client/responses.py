@@ -1,5 +1,5 @@
 from typing import Optional, Any
-from pydantic import BaseModel
+# from pydantic import BaseModel
 from ..shared.models import CustomBaseModel
 
 # class HTTPResponse(BaseModel):
