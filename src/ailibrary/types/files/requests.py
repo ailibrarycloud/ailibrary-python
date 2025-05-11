@@ -1,6 +1,6 @@
 from typing import Optional
 from pydantic import Field
-from ..shared.base import CustomBaseModel
+from ..shared.models import CustomBaseModel
 
 
 class FileUploadRequest(CustomBaseModel):

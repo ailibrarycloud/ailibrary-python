@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 from ..shared.responses import APIResponse
-from ..shared.base import CustomBaseModel
+from ..shared.models import CustomBaseModel
 from typing import Optional, Any
 
 

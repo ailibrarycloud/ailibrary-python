@@ -1,6 +1,6 @@
 from typing import Optional
 from datetime import datetime
-from ..shared.base import CustomBaseModel
+from ..shared.models import CustomBaseModel
 from .forms_base_class import FormsBaseClass
 from pydantic import Field
 

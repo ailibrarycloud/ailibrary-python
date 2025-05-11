@@ -4,7 +4,7 @@ import mimetypes
 import os
 from ..types.files.requests import FileUploadRequest, FileListRequest
 from ..types.files.responses import FileUploadResponse, FileGetResponse, FileListResponse, FileDeleteResponse
-from ..types.shared.base import PaginationParams
+from ..types.shared.models import PaginationParams
 from pydantic import ValidationError
 
 

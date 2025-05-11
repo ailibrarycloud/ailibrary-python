@@ -45,8 +45,8 @@ def test_forms(client, args):
     form_info = forms.get(form_id)  # Get information about the form
     print(f"forms.get() response:\n{form_info}\n")
 
-    forms_list = forms.list_forms()  # List all forms
-    print(f"forms.list_forms() response:\n{forms_list}\n")
+    forms_list_response = forms.list_forms()  # List all forms
+    print(f"forms.list_forms() response:\n{forms_list_response}\n")
 
     updated_form = forms.update(form_id, title=update_title)  # Update the form
     print(f"forms.update() response:\n{updated_form}\n")

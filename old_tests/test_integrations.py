@@ -31,7 +31,7 @@ def test_agent_kb(client):
         return agent_info
 
     def _get_result(info, kb_id):
-        return "knowledgeId" in info and info["knowledgeId"] == knowledgeId
+        return "knowledgeId" in info and info["knowledgeId"] == kb_id
 
     kb_response = client.knowledge_base.create("kb_test")
     knowledgeId = kb_response["knowledgeId"]

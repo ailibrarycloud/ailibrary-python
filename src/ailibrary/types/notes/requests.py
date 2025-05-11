@@ -1,9 +1,10 @@
 from typing import Optional
 from pydantic import BaseModel, Field, field_validator
-from ..shared.base import MetaModel
+from ..shared.models import MetaModel, CustomBaseModel
 from ..shared.enums import ResourceType, RoleType
 from ..files.file_schema import FileSchema
 from pydantic import ValidationError
+
 
 class NoteAddRequest(MetaModel):
     content: str = Field(..., min_length=1)
@@ -12,6 +13,7 @@ class NoteAddRequest(MetaModel):
     resource_id: str = Field(..., min_length=1)
     meta: Optional[dict] = None
 
+
 class NoteUpdateRequest(MetaModel):
     note_id: str = Field(..., min_length=1, exclude=True)
     content: str = Field(..., min_length=1)
@@ -19,7 +21,8 @@ class NoteUpdateRequest(MetaModel):
     meta: Optional[dict] = None
 
 
-class NoteDeleteRequest(BaseModel):
+# class NoteDeleteRequest(BaseModel):
+class NoteDeleteRequest(CustomBaseModel):
     resource: ResourceType
     resource_id: str = Field(..., min_length=1)
     values: Optional[list[str]] = None

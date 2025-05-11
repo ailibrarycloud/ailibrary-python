@@ -1,9 +1,14 @@
 # from typing import Any
-from ..shared.base import CustomBaseModel
+from ..shared.models import CustomBaseModel
 from pydantic import Field, ConfigDict
 
 class FormsBaseClass(CustomBaseModel):
-    model_config = ConfigDict(validate_by_alias=True, validate_by_name=True, serialize_by_alias=True)
+    model_config = ConfigDict(validate_by_alias=True, 
+                              validate_by_name=True, 
+                              serialize_by_alias=True, 
+                              use_enum_values=True,
+                              extra="allow") # for now
+
     schema_data: dict = Field(default=None, alias="schema")
 
     # @property

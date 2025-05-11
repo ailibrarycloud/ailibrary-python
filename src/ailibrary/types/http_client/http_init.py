@@ -1,6 +1,6 @@
 from typing import Optional, Tuple, BinaryIO, Any
 from pydantic import Field, field_validator, ConfigDict, ValidationError
-from ..shared.base import CustomBaseModel
+from ..shared.models import CustomBaseModel
 from ..shared.enums import HTTPMethod
 from ..files.file_schema import FileSchema
 

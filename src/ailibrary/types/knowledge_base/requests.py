@@ -1,13 +1,13 @@
 from typing import Optional
 from pydantic import BaseModel, Field
-from ..shared.base import CustomBaseModel
+from ..shared.models import CustomBaseModel
 from ..shared.enums import SourceType
 
 class KnowledgeBaseCreateRequest(CustomBaseModel):
     name: str = Field(..., description="The name of the knowledge base", min_length=1)
     meta: Optional[dict] = None
 
-class SourceOptions(BaseModel):
+class SourceOptions(CustomBaseModel):
     urls: Optional[dict[str, str]] = None
 
 class AddSourceRequest(CustomBaseModel):

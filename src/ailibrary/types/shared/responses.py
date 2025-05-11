@@ -1,7 +1,7 @@
 from typing import Optional, Any, Generic, TypeVar
 from pydantic import BaseModel
-from .base import MetaModel
-from .base import CustomBaseModel
+from .models import MetaModel
+from .models import CustomBaseModel
 
 T = TypeVar('T')
 

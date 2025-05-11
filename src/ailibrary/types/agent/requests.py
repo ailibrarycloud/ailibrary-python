@@ -2,12 +2,12 @@ from typing import Optional
 from enum import Enum
 from pydantic import Field
 from .chat_message_model import ChatMessageModel
-from ..shared.base import CustomBaseModel
+from ..shared.models import CustomBaseModel
 from ..shared.enums import AgentType
 
 
 class ResponseFormatEnum(str, Enum):
-    # TEXT = "text"
+    TEXT = "text"
     JSON = "json"
 
 class AgentChatRequest(CustomBaseModel):
@@ -17,7 +17,7 @@ class AgentChatRequest(CustomBaseModel):
         min_length=1
     )
     messages: list[ChatMessageModel]
-    response_format: Optional[ResponseFormatEnum] = "json"
+    response_format: Optional[ResponseFormatEnum] = "text"
     session_id: Optional[str] = None
     
 
