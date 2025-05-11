@@ -89,15 +89,11 @@ def test_agent_chat_json(client, args):
     print(f"Calling client.agent.chat() using agent {namespace} (arguments passed are the messages above and response_format '{res_format}'):\n")
     response = agent.chat(namespace=namespace, messages=messages, response_format=res_format)
     print(f"client.agent.chat() response:\n\n{response}\n\n")
-    print(type(response))
-    # print(f"client.agent.chat() response type:\n\n{type(response)}\n\n")
     return agent_data
 
 def test_agent_chat_text(client, agent_namespace):
 
-    # client = _setup_tests.__setup(personal_key=True)
     agent = client.agent
-    
     # send multiple messages using chat (json response format)
     original_messages = [
         {
@@ -117,10 +113,11 @@ def test_agent_chat_text(client, agent_namespace):
             "content": "I am John, I work as a developer"
         }
     ]
-    original_response = agent.chat(namespace=agent_namespace, messages=original_messages, response_format="json")
-    
-    # now we test chat (streaming) 
-    session_id = original_response["session_id"]
+    original_response = agent.chat(namespace=agent_namespace, messages=original_messages, 
+                                   response_format="json", session_id = "unique_id_lskad")
+    print(original_response)
+    # now we test chat (with text) 
+    session_id = original_response.get("session_id", "unique_id_lskad")
     messages = [
         {
             "role": "user",
@@ -128,18 +125,9 @@ def test_agent_chat_text(client, agent_namespace):
         }
     ]
 
-    try:
-        full_response = ""
-        for chunk in agent.chat(namespace=agent_namespace, session_id=session_id, 
-                          messages=messages, response_format="text"):
-            try:
-                # print(f"Raw chunk: {chunk}")
-                full_response += chunk
-            except Exception as e:
-                print(f"Error processing chunk: {str(e)}")
-        print(f"\nFull response: {full_response}")
-    except Exception as e:
-        print(f"Chat error: {str(e)}")
+    full_response = agent.chat(namespace=agent_namespace, session_id=session_id, 
+                               messages=messages, response_format="text")
+    print(f"agent.chat() text response: {full_response}")
 
 
 
@@ -147,10 +135,11 @@ if __name__ == "__main__":
     client = _setup_tests.__setup() # set up client
     args = get_args() # get arguments from command line
     # run test
+
     print("Running test_agent (except for agent.chat()):\n")
-    # test_agent(client, args)
-    # print("Finished running test_agent.\nNow running test_agent_chat_json\n")
+    test_agent(client, args)
+    print("Finished running test_agent.\nNow running test_agent_chat_json\n")
     chat_agent_info = test_agent_chat_json(client, args)
-    # print("Finished running test_agent_chat_json.\nNow running test_agent_chat_text\n")
-    # test_agent_chat_text(client, chat_agent_info["namespace"])
-    # print("Finished running all agent tests.\n")
+    print("Finished running test_agent_chat_json.\nNow running test_agent_chat_text\n")
+    test_agent_chat_text(client, chat_agent_info["namespace"])
+    print("Finished running all agent tests.\n")

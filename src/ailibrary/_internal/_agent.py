@@ -60,24 +60,39 @@ class _Agent:
         return self._validate_response(response, AgentDeleteResponse)
 
 
-    ### WORK IN PROGRESS ###
+
+    def chat_stream(self, namespace: str, messages: list[dict], **kwargs):
+        """ Stream a chat with an agent with text data"""
+        payload = AgentChatRequest(namespace=namespace, messages=messages, **kwargs).model_dump()
+        headers = {
+            'Content-Type': 'application/json',
+            'X-Library-Key': self._http_client.headers["X-Library-Key"]
+        }
+        url = f"{self._http_client.base_url}/{self._RESOURCE_PATH}/{namespace}/chat"
+        with requests.request("POST", url, headers=headers, json=payload, stream=True) as response:
+            response.raise_for_status()
+            for chunk in response.iter_content(chunk_size=8192):
+                if chunk:
+                    yield chunk.decode('utf-8')
+
+
     def chat(self, namespace: str, messages: list[dict], **kwargs):
         """Chat with an agent."""
 
         payload = AgentChatRequest(namespace=namespace, messages=messages, **kwargs).model_dump()
-        print(payload)
         url = f"{self._RESOURCE_PATH}/{namespace}/chat"
-        # return self._http_client._request("POST", url, content_type="application/json", json=payload)
         if payload["response_format"] == "json":
-            response = self._http_client._request("POST", url, content_type="application/json", json=payload)
-            return response
+            response = self._http_client._request("POST", url, json=payload)
         else:
-            headers = {
-                'Content-Type': 'application/json',
-                'X-Library-Key': self._http_client.headers["X-Library-Key"]
-            }
-            with requests.request("POST", url, headers=headers, json=payload, stream=True) as response:
-                response.raise_for_status()
-                for chunk in response.iter_content(chunk_size=8192):
-                    if chunk:
-                        yield chunk.decode('utf-8')        
+            try:
+                response = ""
+                for chunk in self.chat_stream(namespace=namespace, messages=messages, **kwargs):
+                    try:
+                        response += chunk
+                        # print(f"response: {response}")
+                    except Exception as e:
+                        print(f"Error processing chunk: {str(e)}\nMoving on to next chunk...")
+            except Exception as e:
+                print(f"Chat error: {str(e)}")
+
+        return response
