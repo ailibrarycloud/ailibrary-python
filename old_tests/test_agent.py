@@ -132,12 +132,14 @@ def test_agent_chat_text(client, agent_namespace):
 
 
 if __name__ == "__main__":
+
+    
     client = _setup_tests.__setup() # set up client
     args = get_args() # get arguments from command line
     # run test
 
-    print("Running test_agent (except for agent.chat()):\n")
-    test_agent(client, args)
+    # print("Running test_agent (except for agent.chat()):\n")
+    # test_agent(client, args)
     print("Finished running test_agent.\nNow running test_agent_chat_json\n")
     chat_agent_info = test_agent_chat_json(client, args)
     print("Finished running test_agent_chat_json.\nNow running test_agent_chat_text\n")

@@ -4,6 +4,7 @@ from ..types.agent.requests import AgentCreateRequest, AgentUpdateRequest, Agent
 from ..types.agent.responses import AgentCreateResponse, AgentGetResponse, AgentListResponse, AgentUpdateResponse, AgentDeleteResponse
 from pydantic import ValidationError
 import requests
+import json
 
 class _Agent:
     """Client for interacting with the AI Library Agent API."""
@@ -82,17 +83,23 @@ class _Agent:
         payload = AgentChatRequest(namespace=namespace, messages=messages, **kwargs).model_dump()
         url = f"{self._RESOURCE_PATH}/{namespace}/chat"
         if payload["response_format"] == "json":
-            response = self._http_client._request("POST", url, json=payload)
+            result = self._http_client._request("POST", url, json=payload)
         else:
             try:
-                response = ""
+                result = ""
+                buffer = ""
                 for chunk in self.chat_stream(namespace=namespace, messages=messages, **kwargs):
+                    buffer = ""
+                    buffer += chunk
                     try:
-                        response += chunk
-                        # print(f"response: {response}")
+                        print(buffer, type(buffer))
+                        chunk_json = json.loads(buffer)
+                        result += chunk_json["content"]
+                    # except json.JSONDecodeError:
+                    #     continue
                     except Exception as e:
                         print(f"Error processing chunk: {str(e)}\nMoving on to next chunk...")
             except Exception as e:
                 print(f"Chat error: {str(e)}")
 
-        return response
+        return result
