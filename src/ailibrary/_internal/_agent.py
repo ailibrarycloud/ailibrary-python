@@ -3,7 +3,7 @@ from .__http_client import _HTTPClient
 from ..types.agent.requests import AgentCreateRequest, AgentUpdateRequest, AgentDeleteRequest, AgentChatRequest
 from ..types.agent.responses import AgentCreateResponse, AgentGetResponse, AgentListResponse, AgentUpdateResponse, AgentDeleteResponse
 from pydantic import ValidationError
-
+import requests
 
 class _Agent:
     """Client for interacting with the AI Library Agent API."""
@@ -60,31 +60,24 @@ class _Agent:
         return self._validate_response(response, AgentDeleteResponse)
 
 
-    ### CURRENTLY ONLY WORKS FOR RESPONSE FORMAT JSON ###
+    ### WORK IN PROGRESS ###
     def chat(self, namespace: str, messages: list[dict], **kwargs):
         """Chat with an agent."""
+
         payload = AgentChatRequest(namespace=namespace, messages=messages, **kwargs).model_dump()
-        response = self._http_client._request("POST", 
-                                              f"{self._RESOURCE_PATH}/{namespace}/chat", 
-                                              content_type="application/json",
-                                              json=payload)
-        # response_format = payload["response_format"]
-        # if response_format == "json" and not isinstance(response, dict):
-        #     raise ValueError("Something has gone wrong. Please try again.\n")
-        return response
-
-        # # OLD CODE
-        # request = ChatRequest(messages=messages)
-        # url = f"{self._http_client.base_url}/v1/agent/{namespace}/chat"
-        # payload = request.model_dump_json()
-        # headers = {
-        #     'Content-Type': 'application/json',
-        #     'X-Library-Key': self._http_client.headers["X-Library-Key"]
-        # }
-
-        # with requests.request("POST", url, headers=headers, data=payload, stream=True) as response:
-        #     response.raise_for_status()
-        #     for chunk in response.iter_content(chunk_size=8192):
-        #         if chunk:
-        #             yield chunk.decode('utf-8')
-        
+        print(payload)
+        url = f"{self._RESOURCE_PATH}/{namespace}/chat"
+        # return self._http_client._request("POST", url, content_type="application/json", json=payload)
+        if payload["response_format"] == "json":
+            response = self._http_client._request("POST", url, content_type="application/json", json=payload)
+            return response
+        else:
+            headers = {
+                'Content-Type': 'application/json',
+                'X-Library-Key': self._http_client.headers["X-Library-Key"]
+            }
+            with requests.request("POST", url, headers=headers, json=payload, stream=True) as response:
+                response.raise_for_status()
+                for chunk in response.iter_content(chunk_size=8192):
+                    if chunk:
+                        yield chunk.decode('utf-8')        
