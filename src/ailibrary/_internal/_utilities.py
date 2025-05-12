@@ -12,11 +12,12 @@ from ..types.utilities.responses import (
     WebParserResponse,
     NewsSearchResponse,
     DocumentParserResponse,
-    DocumentThumbnailResponse,
-    JSONSchemaGeneratorResponse
+    DocumentThumbnailResponse
 )
 from pydantic import ValidationError
 from typing import Union, Optional
+
+
 # from ..types.utilities.responses import SearchResultData, ParsedContentData
 
 class _Utilities:
@@ -72,6 +73,7 @@ class _Utilities:
         )
         return self._validate_response(response, NewsSearchResponse)
 
+
     def document_parser(self, urls: str) -> dict:
         """Parse document content and metadata."""
         payload = DocumentParserRequest(urls=urls).model_dump()
@@ -81,6 +83,7 @@ class _Utilities:
             json=payload
         )
         return self._validate_response(response, DocumentParserResponse)
+
 
     def document_thumbnail(self, urls: str) -> dict:
         """Generate document page thumbnail."""
@@ -92,6 +95,7 @@ class _Utilities:
         )
         return self._validate_response(response, DocumentThumbnailResponse)
 
+
     def json_schema_generator(self, content: str) -> dict:
         """Generate JSON schema from text description."""
         payload = JSONSchemaGeneratorRequest(content=content).model_dump()
@@ -100,4 +104,17 @@ class _Utilities:
             f"{self._RESOURCE_PATH}/schema_generator",
             json=payload
         )
-        return self._validate_response(response, JSONSchemaGeneratorResponse)
+        return response
+
+
+    def json_schema_validator(self, schema: dict) -> Union[bool, dict]:
+        """Check if given JSON schema is valid."""
+        if not isinstance(schema, dict):
+            raise TypeError("Input schema be a dict.")
+        payload = schema
+        response = self._http_client._request(
+            "POST",
+            f"{self._RESOURCE_PATH}/schema_validator",
+            json=payload
+        )
+        return response

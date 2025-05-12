@@ -65,10 +65,3 @@ class DocumentThumbnailResponse(CustomBaseModel):
     url: str
     thumbnail: str
 
-class JSONSchemaGeneratorResponse(CustomBaseModel):
-    name: dict
-    email: dict
-    phone: dict
-    experience_in_years: dict
-    ai_experience_in_years: dict
-    highest_educational_qualification: dict

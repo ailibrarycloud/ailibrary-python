@@ -34,6 +34,8 @@ def test_utilities(client):
     schema_gen_response = utilities.json_schema_generator(instruction)
     print(f"utilities.json_schema_generator() response \n{schema_gen_response}\n\n")
 
+    validator_response = utilities.json_schema_validator(schema_gen_response)
+    print(f"utilities.json_schema_validator() response \n{validator_response}\n\n")
 
     for url_function in [utilities.web_parser, utilities.document_parser, utilities.document_thumbnail]:
         test_invalid_tokens(url_function, ["doesnotexist.com"], "a given url does not exist")
@@ -49,6 +51,5 @@ def test_utilities(client):
 if __name__ == "__main__":
     client = _setup_tests.__setup()
     print("Running test_utilities:\n")
-    # print(client.utilities.web_search(["humans"]))
     test_utilities(client)
     print("Finished running test_utilities\n")
