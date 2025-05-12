@@ -60,7 +60,7 @@ def test_agent_chat_json(client, args):
 
     print("Step 1: generate schema using client.utilities.json_schema_generator()\n" +
           "Step 2: use schema to generate form using client.form.create()\n" +
-          "Step 3: Ccreate a chat agent and specify form id\n" +
+          "Step 3: Create a chat agent and specify form id\n" +
           "Step 4: Call agent.chat()\n")
     
     print("Calling client.utilities.json_schema_generator()...\n")
@@ -113,7 +113,7 @@ def test_agent_chat_text(client, agent_namespace):
         }
     ]
     original_response = agent.chat(namespace=agent_namespace, messages=original_messages, 
-                                   response_format="json", session_id = "unique_id_lskad")
+                                   response_format="json", session_id="unique_id_lskad")
     print(original_response)
     # now we test chat (with text) 
     session_id = original_response.get("session_id", "unique_id_lskad")

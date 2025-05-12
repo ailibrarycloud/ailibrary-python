@@ -70,39 +70,31 @@ class _Agent:
             'X-Library-Key': self._http_client.headers["X-Library-Key"]
         }
         url = f"{self._http_client.base_url}/{self._RESOURCE_PATH}/{namespace}/chat"
-        with requests.request("POST", url, headers=headers, json=payload, stream=True) as response:
-            response.raise_for_status()
-            for chunk in response.iter_content(chunk_size=8192):
-                if chunk:
-                    yield chunk.decode('utf-8')
+        try:
+            with requests.request("POST", url, headers=headers, json=payload, stream=True) as response:
+                response.raise_for_status()
+                for chunk in response.iter_content(chunk_size=8192):
+                    try:
+                        if chunk:
+                            json_strings = chunk.decode('utf-8')
+                            json_objects = [json.loads(json_string) for json_string in json_strings.splitlines()]
+                            for obj in json_objects:
+                                yield obj
+                    except Exception as e:
+                        print(f"Error processing chunk: {str(e)}\nMoving on to next chunk...")
+        except Exception as e:
+            print(f"Chat error: {str(e)}")
 
 
     def chat(self, namespace: str, messages: list[dict], **kwargs):
         """Chat with an agent."""
-
         payload = AgentChatRequest(namespace=namespace, messages=messages, **kwargs).model_dump()
         url = f"{self._RESOURCE_PATH}/{namespace}/chat"
         if payload["response_format"] == "json":
             result = self._http_client._request("POST", url, json=payload)
         else:
-            try:
-                result = ""
-                for chunks in self.chat_stream(namespace=namespace, messages=messages, **kwargs):
-                    buffer = ""
-                    buffer += chunks
-                    try:
-                        print(buffer, type(buffer))
-                        contents = [
-                            item["content"] # extract content
-                            for chunk in buffer.splitlines() # from each json object if it is a response chunk
-                            if (item := json.loads(chunk)).get("object") == "chat.completion.chunk"
-                        ]
-                        result += ''.join(contents) # join list of strings and add to result
-                    # except json.JSONDecodeError:
-                    #     continue
-                    except Exception as e:
-                        print(f"Error processing chunk: {str(e)}\nMoving on to next chunk...")
-            except Exception as e:
-                print(f"Chat error: {str(e)}")
-
+            result = ""
+            for json_object in self.chat_stream(namespace=namespace, messages=messages, **kwargs):
+                if json_object["object"] == "chat.completion.chunk":
+                    result += json_object["content"]
         return result
