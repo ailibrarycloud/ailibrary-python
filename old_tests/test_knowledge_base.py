@@ -40,7 +40,6 @@ def test_knowledge_base(client, args):
     print(f"knowledge_base.get_status() response:\n{kb_status}\n")
     
 
-    # MAJOR BUGS / UNFINISHED
     urls = ["https://example-files.online-convert.com/document/txt/example.txt"]
     options = {"urls": urls}
     source_data = knowledge_base.add_source(knowledgeId, type="docs", options=options)  # Add a source to the knowledge base

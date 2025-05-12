@@ -87,14 +87,17 @@ class _Agent:
         else:
             try:
                 result = ""
-                buffer = ""
-                for chunk in self.chat_stream(namespace=namespace, messages=messages, **kwargs):
+                for chunks in self.chat_stream(namespace=namespace, messages=messages, **kwargs):
                     buffer = ""
-                    buffer += chunk
+                    buffer += chunks
                     try:
                         print(buffer, type(buffer))
-                        chunk_json = json.loads(buffer)
-                        result += chunk_json["content"]
+                        contents = [
+                            item["content"] # extract content
+                            for chunk in buffer.splitlines() # from each json object if it is a response chunk
+                            if (item := json.loads(chunk)).get("object") == "chat.completion.chunk"
+                        ]
+                        result += ''.join(contents) # join list of strings and add to result
                     # except json.JSONDecodeError:
                     #     continue
                     except Exception as e:

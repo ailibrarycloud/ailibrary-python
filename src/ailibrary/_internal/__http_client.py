@@ -23,15 +23,6 @@ class _HTTPClient:
         }
 
 
-    # @staticmethod
-    # def _stringify(list_of_strings: list[str]) -> str:
-    #     """ 
-    #     input example: ["A", "list", "of", "words"]
-    #     return value example: "'A', 'list', 'of', 'words'"
-    #     """
-    #     return "'" + "', '".join(list_of_strings) + "'"
-
-
     def _request(
         self, 
         method: str, 
@@ -81,9 +72,10 @@ class _HTTPClient:
             #     return response
             response.raise_for_status()
             return response.json()
-        except requests.exceptions.RequestException as e:
-            raise ErrorResponse(
-                status_code=e.response.status_code if e.response else 500,
-                message=str(e),
-                error=e.response.json() if e.response else None
-            )
+        except Exception as e:
+            raise e
+            # raise ErrorResponse(
+            #     status_code=e.response.status_code if e.response else 500,
+            #     message=str(e),
+            #     error=e.response.json() if e.response else None
+            # )

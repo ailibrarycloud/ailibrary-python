@@ -58,17 +58,16 @@ def test_agent_chat_json(client, args):
     agent = client.agent
     chat_agent_title = args.get("chat_agent_title", "Test_Chat_Agent")
 
-    print("Here is how we will test agent.chat() with json response format:\n \
-          First, we generate a schema using client.utilities.json_schema_generator()\n \
-          then we use that schema to generate a form using client.form.create()\n \
-          Then we create a chat agent and specify the form id\n \
-          And then we finally call agent.chat().\n")
+    print("Step 1: generate schema using client.utilities.json_schema_generator()\n" +
+          "Step 2: use schema to generate form using client.form.create()\n" +
+          "Step 3: Ccreate a chat agent and specify form id\n" +
+          "Step 4: Call agent.chat()\n")
     
     print("Calling client.utilities.json_schema_generator()...\n")
     instructions = "Please generate a form with the following fields: \n name (string), email(string), phone(number), experience in years (number), ai experience in years (number), highest educational qualification (phd, bachelor's degree, high school, not mentioned)"
     schema = client.utilities.json_schema_generator(content=instructions)
 
-    print(f"Here is the schema:\n{schema}\n\n\n Now calling client.forms.create():\n")
+    print(f"Schema successfully generated. Now calling client.forms.create():\n")
     form = client.forms.create(title="my agent form", schema=schema)
     form_id = form["form_id"]
 
@@ -83,12 +82,12 @@ def test_agent_chat_json(client, args):
             "content": "My name is John Doe. Who are you?"
         }
     ]
-    print(f"The namespace of the new chat agent is: {namespace}\n Here are the messages we will use:\n{messages}\n")
+    print(f"The namespace of the new chat agent is: {namespace}")
 
     res_format = "json"
-    print(f"Calling client.agent.chat() using agent {namespace} (arguments passed are the messages above and response_format '{res_format}'):\n")
+    print(f"Calling client.agent.chat() with json response using agent {namespace}\n")
     response = agent.chat(namespace=namespace, messages=messages, response_format=res_format)
-    print(f"client.agent.chat() response:\n\n{response}\n\n")
+    print(f"client.agent.chat() response:\n{response}\n\n")
     return agent_data
 
 def test_agent_chat_text(client, agent_namespace):
@@ -127,7 +126,7 @@ def test_agent_chat_text(client, agent_namespace):
 
     full_response = agent.chat(namespace=agent_namespace, session_id=session_id, 
                                messages=messages, response_format="text")
-    print(f"agent.chat() text response: {full_response}")
+    print(f"agent.chat() text response: {full_response}\n")
 
 
 
