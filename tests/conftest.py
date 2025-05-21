@@ -8,6 +8,26 @@ from ailibrary._internal.__http_client import _HTTPClient
 # Load test environment variables
 load_dotenv('.env.test')
 
+def pytest_collection_modifyitems(session, config, items):
+    # Define test directory priority (lower index = runs first)
+    ORDER = {
+        "http_client": 0,
+        "unit": 1,
+        "integration": 2,
+        "e2e": 3
+    }
+    
+    # Sort test items based on their directory
+    def get_test_priority(item):
+        path = str(item.fspath)
+        for key, priority in ORDER.items():
+            if f"/{key}/" in path:
+                return priority
+        return 99  # Default for unclassified tests
+    
+    items.sort(key=lambda item: get_test_priority(item))
+
+
 @pytest.fixture
 def mock_http_client():
     """Fixture for mocked HTTP client"""
