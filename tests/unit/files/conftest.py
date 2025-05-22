@@ -1,6 +1,6 @@
 import pytest
-from ailibrary.types.shared.enums import ResourcePath
+from ailibrary._internal._files import _Files
 
 @pytest.fixture
 def res_path():
-    return ResourcePath.FILES
+    return "/files"

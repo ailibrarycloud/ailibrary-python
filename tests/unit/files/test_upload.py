@@ -24,11 +24,11 @@ import pytest
 import mimetypes
 import os
 from ailibrary._internal._files import _Files
-from ailibrary.types.files.responses import FileUploadResponse
 from unittest.mock import ANY
 
 
 class TestFilesUpload:
+    
     @pytest.mark.parametrize("upload_payload", [
         {
             "files": ["tests/_sample_files/test.txt"],
@@ -37,12 +37,13 @@ class TestFilesUpload:
     ])
     def test_general(self, res_path, mock_http_client, upload_payload):
         """Test successful file upload with various valid payloads"""
+
         file_path = upload_payload["files"][0]
         file_name = os.path.basename(file_path)
         mime_type = mimetypes.guess_type(file_path)[0]
-        
+
         files = _Files(mock_http_client)
-        
+
         mock_response = {
             "url": "https://example.com/test.txt",
             "id": 1,

@@ -20,7 +20,6 @@
 
 import pytest
 from ailibrary._internal._forms import _Forms
-from ailibrary.types.forms.responses import FormUpdateResponse
 
 class TestFormsUpdate:
     @pytest.mark.parametrize("update_payload", [

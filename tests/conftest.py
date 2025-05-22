@@ -33,12 +33,14 @@ def mock_http_client():
     """Fixture for mocked HTTP client"""
     return Mock(spec=_HTTPClient)
 
+
 @pytest.fixture
 def mock_response():
     """Fixture for mocked API responses"""
     def _create_response(data):
         return data
     return _create_response
+
 
 @pytest.fixture
 def api_client():
@@ -54,3 +56,4 @@ def test_file_path(tmp_path):
     test_file = tmp_path / "test.txt"
     test_file.write_text("Test content")
     return str(test_file)
+
