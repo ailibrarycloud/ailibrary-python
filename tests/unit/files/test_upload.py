@@ -65,5 +65,6 @@ class TestFilesUpload:
             "POST",
             res_path,
             data={"knowledgeId": upload_payload["knowledgeId"]},
-            files=[('files', (file_name, ANY, mime_type))]
+            files=[('files', (file_name, ANY, mime_type))],
+            content_type=""
         )
