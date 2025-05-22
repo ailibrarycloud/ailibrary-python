@@ -2,6 +2,7 @@ from typing import Optional, Generator
 from .__http_client import _HTTPClient
 from ..types.agent.requests import AgentCreateRequest, AgentUpdateRequest, AgentDeleteRequest, AgentChatRequest
 from ..types.agent.responses import AgentCreateResponse, AgentGetResponse, AgentListResponse, AgentUpdateResponse, AgentDeleteResponse
+from ..types.shared.enums import ResourcePath
 from pydantic import ValidationError
 import requests
 import json
@@ -9,7 +10,7 @@ import json
 class _Agent:
     """Client for interacting with the AI Library Agent API."""
 
-    _RESOURCE_PATH = "/agent"
+    _RESOURCE_PATH = ResourcePath.AGENT.value
 
     def __init__(self, http_client: _HTTPClient):
         self._http_client = http_client

@@ -5,13 +5,14 @@ import os
 from ..types.files.requests import FileUploadRequest, FileListRequest
 from ..types.files.responses import FileUploadResponse, FileGetResponse, FileListResponse, FileDeleteResponse
 from ..types.shared.models import PaginationParams
+from ..types.shared.enums import ResourcePath
 from pydantic import ValidationError
 
 
 class _Files:
     """Files resource for managing file uploads and operations."""
 
-    _RESOURCE_PATH = "/files"
+    _RESOURCE_PATH = ResourcePath.FILES.value
 
     def __init__(self, http_client: _HTTPClient):
         self._http_client = http_client

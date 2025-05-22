@@ -6,7 +6,7 @@ from ailibrary.types.agent.responses import AgentCreateResponse, AgentUpdateResp
 
 @pytest.fixture
 def res_path():
-    return "/agent"
+    return ResourcePath.AGENT.value
 
 # @pytest.fixture
 # def create_request():

@@ -14,6 +14,7 @@ from ..types.utilities.responses import (
     DocumentParserResponse,
     DocumentThumbnailResponse
 )
+from ..types.shared.enums import ResourcePath
 from pydantic import ValidationError
 from typing import Union, Optional
 
@@ -23,7 +24,7 @@ from typing import Union, Optional
 class _Utilities:
     """Utility functions to support AI agents."""
 
-    _RESOURCE_PATH = "/utilities"
+    _RESOURCE_PATH = ResourcePath.UTILITIES.value
 
     def __init__(self, http_client: _HTTPClient):
         self._http_client = http_client
