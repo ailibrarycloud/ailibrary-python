@@ -119,13 +119,15 @@ def test_agent_forms(client):
 def test_files_kb(client):
     """ Test that when uploading a file and specifying a knowledge_base, the contents of the file can be retrieved after"""
     agent_response = client.agent.create(title="test_agent", knowledge_search=True)
-    kb_id = agent_response["knowledgeId"]
+    # print(agent_response)
+    kb_id = agent_response["knowledge_id"]
     uploaded_files = client.files.upload(
-        files=["old_tests/file_for_testing.txt, old_tests/file_for_testing2.txt"],
+        files=["old_tests/file_for_testing.txt", "old_tests/file_for_testing2.txt"],
         knowledgeId=kb_id
     )
 
-    #### Need a way to access the file in that kb
+    sources_response = client.knowledge_base.list_sources(knowledgeId=kb_id)
+    print(sources_response)
     client.agent.delete(agent_response["namespace"], delete_connected_resources=True)
 
 
@@ -133,5 +135,5 @@ if __name__ == "__main__":
     # This testing file will test how the entities integrate together
     client = _setup_tests.__setup()  # set up client
     # test_agent_kb(client)
-    test_agent_forms(client)
-    # test_files_kb(client)
+    # test_agent_forms(client)
+    test_files_kb(client)

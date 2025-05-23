@@ -51,9 +51,16 @@ def api_client():
     )
 
 @pytest.fixture
-def test_file_path(tmp_path):
+def test_file_name():
+    """ name for test files, mainly to be used in test_file_path fixture"""
+    return "test.txt"
+
+
+@pytest.fixture
+def test_file_path(tmp_path, test_file_name):
     """Fixture to create a temporary test file"""
-    test_file = tmp_path / "test.txt"
+    # tmp_path is a pytest object / fixture
+    test_file = tmp_path / test_file_name
     test_file.write_text("Test content")
     return str(test_file)
 

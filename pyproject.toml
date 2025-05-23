@@ -35,7 +35,7 @@ dev = [
 
 
 [tool.pytest.ini_options]
-testpaths = ["tests/"]
+testpaths = ["tests/unit", "tests/integration"]
 markers = [
     "http_client: tests for _HTTPClient class",
     "unit: unit tests using mock",
