@@ -1,6 +1,11 @@
+# general case
+# title is empty
+# title is too long
+# schema is empty
+
+
 import pytest
 from ailibrary._internal._forms import _Forms
-from ailibrary.types.forms.responses import FormCreateResponse
 
 
 class TestFormsCreate:

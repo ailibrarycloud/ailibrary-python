@@ -4,7 +4,10 @@ from typing import Any
 
 
 class BinaryFileValidator(BaseModel):
-    model_config = ConfigDict(arbitrary_types_allowed=True, loc_by_alias=False)
+    model_config = ConfigDict(arbitrary_types_allowed=True, 
+                              loc_by_alias=False, 
+                              use_enum_values=True, 
+                              extra="allow") # for now
     file_obj: Any
     
     @field_validator('file_obj')

@@ -1,6 +1,6 @@
 from typing import Optional
 from .requests import AgentCreateRequest
-from ..shared.base import CustomBaseModel
+from ..shared.models import CustomBaseModel
 
 
 class AgentCreateResponse(AgentCreateRequest):
@@ -16,7 +16,9 @@ class AgentListResponse(CustomBaseModel):
     meta: dict
 
 class AgentUpdateResponse(CustomBaseModel):
-    response: str
+    response: Optional[str] = None
+    status: Optional[str] = None
+    message: Optional[str] = None
 
 class AgentDeleteResponse(CustomBaseModel):
     statusCode: int

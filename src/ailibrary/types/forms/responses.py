@@ -1,17 +1,9 @@
-from typing import Optional
-from datetime import datetime
-from ..shared.base import CustomBaseModel
+from ..shared.models import CustomBaseModel
 from .forms_base_class import FormsBaseClass
 from pydantic import Field
 
-class FormListItems(CustomBaseModel):
-    form_id: str
-    title: str
-    userName: str
-    created_timestamp: str
-    updated_timestamp: str
 
-class FormMeta(CustomBaseModel):
+class FormsMeta(CustomBaseModel):
     total_items: int
     total_pages: int
     current_page: int
@@ -19,30 +11,38 @@ class FormMeta(CustomBaseModel):
     next_page: str
     prev_page: str
 
-class FormCreateResponse(FormsBaseClass):
+
+class FormsListItems(FormsBaseClass):
+    form_id: str
+    title: str
+    userName: str
+    created_timestamp: str
+    updated_timestamp: str
+
+
+class FormsCreateResponse(FormsBaseClass):
     form_id: str
     title: str
     schema_data: dict = Field(default=..., alias="schema")
 
 
-class FormGetResponse(FormsBaseClass):
+class FormsGetResponse(FormsBaseClass):
     form_id: str
     title: str
     schema_data: dict = Field(default=..., alias="schema")
 
 
-class FormListResponse(CustomBaseModel):
-    forms: list[FormListItems]
-    meta: FormMeta
+class FormsListResponse(CustomBaseModel):
+    forms: list[FormsListItems]
+    meta: FormsMeta
 
 
-class FormUpdateResponse(FormsBaseClass):
+class FormsUpdateResponse(FormsBaseClass):
     form_id: str
     title: str
     schema_data: dict = Field(default=..., alias="schema")
 
 
-class FormDeleteResponse(CustomBaseModel):
-    # status: str
-    # message: str
-    response: str
+class FormsDeleteResponse(CustomBaseModel):
+    status: str
+    message: str

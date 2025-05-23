@@ -1,8 +1,25 @@
 from typing import Optional
+from enum import Enum
 from pydantic import Field
-from ..shared.base import CustomBaseModel
+from .chat_message_model import ChatMessageModel
+from ..shared.models import CustomBaseModel
 from ..shared.enums import AgentType
 
+
+class ResponseFormatEnum(str, Enum):
+    TEXT = "text"
+    JSON = "json"
+
+class AgentChatRequest(CustomBaseModel):
+    namespace: str = Field(..., 
+        description="The unique identifier for the agent",
+        exclude=True,
+        min_length=1
+    )
+    messages: list[ChatMessageModel]
+    response_format: Optional[ResponseFormatEnum] = "text"
+    session_id: Optional[str] = None
+    
 
 class AgentDeleteRequest(CustomBaseModel):
     namespace: str = Field(..., 
@@ -15,11 +32,7 @@ class AgentDeleteRequest(CustomBaseModel):
 
 class AgentCreateRequest(CustomBaseModel):
     title: str = Field(..., description="The name of your agent", min_length=1)
-    instructions: str = Field(
-        default="You are a helpful assistant.",
-        description="System instructions for the agent"
-    )
-    type: Optional[AgentType] = None
+    instructions: Optional[str] = "You are a helpful assistant."
     description: Optional[str] = None
     coverimage: Optional[str] = None
     intromessage: Optional[str] = None
@@ -36,3 +49,5 @@ class AgentUpdateRequest(AgentCreateRequest):
         exclude=True,
         min_length=1
     )
+    title: Optional[str] = None
+    type: Optional[AgentType] = None

@@ -13,7 +13,7 @@ from pydantic import ValidationError
 class _Notes:
     """Notes resource for managing notes on resources."""
 
-    _RESOURCE_PATH = ResourcePath.NOTES
+    _RESOURCE_PATH = ResourcePath.NOTES.value
 
     def __init__(self, http_client: _HTTPClient):
         self._http_client = http_client

@@ -1,6 +1,25 @@
+# general case
+# no title, no schema
+# title, no schema
+# no title, with scheme
+# both title and schema
+# title is too long
+# title is an empty string
+# schema is an empty dictionary
+
+# update with non-empty schema when original schema is empty
+# update with empty schema when original schema is non-empty
+# update with different non-empty schema when original schema is non-empty
+# update with exactly same schema as original schema
+
+# update with non-empty title when original title is empty
+# update with empty title when original title is non-empty
+# update with different non-empty title when original title is non-empty
+# update with exactly same title as original title
+
+
 import pytest
 from ailibrary._internal._forms import _Forms
-from ailibrary.types.forms.responses import FormUpdateResponse
 
 class TestFormsUpdate:
     @pytest.mark.parametrize("update_payload", [

@@ -1,6 +1,5 @@
 import pytest
 from ailibrary._internal._forms import _Forms
-from ailibrary.types.forms.responses import FormListResponse
 
 
 class TestFormsList:

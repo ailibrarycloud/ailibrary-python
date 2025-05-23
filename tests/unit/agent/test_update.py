@@ -4,6 +4,14 @@
 # different kinds of characters in actual namespace
 # every other test as create()
 
+# update with non-empty title when original title is empty
+# update with empty title when original title is non-empty
+# update with different non-empty title when original title is non-empty
+# update with exactly same title as original title
+
+# repeat w other parameters
+
+
 import pytest
 from ailibrary._internal._agent import _Agent
 from ailibrary.types.agent.responses import AgentUpdateResponse
